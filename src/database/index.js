@@ -62,141 +62,164 @@ class DatabaseService {
         try {
             // Begin a single transaction for all operations
             await this.db.run('BEGIN TRANSACTION');
+            let transactionStarted = true;
 
-            // Upsert season
-            const season = await this.seasons.upsertSeason({
-                year,
-                leagueId,
-                name: data[0]?.season || `${year} Season`
-            });
-
-            console.log(`Season saved: ${season.year} (ID: ${season.id})`);
-
-            // Extract unique teams
-            const uniqueTeams = new Map();
-
-            data.forEach(match => {
-                // Add away team if not already added
-                if (match.awayTeamId && match.awayTeamName) {
-                    uniqueTeams.set(match.awayTeamId, {
-                        teamId: match.awayTeamId,
-                        seasonId: season.id,
-                        name: match.awayTeamName
-                    });
-                }
-
-                // Add home team if not already added
-                if (match.homeTeamId && match.homeTeamName) {
-                    uniqueTeams.set(match.homeTeamId, {
-                        teamId: match.homeTeamId,
-                        seasonId: season.id,
-                        name: match.homeTeamName
-                    });
-                }
-            });
-
-            // Save teams directly without using bulkUpsertTeams
-            const teams = Array.from(uniqueTeams.values());
-            for (const team of teams) {
-                const { teamId, seasonId, name } = team;
-                // Check if team exists
-                const existingTeam = await this.db.get(
-                    'SELECT * FROM teams WHERE team_id = ? AND season_id = ?',
-                    [teamId, seasonId]
+            try {
+                // Instead of using this.seasons.upsertSeason which starts its own transaction
+                // Get existing season first
+                let season = await this.db.get(
+                    'SELECT * FROM seasons WHERE league_id = ?',
+                    [leagueId]
                 );
 
-                if (existingTeam) {
-                    // Update existing team
+                if (season) {
+                    // Update existing season
                     await this.db.run(
-                        'UPDATE teams SET name = ? WHERE team_id = ? AND season_id = ?',
-                        [name, teamId, seasonId]
+                        'UPDATE seasons SET year = ?, name = ? WHERE league_id = ?',
+                        [year, data[0]?.season || `${year} Season`, leagueId]
                     );
+                    season = await this.db.get('SELECT * FROM seasons WHERE league_id = ?', [leagueId]);
                 } else {
-                    // Insert new team
+                    // Insert new season
                     await this.db.run(
-                        'INSERT INTO teams (team_id, season_id, name) VALUES (?, ?, ?)',
-                        [teamId, seasonId, name]
+                        'INSERT INTO seasons (year, league_id, name) VALUES (?, ?, ?)',
+                        [year, leagueId, data[0]?.season || `${year} Season`]
                     );
-                }
-            }
-
-            console.log(`Saved ${teams.length} teams for season ${year}`);
-
-            // Get fresh team data with database IDs
-            const savedTeams = await this.teams.getTeamsBySeason(season.id);
-            const teamMap = new Map();
-
-            savedTeams.forEach(team => {
-                teamMap.set(team.team_id, team);
-            });
-
-            // Prepare matchups with database IDs
-            let matchupCount = 0;
-
-            for (const match of data) {
-                const awayTeam = teamMap.get(match.awayTeamId);
-                const homeTeam = teamMap.get(match.homeTeamId);
-
-                if (!awayTeam || !homeTeam) {
-                    console.warn(`Skipping matchup with missing team: ${match.awayTeamName} vs ${match.homeTeamName}`);
-                    continue;
+                    season = await this.db.get('SELECT * FROM seasons WHERE league_id = ?', [leagueId]);
                 }
 
-                // Check if matchup exists
-                const existingMatchup = await this.db.get(`
+                console.log(`Season saved: ${season.year} (ID: ${season.id})`);
+
+                // Extract unique teams
+                const uniqueTeams = new Map();
+
+                data.forEach(match => {
+                    // Add away team if not already added
+                    if (match.awayTeamId && match.awayTeamName) {
+                        uniqueTeams.set(match.awayTeamId, {
+                            teamId: match.awayTeamId,
+                            seasonId: season.id,
+                            name: match.awayTeamName
+                        });
+                    }
+
+                    // Add home team if not already added
+                    if (match.homeTeamId && match.homeTeamName) {
+                        uniqueTeams.set(match.homeTeamId, {
+                            teamId: match.homeTeamId,
+                            seasonId: season.id,
+                            name: match.homeTeamName
+                        });
+                    }
+                });
+
+                // Save teams directly without using bulkUpsertTeams
+                const teams = Array.from(uniqueTeams.values());
+                for (const team of teams) {
+                    const { teamId, seasonId, name } = team;
+                    // Check if team exists
+                    const existingTeam = await this.db.get(
+                        'SELECT * FROM teams WHERE team_id = ? AND season_id = ?',
+                        [teamId, seasonId]
+                    );
+
+                    if (existingTeam) {
+                        // Update existing team
+                        await this.db.run(
+                            'UPDATE teams SET name = ? WHERE team_id = ? AND season_id = ?',
+                            [name, teamId, seasonId]
+                        );
+                    } else {
+                        // Insert new team
+                        await this.db.run(
+                            'INSERT INTO teams (team_id, season_id, name) VALUES (?, ?, ?)',
+                            [teamId, seasonId, name]
+                        );
+                    }
+                }
+
+                console.log(`Saved ${teams.length} teams for season ${year}`);
+
+                // Get fresh team data with database IDs
+                const savedTeams = await this.teams.getTeamsBySeason(season.id);
+                const teamMap = new Map();
+
+                savedTeams.forEach(team => {
+                    teamMap.set(team.team_id, team);
+                });
+
+                // Prepare matchups with database IDs
+                let matchupCount = 0;
+
+                for (const match of data) {
+                    const awayTeam = teamMap.get(match.awayTeamId);
+                    const homeTeam = teamMap.get(match.homeTeamId);
+
+                    if (!awayTeam || !homeTeam) {
+                        console.warn(`Skipping matchup with missing team: ${match.awayTeamName} vs ${match.homeTeamName}`);
+                        continue;
+                    }
+
+                    // Check if matchup exists
+                    const existingMatchup = await this.db.get(`
                     SELECT * FROM schedule 
                     WHERE season_id = ? AND period_number = ? 
                     AND away_team_id = ? AND home_team_id = ?
                 `, [season.id, match.periodNumber, awayTeam.id, homeTeam.id]);
 
-                if (existingMatchup) {
-                    // Update existing matchup
-                    await this.db.run(`
+                    if (existingMatchup) {
+                        // Update existing matchup
+                        await this.db.run(`
                         UPDATE schedule 
                         SET period_type = ?, date_range = ?, matchup_id = ?
                         WHERE season_id = ? AND period_number = ? 
                         AND away_team_id = ? AND home_team_id = ?
                     `, [
-                        match.periodType,
-                        match.dateRange,
-                        match.matchupId,
-                        season.id, match.periodNumber, awayTeam.id, homeTeam.id
-                    ]);
-                } else {
-                    // Insert new matchup
-                    await this.db.run(`
+                            match.periodType,
+                            match.dateRange,
+                            match.matchupId,
+                            season.id, match.periodNumber, awayTeam.id, homeTeam.id
+                        ]);
+                    } else {
+                        // Insert new matchup
+                        await this.db.run(`
                         INSERT INTO schedule 
                         (season_id, period_number, period_type, date_range, 
                          away_team_id, home_team_id, matchup_id)
                         VALUES (?, ?, ?, ?, ?, ?, ?)
                     `, [
-                        season.id, match.periodNumber, match.periodType, match.dateRange,
-                        awayTeam.id, homeTeam.id, match.matchupId
-                    ]);
+                            season.id, match.periodNumber, match.periodType, match.dateRange,
+                            awayTeam.id, homeTeam.id, match.matchupId
+                        ]);
+                    }
+
+                    matchupCount++;
                 }
 
-                matchupCount++;
+                // Commit the transaction
+                await this.db.run('COMMIT');
+                transactionStarted = false;
+
+                console.log(`Saved ${matchupCount} matchups for season ${year}`);
+
+                return {
+                    teams: teams.length,
+                    matchups: matchupCount
+                };
+
+            } catch (error) {
+                // Only try to rollback if we started the transaction
+                if (transactionStarted) {
+                    try {
+                        await this.db.run('ROLLBACK');
+                    } catch (rollbackError) {
+                        console.error('Error during rollback:', rollbackError);
+                        // Continue with original error
+                    }
+                }
+                throw error;
             }
-
-            // Commit the transaction
-            await this.db.run('COMMIT');
-
-            console.log(`Saved ${matchupCount} matchups for season ${year}`);
-
-            return {
-                teams: teams.length,
-                matchups: matchupCount
-            };
-
         } catch (error) {
-            // Rollback the transaction
-            try {
-                await this.db.run('ROLLBACK');
-            } catch (rollbackError) {
-                console.error('Error during rollback:', rollbackError);
-                // Continue with original error
-            }
-
             console.error(`Error saving schedule data for season ${year}:`, error);
             throw error;
         }

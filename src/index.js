@@ -23,7 +23,7 @@ const SEASONS = [
 
 // Select which seasons to scrape
 // Set to empty array to scrape all seasons
-const YEARS_TO_SCRAPE = ['2024', '2023']; // Example: only scrape 2024 and 2023
+const YEARS_TO_SCRAPE = ['2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017'];
 
 // Filter seasons based on YEARS_TO_SCRAPE
 const seasonsToScrape = YEARS_TO_SCRAPE.length > 0
