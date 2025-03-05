@@ -1,87 +1,145 @@
+const { takeScreenshot } = require('../utils/browser');
+const { FANTRAX_BASE_URL } = require('../auth');
+const fs = require('fs-extra');
+const path = require('path');
+
 /**
- * Scrapes standings data for a specific league
+ * Scrapes the standings data for a league
  * @param {Page} page - Puppeteer page object
- * @param {string} leagueId - Fantrax league ID
+ * @param {string} leagueId - Fantrax league ID 
  * @returns {Promise<Array>} - Array of standings data
  */
 async function scrapeStandings(page, leagueId) {
-    console.log(`Navigating to standings page for league: ${leagueId}`);
+    console.log(`Scraping standings for league: ${leagueId}`);
 
-    // Navigate to the standings page
-    await page.goto(`${FANTRAX_BASE_URL}/fantasy/league/${leagueId}/standings`,
-        { waitUntil: 'networkidle2' });
+    try {
+        // Navigate to the standings page
+        const url = `${FANTRAX_BASE_URL}/fantasy/league/${leagueId}/standings;view=COMBINED`;
+        console.log(`Navigating to: ${url}`);
+        await page.goto(url, { waitUntil: 'networkidle2' });
 
-    // Take a screenshot of the standings page
-    await page.screenshot({ path: path.join(SCREENSHOTS_DIR, 'standings-page.png') });
+        // Take a screenshot
+        await takeScreenshot(page, 'standings-page');
 
-    console.log('Scraping standings data...');
+        // Save the HTML content for debugging
+        const content = await page.content();
+        const debugDir = path.join(__dirname, '../../data/debug');
+        fs.ensureDirSync(debugDir);
+        await fs.writeFile(path.join(debugDir, `standings-page-${leagueId}.html`), content);
+        console.log('Saved HTML content for debugging');
 
-    // Extract the standings data using page.evaluate
-    // IMPORTANT: Pass leagueId as a parameter to page.evaluate
-    const standingsData = await page.evaluate((leagueId) => {
-        // Initialize array to hold data
-        const standings = [];
+        // Extract standings data using page.evaluate
+        const standingsData = await page.evaluate(() => {
+            const standings = [];
 
-        // First get the league name and season
-        const leagueName = document.querySelector('.fx-headline h4 span:last-child')?.textContent || '';
-        const season = document.querySelector('.fx-headline h4')?.textContent?.split(leagueName)[0]?.trim() || '';
+            // Find team rows in the standings table
+            // Targeting the rows that have team information
+            const rows = Array.from(document.querySelectorAll('tr'));
 
-        // Find the standings table
-        const teamElements = Array.from(document.querySelectorAll('aside._ut__aside td'));
-        const statElements = Array.from(document.querySelectorAll('div._ut__content table tr'));
+            for (const row of rows) {
+                // Check if this row contains a team
+                const teamElement = row.querySelector('a[href*="teamId="]');
+                if (!teamElement) continue;
 
-        if (teamElements.length > 0 && statElements.length > 0) {
-            for (let i = 0; i < teamElements.length; i++) {
-                const teamElement = teamElements[i];
-                const statElement = statElements[i];
+                // Extract team ID from href
+                const teamIdMatch = teamElement.href.match(/teamId=([^&]+)/);
+                if (!teamIdMatch) continue;
 
-                if (!teamElement || !statElement) continue;
+                const teamId = teamIdMatch[1];
+                const teamName = teamElement.textContent.trim();
 
-                // Extract team info
-                const rank = teamElement.querySelector('b')?.textContent?.trim() || '';
-                const teamName = teamElement.querySelector('a')?.textContent?.trim() || '';
-                const teamId = teamElement.querySelector('a')?.href?.match(/teamId=([^&]+)/)?.[1] || '';
-                const teamIconUrl = teamElement.querySelector('figure')?.style?.backgroundImage?.match(/url\\(\"([^\"]+)\"\\)/)?.[1] || '';
+                // Find the rank
+                const rankElement = row.querySelector('b');
+                const rank = rankElement ? rankElement.textContent.trim() : '';
 
-                // Extract stats
-                const cells = Array.from(statElement.querySelectorAll('td'));
-                const wins = cells[0]?.textContent?.trim() || '';
-                const losses = cells[1]?.textContent?.trim() || '';
-                const ties = cells[2]?.textContent?.trim() || '';
-                const winPercentage = cells[3]?.textContent?.trim() || '';
-                const divisionRecord = cells[4]?.textContent?.trim() || '';
-                const gamesBack = cells[5]?.textContent?.trim() || '';
-                const waiverWireOrder = cells[6]?.textContent?.trim() || '';
-                const fantasyPointsFor = cells[7]?.textContent?.trim() || '';
-                const fantasyPointsAgainst = cells[8]?.textContent?.trim() || '';
-                const streak = cells[9]?.textContent?.trim() || '';
+                // Get all cell data
+                const cells = Array.from(row.querySelectorAll('td'));
+                if (cells.length < 9) continue; // Make sure we have all the cells we need
 
-                // Add to standings array
+                // Map cells to data
+                // The cell indices might need adjustment based on the actual HTML structure
+                const winsElem = row.querySelector('td span[aria-describedby*="W"]');
+                const lossesElem = row.querySelector('td span[aria-describedby*="L"]');
+                const tiesElem = row.querySelector('td span[aria-describedby*="T"]');
+
+                const wins = winsElem ? parseInt(winsElem.textContent.trim()) : 0;
+                const losses = lossesElem ? parseInt(lossesElem.textContent.trim()) : 0;
+                const ties = tiesElem ? parseInt(tiesElem.textContent.trim()) : 0;
+
+                // Get remaining data
+                // These selectors need to be adjusted based on actual HTML structure
+                let winPct = '', divRecord = '', gamesBack = '', waiverPos = '', fptsFor = '', fptsAgainst = '', streak = '';
+
+                // Try to find win percentage
+                const winPctElem = row.querySelector('td:nth-child(4)');
+                if (winPctElem) {
+                    winPct = winPctElem.textContent.trim();
+                }
+
+                // Try to find division record
+                const divRecordElem = row.querySelector('td:nth-child(5)');
+                if (divRecordElem) {
+                    divRecord = divRecordElem.textContent.trim();
+                }
+
+                // Try to find games back
+                const gamesBackElem = row.querySelector('td:nth-child(6)');
+                if (gamesBackElem) {
+                    gamesBack = gamesBackElem.textContent.trim();
+                }
+
+                // Try to find waiver position
+                const waiverPosElem = row.querySelector('td:nth-child(7)');
+                if (waiverPosElem) {
+                    waiverPos = waiverPosElem.textContent.trim();
+                }
+
+                // Try to find fantasy points for
+                const fptsForElem = row.querySelector('td span[aria-describedby*="FPtsF"]');
+                if (fptsForElem) {
+                    fptsFor = fptsForElem.textContent.trim();
+                }
+
+                // Try to find fantasy points against
+                const fptsAgainstElem = row.querySelector('td span[aria-describedby*="FPtsA"]');
+                if (fptsAgainstElem) {
+                    fptsAgainst = fptsAgainstElem.textContent.trim();
+                }
+
+                // Try to find streak
+                const streakElem = row.querySelector('td:nth-child(10)');
+                if (streakElem) {
+                    streak = streakElem.textContent.trim();
+                }
+
                 standings.push({
-                    leagueId,
-                    season,
-                    leagueName,
-                    rank,
-                    teamName,
                     teamId,
-                    teamIconUrl,
+                    teamName,
+                    rank,
                     wins,
                     losses,
                     ties,
-                    winPercentage,
-                    divisionRecord,
-                    gamesBack,
-                    waiverWireOrder,
-                    fantasyPointsFor,
-                    fantasyPointsAgainst,
+                    winPercentage: parseFloat(winPct.replace('.', '0.').replace('%', '')) || 0,
+                    divisionRecord: divRecord,
+                    gamesBack: parseFloat(gamesBack) || 0,
+                    waiverPosition: parseInt(waiverPos) || 0,
+                    fantasyPointsFor: parseFloat(fptsFor.replace(',', '')) || 0,
+                    fantasyPointsAgainst: parseFloat(fptsAgainst.replace(',', '')) || 0,
                     streak
                 });
             }
-        }
 
-        return standings;
-    }, leagueId); // Pass leagueId here
+            return standings;
+        });
 
-    console.log(`Scraped data for ${standingsData.length} teams`);
-    return standingsData;
+        console.log(`Scraped standings data for ${standingsData.length} teams`);
+        return standingsData;
+    } catch (error) {
+        console.error('Error scraping standings:', error);
+        throw error;
+    }
 }
+
+module.exports = {
+    scrapeStandings
+};

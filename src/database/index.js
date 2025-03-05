@@ -12,13 +12,13 @@ class DatabaseService {
         this.seasons = null;
         this.teams = null;
         this.schedule = null;
+        this.standings = null;       // New
+        this.seasonStats = null;     // New
+        this.hittingStats = null;    // New
+        this.pitchingStats = null;   // New
         this.initialized = false;
     }
 
-    /**
-     * Initialize the database service
-     * @returns {Promise<DatabaseService>} This service instance
-     */
     async initialize() {
         if (this.initialized) {
             return this;
@@ -32,6 +32,10 @@ class DatabaseService {
             this.seasons = new SeasonsDb(this.db);
             this.teams = new TeamsDb(this.db);
             this.schedule = new ScheduleDb(this.db);
+            this.standings = new StandingsDb(this.db);         // New
+            this.seasonStats = new SeasonStatsDb(this.db);     // New
+            this.hittingStats = new HittingStatsDb(this.db);   // New
+            this.pitchingStats = new PitchingStatsDb(this.db); // New
 
             this.initialized = true;
             return this;
@@ -41,172 +45,70 @@ class DatabaseService {
         }
     }
 
-    /**
-     * Save a complete season's schedule data to the database
-     * @param {Object} data - The schedule data
-     * @param {string} year - Season year
-     * @param {string} leagueId - Fantrax league ID
-     * @returns {Promise<Object>} Summary of saved data
-     */
-    async saveScheduleData(data, year, leagueId) {
+    // Add a method to save standings data
+    async saveStandingsData(data, seasonId) {
         if (!this.initialized) {
             await this.initialize();
         }
 
-        // Check if data is empty
         if (!data || data.length === 0) {
-            console.log(`No schedule data to save for season ${year}`);
-            return { teams: 0, matchups: 0 };
+            console.log(`No standings data to save for season ID ${seasonId}`);
+            return { saved: 0 };
         }
 
         try {
-            // Begin a single transaction for all operations
+            // Begin transaction
             await this.db.run('BEGIN TRANSACTION');
             let transactionStarted = true;
 
             try {
-                // Instead of using this.seasons.upsertSeason which starts its own transaction
-                // Get existing season first
-                let season = await this.db.get(
-                    'SELECT * FROM seasons WHERE league_id = ?',
-                    [leagueId]
-                );
-
-                if (season) {
-                    // Update existing season
-                    await this.db.run(
-                        'UPDATE seasons SET year = ?, name = ? WHERE league_id = ?',
-                        [year, data[0]?.season || `${year} Season`, leagueId]
-                    );
-                    season = await this.db.get('SELECT * FROM seasons WHERE league_id = ?', [leagueId]);
-                } else {
-                    // Insert new season
-                    await this.db.run(
-                        'INSERT INTO seasons (year, league_id, name) VALUES (?, ?, ?)',
-                        [year, leagueId, data[0]?.season || `${year} Season`]
-                    );
-                    season = await this.db.get('SELECT * FROM seasons WHERE league_id = ?', [leagueId]);
+                // Get season info
+                const season = await this.db.get('SELECT * FROM seasons WHERE id = ?', [seasonId]);
+                if (!season) {
+                    throw new Error(`Season with ID ${seasonId} not found`);
                 }
 
-                console.log(`Season saved: ${season.year} (ID: ${season.id})`);
+                // Prepare standings with proper team database IDs
+                const processedStandings = [];
 
-                // Extract unique teams
-                const uniqueTeams = new Map();
-
-                data.forEach(match => {
-                    // Add away team if not already added
-                    if (match.awayTeamId && match.awayTeamName) {
-                        uniqueTeams.set(match.awayTeamId, {
-                            teamId: match.awayTeamId,
-                            seasonId: season.id,
-                            name: match.awayTeamName
-                        });
-                    }
-
-                    // Add home team if not already added
-                    if (match.homeTeamId && match.homeTeamName) {
-                        uniqueTeams.set(match.homeTeamId, {
-                            teamId: match.homeTeamId,
-                            seasonId: season.id,
-                            name: match.homeTeamName
-                        });
-                    }
-                });
-
-                // Save teams directly without using bulkUpsertTeams
-                const teams = Array.from(uniqueTeams.values());
-                for (const team of teams) {
-                    const { teamId, seasonId, name } = team;
-                    // Check if team exists
-                    const existingTeam = await this.db.get(
+                for (const standing of data) {
+                    // Find team ID in database
+                    const team = await this.db.get(
                         'SELECT * FROM teams WHERE team_id = ? AND season_id = ?',
-                        [teamId, seasonId]
+                        [standing.teamId, seasonId]
                     );
 
-                    if (existingTeam) {
-                        // Update existing team
-                        await this.db.run(
-                            'UPDATE teams SET name = ? WHERE team_id = ? AND season_id = ?',
-                            [name, teamId, seasonId]
-                        );
-                    } else {
-                        // Insert new team
-                        await this.db.run(
-                            'INSERT INTO teams (team_id, season_id, name) VALUES (?, ?, ?)',
-                            [teamId, seasonId, name]
-                        );
-                    }
-                }
-
-                console.log(`Saved ${teams.length} teams for season ${year}`);
-
-                // Get fresh team data with database IDs
-                const savedTeams = await this.teams.getTeamsBySeason(season.id);
-                const teamMap = new Map();
-
-                savedTeams.forEach(team => {
-                    teamMap.set(team.team_id, team);
-                });
-
-                // Prepare matchups with database IDs
-                let matchupCount = 0;
-
-                for (const match of data) {
-                    const awayTeam = teamMap.get(match.awayTeamId);
-                    const homeTeam = teamMap.get(match.homeTeamId);
-
-                    if (!awayTeam || !homeTeam) {
-                        console.warn(`Skipping matchup with missing team: ${match.awayTeamName} vs ${match.homeTeamName}`);
+                    if (!team) {
+                        console.warn(`Team ${standing.teamName} (ID: ${standing.teamId}) not found for season ${seasonId}`);
                         continue;
                     }
 
-                    // Check if matchup exists
-                    const existingMatchup = await this.db.get(`
-                    SELECT * FROM schedule 
-                    WHERE season_id = ? AND period_number = ? 
-                    AND away_team_id = ? AND home_team_id = ?
-                `, [season.id, match.periodNumber, awayTeam.id, homeTeam.id]);
-
-                    if (existingMatchup) {
-                        // Update existing matchup
-                        await this.db.run(`
-                        UPDATE schedule 
-                        SET period_type = ?, date_range = ?, matchup_id = ?
-                        WHERE season_id = ? AND period_number = ? 
-                        AND away_team_id = ? AND home_team_id = ?
-                    `, [
-                            match.periodType,
-                            match.dateRange,
-                            match.matchupId,
-                            season.id, match.periodNumber, awayTeam.id, homeTeam.id
-                        ]);
-                    } else {
-                        // Insert new matchup
-                        await this.db.run(`
-                        INSERT INTO schedule 
-                        (season_id, period_number, period_type, date_range, 
-                         away_team_id, home_team_id, matchup_id)
-                        VALUES (?, ?, ?, ?, ?, ?, ?)
-                    `, [
-                            season.id, match.periodNumber, match.periodType, match.dateRange,
-                            awayTeam.id, homeTeam.id, match.matchupId
-                        ]);
-                    }
-
-                    matchupCount++;
+                    processedStandings.push({
+                        seasonId,
+                        teamId: team.id,
+                        rank: parseInt(standing.rank) || 0,
+                        wins: standing.wins,
+                        losses: standing.losses,
+                        ties: standing.ties,
+                        winPercentage: standing.winPercentage,
+                        divisionRecord: standing.divisionRecord,
+                        gamesBack: standing.gamesBack,
+                        waiverPosition: standing.waiverPosition,
+                        fantasyPointsFor: standing.fantasyPointsFor,
+                        fantasyPointsAgainst: standing.fantasyPointsAgainst,
+                        streak: standing.streak
+                    });
                 }
 
-                // Commit the transaction
+                // Save standings
+                const result = await this.standings.bulkUpsertStandings(processedStandings);
+
+                // Commit transaction
                 await this.db.run('COMMIT');
                 transactionStarted = false;
 
-                console.log(`Saved ${matchupCount} matchups for season ${year}`);
-
-                return {
-                    teams: teams.length,
-                    matchups: matchupCount
-                };
-
+                console.log(`Saved ${result} standings for season ID ${seasonId}`);
+                return { saved: result };
             } catch (error) {
                 // Only try to rollback if we started the transaction
                 if (transactionStarted) {
@@ -214,27 +116,153 @@ class DatabaseService {
                         await this.db.run('ROLLBACK');
                     } catch (rollbackError) {
                         console.error('Error during rollback:', rollbackError);
-                        // Continue with original error
                     }
                 }
                 throw error;
             }
         } catch (error) {
-            console.error(`Error saving schedule data for season ${year}:`, error);
+            console.error(`Error saving standings data for season ID ${seasonId}:`, error);
             throw error;
         }
     }
 
-    /**
-     * Close the database connection
-     * @returns {Promise<void>}
-     */
-    async close() {
-        if (this.db) {
-            await this.db.close();
-            console.log('Database connection closed');
+    // Add a method to save season stats data
+    async saveSeasonStatsData(data, seasonId) {
+        if (!this.initialized) {
+            await this.initialize();
         }
-        this.initialized = false;
+
+        if (!data || !data.seasonStats || data.seasonStats.length === 0) {
+            console.log(`No season stats data to save for season ID ${seasonId}`);
+            return { seasonStats: 0, hittingStats: 0, pitchingStats: 0 };
+        }
+
+        try {
+            // Begin transaction
+            await this.db.run('BEGIN TRANSACTION');
+            let transactionStarted = true;
+
+            try {
+                // Get season info
+                const season = await this.db.get('SELECT * FROM seasons WHERE id = ?', [seasonId]);
+                if (!season) {
+                    throw new Error(`Season with ID ${seasonId} not found`);
+                }
+
+                // Process season stats
+                const processedSeasonStats = [];
+                const processedHittingStats = [];
+                const processedPitchingStats = [];
+
+                // Create mappings for later reference
+                const teamMappings = new Map(); // Map Fantrax team IDs to database IDs
+
+                // Process season stats first and build the team mappings
+                for (const stat of data.seasonStats) {
+                    // Find team ID in database
+                    const team = await this.db.get(
+                        'SELECT * FROM teams WHERE team_id = ? AND season_id = ?',
+                        [stat.teamId, seasonId]
+                    );
+
+                    if (!team) {
+                        console.warn(`Team ${stat.teamName} (ID: ${stat.teamId}) not found for season ${seasonId}`);
+                        continue;
+                    }
+
+                    // Store the mapping for later
+                    teamMappings.set(stat.teamId, team.id);
+
+                    processedSeasonStats.push({
+                        seasonId,
+                        teamId: team.id,
+                        fantasyPoints: stat.fantasyPoints,
+                        adjustments: stat.adjustments,
+                        totalPoints: stat.totalPoints,
+                        fantasyPointsPerGame: stat.fantasyPointsPerGame,
+                        gamesPlayed: stat.gamesPlayed,
+                        hittingPoints: stat.hittingPoints,
+                        teamPitchingPoints: stat.teamPitchingPoints,
+                        waiverPosition: stat.waiverPosition,
+                        projectedBudgetLeft: stat.projectedBudgetLeft || 0
+                    });
+                }
+
+                // Process hitting stats
+                for (const stat of (data.hittingStats || [])) {
+                    // Use the team mapping we created
+                    const teamId = teamMappings.get(stat.teamId);
+                    if (!teamId) {
+                        console.warn(`Team ${stat.teamName} (ID: ${stat.teamId}) mapping not found for hitting stats`);
+                        continue;
+                    }
+
+                    processedHittingStats.push({
+                        seasonId,
+                        teamId,
+                        runs: stat.runs,
+                        singles: stat.singles,
+                        doubles: stat.doubles,
+                        triples: stat.triples,
+                        homeRuns: stat.homeRuns,
+                        runsBattedIn: stat.runsBattedIn,
+                        walks: stat.walks,
+                        stolenBases: stat.stolenBases,
+                        caughtStealing: stat.caughtStealing
+                    });
+                }
+
+                // Process pitching stats
+                for (const stat of (data.pitchingStats || [])) {
+                    // Use the team mapping we created
+                    const teamId = teamMappings.get(stat.teamId);
+                    if (!teamId) {
+                        console.warn(`Team ${stat.teamName} (ID: ${stat.teamId}) mapping not found for pitching stats`);
+                        continue;
+                    }
+
+                    processedPitchingStats.push({
+                        seasonId,
+                        teamId,
+                        wins: stat.wins,
+                        inningsPitched: stat.inningsPitched,
+                        earnedRuns: stat.earnedRuns,
+                        hitsPlusWalks: stat.hitsPlusWalks,
+                        strikeouts: stat.strikeouts
+                    });
+                }
+
+                // Save all stats
+                const seasonStatsResult = await this.seasonStats.bulkUpsertSeasonStats(processedSeasonStats);
+                const hittingStatsResult = await this.hittingStats.bulkUpsertHittingStats(processedHittingStats);
+                const pitchingStatsResult = await this.pitchingStats.bulkUpsertPitchingStats(processedPitchingStats);
+
+                // Commit transaction
+                await this.db.run('COMMIT');
+                transactionStarted = false;
+
+                console.log(`Saved ${seasonStatsResult} season stats, ${hittingStatsResult} hitting stats, and ${pitchingStatsResult} pitching stats for season ID ${seasonId}`);
+
+                return {
+                    seasonStats: seasonStatsResult,
+                    hittingStats: hittingStatsResult,
+                    pitchingStats: pitchingStatsResult
+                };
+            } catch (error) {
+                // Only try to rollback if we started the transaction
+                if (transactionStarted) {
+                    try {
+                        await this.db.run('ROLLBACK');
+                    } catch (rollbackError) {
+                        console.error('Error during rollback:', rollbackError);
+                    }
+                }
+                throw error;
+            }
+        } catch (error) {
+            console.error(`Error saving season stats data for season ID ${seasonId}:`, error);
+            throw error;
+        }
     }
 }
 
