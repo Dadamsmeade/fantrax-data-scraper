@@ -18,6 +18,62 @@ async function scrapeSeasonStats(page, leagueId) {
         console.log(`Navigating to: ${url}`);
         await page.goto(url, { waitUntil: 'networkidle2' });
 
+        // Add a delay to ensure Angular has time to render components
+        console.log('Waiting for page to fully render...');
+        await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 3000)));
+
+        // Wait for any tabs to be available and click on the Season Stats tab if needed
+        try {
+            // Wait for tab elements to be available
+            const tabsAvailable = await page.evaluate(() => {
+                const tabs = document.querySelectorAll('.tabs__item');
+                return tabs.length > 0;
+            });
+
+            if (tabsAvailable) {
+                console.log('Tabs found, checking if we need to click the Season Stats tab');
+                // Check if we need to click on the Season Stats tab
+                const needToClick = await page.evaluate(() => {
+                    const tabs = Array.from(document.querySelectorAll('.tabs__item'));
+                    const seasonStatsTab = tabs.find(tab => tab.textContent.trim().includes('Season Stats'));
+                    if (seasonStatsTab && !seasonStatsTab.classList.contains('tabs__item--selected')) {
+                        return true;
+                    }
+                    return false;
+                });
+
+                if (needToClick) {
+                    console.log('Clicking on Season Stats tab');
+                    await page.evaluate(() => {
+                        const tabs = Array.from(document.querySelectorAll('.tabs__item'));
+                        const seasonStatsTab = tabs.find(tab => tab.textContent.trim().includes('Season Stats'));
+                        if (seasonStatsTab) {
+                            seasonStatsTab.click();
+                        }
+                    });
+
+                    // Wait for tab content to load
+                    await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 2000)));
+                }
+            }
+        } catch (tabError) {
+            console.warn('Warning: Error when checking tabs:', tabError.message);
+        }
+
+        // Wait for specific elements that indicate the stats table is loaded
+        console.log('Checking for stats table elements...');
+        try {
+            // Wait for team rows to be present
+            await page.waitForSelector('.ultimate-table section > aside > td', { timeout: 5000 });
+            console.log('Found team rows in stats table');
+
+            // Wait for data cells to be populated
+            await page.waitForSelector('.ultimate-table > section > div > table > tr > td', { timeout: 5000 });
+            console.log('Found data cells in stats table');
+        } catch (waitError) {
+            console.warn('Warning: Timed out waiting for stats table elements. Will try to extract data anyway.', waitError.message);
+        }
+
         // Take a screenshot
         await takeScreenshot(page, 'season-stats-page');
 
@@ -28,179 +84,197 @@ async function scrapeSeasonStats(page, leagueId) {
         await fs.writeFile(path.join(debugDir, `season-stats-page-${leagueId}.html`), content);
         console.log('Saved HTML content for debugging');
 
-        // Extract season stats data
+        // Log some DOM stats to help debug rendering issues
+        const domStats = await page.evaluate(() => {
+            return {
+                teamRows: document.querySelectorAll('.ultimate-table section > aside > td').length,
+                dataRows: document.querySelectorAll('.ultimate-table > section > div > table > tr').length,
+                dataCells: document.querySelectorAll('.ultimate-table > section > div > table > tr > td').length,
+                tableHeaders: document.querySelectorAll('.ultimate-table > header th').length
+            };
+        });
+        console.log('DOM Statistics:', domStats);
+
+        // Extract season stats data using page.evaluate with updated selectors for the Angular structure
         const stats = await page.evaluate(() => {
-            // Helper function to extract data from tables
-            const extractTableData = (selector, rowHandler) => {
-                const tables = document.querySelectorAll(selector);
-                if (!tables || tables.length === 0) return [];
+            // Helper to parse numeric values
+            const parseNumeric = (text) => {
+                if (!text) return 0;
+                text = text.trim().replace(/,/g, '');
+                return parseFloat(text) || 0;
+            };
 
-                const data = [];
+            // Helper to safely get text from an element
+            const safeText = (element) => {
+                if (!element) return '';
+                return element.textContent.trim();
+            };
 
-                for (const table of tables) {
-                    const rows = table.querySelectorAll('tr');
+            // Find all team rows in the standings table for Season Stats view
+            const findTeamRows = () => {
+                // Look for team info in the side column
+                return Array.from(document.querySelectorAll('.ultimate-table section > aside > td'));
+            };
 
-                    for (const row of rows) {
-                        const result = rowHandler(row);
-                        if (result) data.push(result);
+            // Extract season stats from the Angular structure
+            const extractSeasonStats = () => {
+                const seasonStats = [];
+                const teamRows = findTeamRows();
+
+                if (teamRows.length === 0) {
+                    console.error('No team rows found in season stats table');
+                    return seasonStats;
+                }
+
+                console.log(`Found ${teamRows.length} team rows for season stats`);
+
+                // Process each team row
+                for (let i = 0; i < teamRows.length; i++) {
+                    try {
+                        const teamRow = teamRows[i];
+
+                        // Get team name and ID from the link
+                        const teamLink = teamRow.querySelector('a[href*="teamId="]');
+                        if (!teamLink) {
+                            console.warn(`No team link found in row ${i + 1}`);
+                            continue;
+                        }
+
+                        const href = teamLink.getAttribute('href');
+                        const teamIdMatch = href.match(/teamId=([^&;]+)/);
+                        if (!teamIdMatch) {
+                            console.warn(`No teamId found in href: ${href}`);
+                            continue;
+                        }
+
+                        const teamId = teamIdMatch[1];
+                        const teamName = teamLink.textContent.trim();
+
+                        console.log(`Processing team: ${teamName} (${teamId})`);
+
+                        // Find corresponding data cells
+                        const dataRowCells = Array.from(document.querySelectorAll(`.ultimate-table > section > div > table > tr:nth-child(${i + 1}) > td`));
+
+                        // Check for number of cells and log what we found
+                        console.log(`Found ${dataRowCells.length} data cells for team ${teamName}`);
+
+                        // Get headers to understand column order
+                        const headers = Array.from(document.querySelectorAll('.ultimate-table > header ._ut__head th')).map(th => th.textContent.trim());
+                        console.log(`Found ${headers.length} headers: ${headers.join(', ')}`);
+
+                        // Default values if cells aren't found
+                        let fantasyPoints = 0;
+                        let adjustments = 0;
+                        let totalPoints = 0;
+                        let fantasyPointsPerGame = 0;
+                        let gamesPlayed = 0;
+                        let hittingPoints = 0;
+                        let teamPitchingPoints = 0;
+                        let waiverPosition = 0;
+                        let projectedBudgetLeft = 0;
+
+                        // Try to extract data from cells based on what's available
+                        if (dataRowCells.length > 0) {
+                            // Look for specific column indices based on headers if available
+                            let fptsIndex = headers.findIndex(h => h.includes('FPts'));
+                            let adjIndex = headers.findIndex(h => h.includes('Adj'));
+                            let totalIndex = headers.findIndex(h => h.includes('Total'));
+                            let fpgIndex = headers.findIndex(h => h.includes('FP/G'));
+                            let gpIndex = headers.findIndex(h => h.includes('GP'));
+                            let hitIndex = headers.findIndex(h => h.includes('Hit'));
+                            let tpIndex = headers.findIndex(h => h.includes('TP'));
+                            let wwIndex = headers.findIndex(h => h.includes('WW'));
+
+                            // If header detection doesn't work, use these default indices
+                            if (fptsIndex === -1) fptsIndex = 0;
+                            if (adjIndex === -1) adjIndex = 1;
+                            if (totalIndex === -1) totalIndex = 2;
+                            if (fpgIndex === -1) fpgIndex = 3;
+                            if (gpIndex === -1) gpIndex = 4;
+                            if (hitIndex === -1) hitIndex = 5;
+                            if (tpIndex === -1) tpIndex = 6;
+                            if (wwIndex === -1) wwIndex = 7;
+
+                            // Extract values with safeguards
+                            if (fptsIndex >= 0 && fptsIndex < dataRowCells.length) {
+                                fantasyPoints = parseNumeric(safeText(dataRowCells[fptsIndex]));
+                            }
+
+                            if (adjIndex >= 0 && adjIndex < dataRowCells.length) {
+                                adjustments = parseNumeric(safeText(dataRowCells[adjIndex]));
+                            }
+
+                            if (totalIndex >= 0 && totalIndex < dataRowCells.length) {
+                                totalPoints = parseNumeric(safeText(dataRowCells[totalIndex]));
+                            }
+
+                            if (fpgIndex >= 0 && fpgIndex < dataRowCells.length) {
+                                fantasyPointsPerGame = parseNumeric(safeText(dataRowCells[fpgIndex]));
+                            }
+
+                            if (gpIndex >= 0 && gpIndex < dataRowCells.length) {
+                                gamesPlayed = parseInt(safeText(dataRowCells[gpIndex])) || 0;
+                            }
+
+                            if (hitIndex >= 0 && hitIndex < dataRowCells.length) {
+                                hittingPoints = parseNumeric(safeText(dataRowCells[hitIndex]));
+                            }
+
+                            if (tpIndex >= 0 && tpIndex < dataRowCells.length) {
+                                teamPitchingPoints = parseNumeric(safeText(dataRowCells[tpIndex]));
+                            }
+
+                            if (wwIndex >= 0 && wwIndex < dataRowCells.length) {
+                                waiverPosition = parseInt(safeText(dataRowCells[wwIndex])) || 0;
+                            }
+
+                            // Additional budget field if available
+                            if (dataRowCells.length > 8) {
+                                projectedBudgetLeft = parseNumeric(safeText(dataRowCells[8]));
+                            }
+                        }
+
+                        console.log(`Stats: FPts=${fantasyPoints}, FP/G=${fantasyPointsPerGame}, GP=${gamesPlayed}`);
+
+                        seasonStats.push({
+                            teamId,
+                            teamName,
+                            fantasyPoints,
+                            adjustments,
+                            totalPoints,
+                            fantasyPointsPerGame,
+                            gamesPlayed,
+                            hittingPoints,
+                            teamPitchingPoints,
+                            waiverPosition,
+                            projectedBudgetLeft
+                        });
+                    } catch (error) {
+                        console.error(`Error processing team row ${i}:`, error.message);
                     }
                 }
 
-                return data;
+                return seasonStats;
             };
 
-            // Extract season stats (points-based summary)
-            const seasonStats = extractTableData('.standings-table-wrapper--pointsbased1', (row) => {
-                // Check if this row contains a team
-                const teamElement = row.querySelector('a[href*="teamId="]');
-                if (!teamElement) return null;
+            // The hitting and pitching stats would require navigating to different tabs
+            // For now, we'll return empty arrays
 
-                // Extract team ID from href
-                const teamIdMatch = teamElement.href.match(/teamId=([^&]+)/);
-                if (!teamIdMatch) return null;
-
-                const teamId = teamIdMatch[1];
-                const teamName = teamElement.textContent.trim();
-
-                // Find all cells
-                const cells = Array.from(row.querySelectorAll('td'));
-                if (cells.length < 8) return null;
-
-                // Extract numerical data from cells
-                // Adjusting indices based on the HTML structure
-                const fptsSpan = row.querySelector('td span[aria-describedby*="FPts"]');
-                const adjustSpan = row.querySelector('td span[aria-describedby*="Adj"]');
-                const totalSpan = row.querySelector('td span[aria-describedby*="Total"]');
-                const fpgSpan = row.querySelector('td span[aria-describedby*="FP/G"]');
-
-                const fpts = fptsSpan ? parseFloat(fptsSpan.textContent.trim().replace(',', '')) : 0;
-                const adj = adjustSpan ? parseFloat(adjustSpan.textContent.trim().replace(',', '')) : 0;
-                const total = totalSpan ? parseFloat(totalSpan.textContent.trim().replace(',', '')) : 0;
-                const fpg = fpgSpan ? parseFloat(fpgSpan.textContent.trim()) : 0;
-
-                // Additional stats
-                const gpElement = cells[4];
-                const hitElement = cells[5];
-                const tpElement = cells[6];
-                const wwElement = cells[7];
-                const pblElement = cells.length > 8 ? cells[8] : null;
-
-                return {
-                    teamId,
-                    teamName,
-                    fantasyPoints: fpts,
-                    adjustments: adj,
-                    totalPoints: total,
-                    fantasyPointsPerGame: fpg,
-                    gamesPlayed: gpElement ? parseInt(gpElement.textContent.trim()) : 0,
-                    hittingPoints: hitElement ? parseFloat(hitElement.textContent.trim().replace(',', '')) : 0,
-                    teamPitchingPoints: tpElement ? parseFloat(tpElement.textContent.trim().replace(',', '')) : 0,
-                    waiverPosition: wwElement ? parseInt(wwElement.textContent.trim()) : 0,
-                    projectedBudgetLeft: pblElement ? parseFloat(pblElement.textContent.trim().replace(',', '')) : 0
-                };
-            });
-
-            // Extract hitting stats
-            const hittingStats = extractTableData('.standings-table-wrapper--pointsbased3, .standings-table-wrapper--statistics-hitting', (row) => {
-                // Check if this is a hitting stats table by looking for hitting-specific columns
-                const headerRow = row.closest('table')?.querySelector('thead tr');
-                if (headerRow && !headerRow.textContent.includes('R') && !headerRow.textContent.includes('HR')) {
-                    return null;
-                }
-
-                // Check if this row contains a team
-                const teamElement = row.querySelector('a[href*="teamId="]');
-                if (!teamElement) return null;
-
-                // Extract team ID from href
-                const teamIdMatch = teamElement.href.match(/teamId=([^&]+)/);
-                if (!teamIdMatch) return null;
-
-                const teamId = teamIdMatch[1];
-                const teamName = teamElement.textContent.trim();
-
-                // Find the cells
-                const cells = Array.from(row.querySelectorAll('td'));
-                if (cells.length < 10) return null;
-
-                // Extract hitting stats (adjusted for the HTML structure)
-                // These indices might need adjustment
-                const runsIdx = 2;
-                const singlesIdx = 3;
-                const doublesIdx = 4;
-                const triplesIdx = 5;
-                const hrsIdx = 6;
-                const rbiIdx = 7;
-                const bbIdx = 8;
-                const sbIdx = 9;
-                const csIdx = 10;
-
-                return {
-                    teamId,
-                    teamName,
-                    runs: parseInt(cells[runsIdx]?.textContent.trim()) || 0,
-                    singles: parseInt(cells[singlesIdx]?.textContent.trim()) || 0,
-                    doubles: parseInt(cells[doublesIdx]?.textContent.trim()) || 0,
-                    triples: parseInt(cells[triplesIdx]?.textContent.trim()) || 0,
-                    homeRuns: parseInt(cells[hrsIdx]?.textContent.trim()) || 0,
-                    runsBattedIn: parseInt(cells[rbiIdx]?.textContent.trim()) || 0,
-                    walks: parseInt(cells[bbIdx]?.textContent.trim()) || 0,
-                    stolenBases: parseInt(cells[sbIdx]?.textContent.trim()) || 0,
-                    caughtStealing: parseInt(cells[csIdx]?.textContent.trim()) || 0
-                };
-            }).filter(stats => stats && stats.runs > 0); // Filter to make sure we only get hitting stats
-
-            // Extract pitching stats
-            const pitchingStats = extractTableData('.standings-table-wrapper--pointsbased3, .standings-table-wrapper--statistics-team-pitching', (row) => {
-                // Check if this is a pitching stats table by looking for pitching-specific columns
-                const headerRow = row.closest('table')?.querySelector('thead tr');
-                if (headerRow && !headerRow.textContent.includes('IP') && !headerRow.textContent.includes('ER')) {
-                    return null;
-                }
-
-                // Check if this row contains a team
-                const teamElement = row.querySelector('a[href*="teamId="]');
-                if (!teamElement) return null;
-
-                // Extract team ID from href
-                const teamIdMatch = teamElement.href.match(/teamId=([^&]+)/);
-                if (!teamIdMatch) return null;
-
-                const teamId = teamIdMatch[1];
-                const teamName = teamElement.textContent.trim();
-
-                // Find the cells
-                const cells = Array.from(row.querySelectorAll('td'));
-                if (cells.length < 6) return null;
-
-                // Extract pitching stats (adjusted for the HTML structure)
-                // These indices might need adjustment
-                const winsIdx = 2;
-                const ipIdx = 3;
-                const erIdx = 4;
-                const hbbIdx = 5;
-                const kIdx = 6;
-
-                return {
-                    teamId,
-                    teamName,
-                    wins: parseInt(cells[winsIdx]?.textContent.trim()) || 0,
-                    inningsPitched: cells[ipIdx]?.textContent.trim() || '0',
-                    earnedRuns: parseInt(cells[erIdx]?.textContent.trim()) || 0,
-                    hitsPlusWalks: parseInt(cells[hbbIdx]?.textContent.trim()) || 0,
-                    strikeouts: parseInt(cells[kIdx]?.textContent.trim()) || 0
-                };
-            }).filter(stats => stats && stats.inningsPitched !== '0'); // Filter to make sure we only get pitching stats
-
-            // Return all collected data
+            // Return all the stats data
             return {
-                seasonStats,
-                hittingStats,
-                pitchingStats
+                seasonStats: extractSeasonStats(),
+                hittingStats: [],
+                pitchingStats: []
             };
         });
 
         console.log(`Scraped stats data: ${stats.seasonStats.length} season stats, ${stats.hittingStats.length} hitting stats, ${stats.pitchingStats.length} pitching stats`);
+
+        // Log sample data if available
+        if (stats.seasonStats.length > 0) {
+            console.log('Sample data from first team:', JSON.stringify(stats.seasonStats[0], null, 2));
+        }
+
         return stats;
     } catch (error) {
         console.error('Error scraping season stats:', error);

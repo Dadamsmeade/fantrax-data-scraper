@@ -99,19 +99,54 @@ class PitchingStatsDb {
     }
 
     /**
-     * Bulk insert or update pitching stats
+     * Bulk insert or update pitching stats - MODIFIED: No transaction inside
      * @param {Array<Object>} statsArray - Array of pitching stats objects
      * @returns {Promise<number>} Number of stats processed
      */
     async bulkUpsertPitchingStats(statsArray) {
-        return withTransaction(this.db, async () => {
-            let processedCount = 0;
-            for (const stats of statsArray) {
-                await this.upsertPitchingStats(stats);
+        // Do NOT use withTransaction here since this is called inside a transaction
+        let processedCount = 0;
+        for (const stats of statsArray) {
+            try {
+                const {
+                    seasonId, teamId, wins, inningsPitched, earnedRuns,
+                    hitsPlusWalks, strikeouts
+                } = stats;
+
+                // Check if the stats record exists
+                const existingStats = await this.findStats(seasonId, teamId);
+
+                if (existingStats) {
+                    // Update existing stats
+                    await this.db.run(`
+                        UPDATE pitching_stats
+                        SET wins = ?, innings_pitched = ?, earned_runs = ?,
+                            hits_plus_walks = ?, strikeouts = ?
+                        WHERE season_id = ? AND team_id = ?
+                    `, [
+                        wins, inningsPitched, earnedRuns,
+                        hitsPlusWalks, strikeouts,
+                        seasonId, teamId
+                    ]);
+                } else {
+                    // Insert new stats
+                    await this.db.run(`
+                        INSERT INTO pitching_stats (
+                            season_id, team_id, wins, innings_pitched, earned_runs,
+                            hits_plus_walks, strikeouts
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?)
+                    `, [
+                        seasonId, teamId, wins, inningsPitched, earnedRuns,
+                        hitsPlusWalks, strikeouts
+                    ]);
+                }
                 processedCount++;
+            } catch (error) {
+                console.error(`Error processing pitching stats: ${error.message}`);
+                // Continue with next stats record if one fails
             }
-            return processedCount;
-        });
+        }
+        return processedCount;
     }
 
     /**

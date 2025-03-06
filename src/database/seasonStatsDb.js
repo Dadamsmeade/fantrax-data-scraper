@@ -108,19 +108,59 @@ class SeasonStatsDb {
     }
 
     /**
-     * Bulk insert or update season stats
+     * Bulk insert or update season stats - MODIFIED: No transaction inside
      * @param {Array<Object>} statsArray - Array of season stats objects
      * @returns {Promise<number>} Number of stats processed
      */
     async bulkUpsertSeasonStats(statsArray) {
-        return withTransaction(this.db, async () => {
-            let processedCount = 0;
-            for (const stats of statsArray) {
-                await this.upsertSeasonStats(stats);
+        // Do NOT use withTransaction here since this is called inside a transaction
+        let processedCount = 0;
+        for (const stats of statsArray) {
+            try {
+                const {
+                    seasonId, teamId, fantasyPoints, adjustments, totalPoints,
+                    fantasyPointsPerGame, gamesPlayed, hittingPoints,
+                    teamPitchingPoints, waiverPosition, projectedBudgetLeft
+                } = stats;
+
+                // Check if the stats record exists
+                const existingStats = await this.findStats(seasonId, teamId);
+
+                if (existingStats) {
+                    // Update existing stats
+                    await this.db.run(`
+                        UPDATE season_stats
+                        SET fantasy_points = ?, adjustments = ?, total_points = ?,
+                            fantasy_points_per_game = ?, games_played = ?, hitting_points = ?,
+                            team_pitching_points = ?, waiver_position = ?, projected_budget_left = ?
+                        WHERE season_id = ? AND team_id = ?
+                    `, [
+                        fantasyPoints, adjustments, totalPoints,
+                        fantasyPointsPerGame, gamesPlayed, hittingPoints,
+                        teamPitchingPoints, waiverPosition, projectedBudgetLeft,
+                        seasonId, teamId
+                    ]);
+                } else {
+                    // Insert new stats
+                    await this.db.run(`
+                        INSERT INTO season_stats (
+                            season_id, team_id, fantasy_points, adjustments, total_points,
+                            fantasy_points_per_game, games_played, hitting_points,
+                            team_pitching_points, waiver_position, projected_budget_left
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    `, [
+                        seasonId, teamId, fantasyPoints, adjustments, totalPoints,
+                        fantasyPointsPerGame, gamesPlayed, hittingPoints,
+                        teamPitchingPoints, waiverPosition, projectedBudgetLeft
+                    ]);
+                }
                 processedCount++;
+            } catch (error) {
+                console.error(`Error processing season stats: ${error.message}`);
+                // Continue with next stats record if one fails
             }
-            return processedCount;
-        });
+        }
+        return processedCount;
     }
 
     /**

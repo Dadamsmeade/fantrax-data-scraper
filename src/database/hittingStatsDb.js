@@ -104,19 +104,55 @@ class HittingStatsDb {
     }
 
     /**
-     * Bulk insert or update hitting stats
+     * Bulk insert or update hitting stats - MODIFIED: No transaction inside
      * @param {Array<Object>} statsArray - Array of hitting stats objects
      * @returns {Promise<number>} Number of stats processed
      */
     async bulkUpsertHittingStats(statsArray) {
-        return withTransaction(this.db, async () => {
-            let processedCount = 0;
-            for (const stats of statsArray) {
-                await this.upsertHittingStats(stats);
+        // Do NOT use withTransaction here since this is called inside a transaction
+        let processedCount = 0;
+        for (const stats of statsArray) {
+            try {
+                const {
+                    seasonId, teamId, runs, singles, doubles, triples, homeRuns,
+                    runsBattedIn, walks, stolenBases, caughtStealing
+                } = stats;
+
+                // Check if the stats record exists
+                const existingStats = await this.findStats(seasonId, teamId);
+
+                if (existingStats) {
+                    // Update existing stats
+                    await this.db.run(`
+                        UPDATE hitting_stats
+                        SET runs = ?, singles = ?, doubles = ?, triples = ?,
+                            home_runs = ?, runs_batted_in = ?, walks = ?,
+                            stolen_bases = ?, caught_stealing = ?
+                        WHERE season_id = ? AND team_id = ?
+                    `, [
+                        runs, singles, doubles, triples, homeRuns,
+                        runsBattedIn, walks, stolenBases, caughtStealing,
+                        seasonId, teamId
+                    ]);
+                } else {
+                    // Insert new stats
+                    await this.db.run(`
+                        INSERT INTO hitting_stats (
+                            season_id, team_id, runs, singles, doubles, triples, home_runs,
+                            runs_batted_in, walks, stolen_bases, caught_stealing
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    `, [
+                        seasonId, teamId, runs, singles, doubles, triples, homeRuns,
+                        runsBattedIn, walks, stolenBases, caughtStealing
+                    ]);
+                }
                 processedCount++;
+            } catch (error) {
+                console.error(`Error processing hitting stats: ${error.message}`);
+                // Continue with next stats record if one fails
             }
-            return processedCount;
-        });
+        }
+        return processedCount;
     }
 
     /**

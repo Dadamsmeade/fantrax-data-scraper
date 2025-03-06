@@ -108,19 +108,57 @@ class StandingsDb {
     }
 
     /**
-     * Bulk insert or update standings
+     * Bulk insert or update standings - MODIFIED: No transaction inside
      * @param {Array<Object>} standings - Array of standing objects
      * @returns {Promise<number>} Number of standings processed
      */
     async bulkUpsertStandings(standings) {
-        return withTransaction(this.db, async () => {
-            let processedCount = 0;
-            for (const standing of standings) {
-                await this.upsertStanding(standing);
+        // Do NOT use withTransaction here since this is called inside a transaction
+        let processedCount = 0;
+        for (const standing of standings) {
+            try {
+                const { seasonId, teamId, rank, wins, losses, ties, winPercentage,
+                    divisionRecord, gamesBack, waiverPosition,
+                    fantasyPointsFor, fantasyPointsAgainst, streak } = standing;
+
+                // Check if the standing record exists
+                const existingStanding = await this.findStanding(seasonId, teamId);
+
+                if (existingStanding) {
+                    // Update existing standing
+                    await this.db.run(`
+                        UPDATE standings
+                        SET rank = ?, wins = ?, losses = ?, ties = ?, win_percentage = ?,
+                            division_record = ?, games_back = ?, waiver_position = ?,
+                            fantasy_points_for = ?, fantasy_points_against = ?, streak = ?
+                        WHERE season_id = ? AND team_id = ?
+                    `, [
+                        rank, wins, losses, ties, winPercentage,
+                        divisionRecord, gamesBack, waiverPosition,
+                        fantasyPointsFor, fantasyPointsAgainst, streak,
+                        seasonId, teamId
+                    ]);
+                } else {
+                    // Insert new standing
+                    await this.db.run(`
+                        INSERT INTO standings (
+                            season_id, team_id, rank, wins, losses, ties, win_percentage,
+                            division_record, games_back, waiver_position, 
+                            fantasy_points_for, fantasy_points_against, streak
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    `, [
+                        seasonId, teamId, rank, wins, losses, ties, winPercentage,
+                        divisionRecord, gamesBack, waiverPosition,
+                        fantasyPointsFor, fantasyPointsAgainst, streak
+                    ]);
+                }
                 processedCount++;
+            } catch (error) {
+                console.error(`Error processing standing: ${error.message}`);
+                // Continue with next standing record if one fails
             }
-            return processedCount;
-        });
+        }
+        return processedCount;
     }
 
     /**
