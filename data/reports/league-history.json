@@ -1,0 +1,1936 @@
+{
+  "leagueName": "Joe Buck Sucks Fantasy Baseball League",
+  "description": "Historical data for the Joe Buck Sucks fantasy baseball league",
+  "seasons": [
+    {
+      "year": "2024",
+      "name": "2024 MLB  Joe Buck Sucks",
+      "leagueId": "413usx30ls6bwvoj",
+      "format": "Head-to-Head",
+      "teams": [
+        {
+          "name": "Boaf Squad",
+          "manager": "Pat",
+          "rank": 1,
+          "record": "16-9-0",
+          "winPercentage": 0.64,
+          "fantasyPoints": 5587,
+          "gamesBack": 0,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Damn Duran",
+          "manager": "Brennan",
+          "rank": 2,
+          "record": "15-10-0",
+          "winPercentage": 0.6,
+          "fantasyPoints": 6106,
+          "gamesBack": 1,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "marcus pilled",
+          "manager": "Danny",
+          "rank": 3,
+          "record": "14-11-0",
+          "winPercentage": 0.56,
+          "fantasyPoints": 5863,
+          "gamesBack": 2,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "GAUZH",
+          "manager": "Bjorn",
+          "rank": 4,
+          "record": "14-11-0",
+          "winPercentage": 0.56,
+          "fantasyPoints": 5993,
+          "gamesBack": 2,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Nepo Baby Jr",
+          "manager": "Marcus",
+          "rank": 5,
+          "record": "14-11-0",
+          "winPercentage": 0.56,
+          "fantasyPoints": 5897,
+          "gamesBack": 2,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Savages",
+          "manager": "Bobby",
+          "rank": 6,
+          "record": "12-12-1",
+          "winPercentage": 0.5,
+          "fantasyPoints": 5778,
+          "gamesBack": 3.5,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Horus",
+          "manager": "Ray",
+          "rank": 7,
+          "record": "12-13-0",
+          "winPercentage": 0.48,
+          "fantasyPoints": 5790,
+          "gamesBack": 4,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Lawrence Butler",
+          "manager": "Justin",
+          "rank": 8,
+          "record": "11-13-1",
+          "winPercentage": 0.46,
+          "fantasyPoints": 5565,
+          "gamesBack": 4.5,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Strait Bussin",
+          "manager": "Jake",
+          "rank": 9,
+          "record": "9-16-0",
+          "winPercentage": 0.36,
+          "fantasyPoints": 5547,
+          "gamesBack": 7,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "I’m not Witty Enough",
+          "manager": "AJ",
+          "rank": 10,
+          "record": "7-18-0",
+          "winPercentage": 0.28,
+          "fantasyPoints": 5314,
+          "gamesBack": 9,
+          "seasonFormat": "Head-to-Head"
+        }
+      ],
+      "champion": {
+        "name": "Boaf Squad",
+        "manager": "Pat",
+        "rank": 1,
+        "record": "16-9-0",
+        "winPercentage": 0.64,
+        "fantasyPoints": 5587,
+        "gamesBack": 0,
+        "seasonFormat": "Head-to-Head"
+      },
+      "runnerUp": {
+        "name": "Damn Duran",
+        "manager": "Brennan",
+        "rank": 2,
+        "record": "15-10-0",
+        "winPercentage": 0.6,
+        "fantasyPoints": 6106,
+        "gamesBack": 1,
+        "seasonFormat": "Head-to-Head"
+      },
+      "thirdPlace": {
+        "name": "marcus pilled",
+        "manager": "Danny",
+        "rank": 3,
+        "record": "14-11-0",
+        "winPercentage": 0.56,
+        "fantasyPoints": 5863,
+        "gamesBack": 2,
+        "seasonFormat": "Head-to-Head"
+      }
+    },
+    {
+      "year": "2023",
+      "name": "2023 MLB  Joe Buck Sucks",
+      "leagueId": "fa79oxi9ld3k0iqz",
+      "format": "Head-to-Head",
+      "teams": [
+        {
+          "name": "I’m not Witty Enough",
+          "manager": "AJ",
+          "rank": 1,
+          "record": "18-7-0",
+          "winPercentage": 0.72,
+          "fantasyPoints": 6339,
+          "gamesBack": 0,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "BK Fire",
+          "manager": "Brennan",
+          "rank": 2,
+          "record": "17-7-1",
+          "winPercentage": 0.7,
+          "fantasyPoints": 6528,
+          "gamesBack": 0.5,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "MyMookie",
+          "manager": "Danny",
+          "rank": 3,
+          "record": "16-9-0",
+          "winPercentage": 0.64,
+          "fantasyPoints": 6162,
+          "gamesBack": 2,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Kong Army",
+          "manager": "Bobby",
+          "rank": 4,
+          "record": "13-12-0",
+          "winPercentage": 0.52,
+          "fantasyPoints": 5735,
+          "gamesBack": 5,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Ray's Team",
+          "manager": "Ray",
+          "rank": 5,
+          "record": "11-14-0",
+          "winPercentage": 0.44,
+          "fantasyPoints": 5840,
+          "gamesBack": 7,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "We Lose These",
+          "manager": "Marcus",
+          "rank": 6,
+          "record": "11-14-0",
+          "winPercentage": 0.44,
+          "fantasyPoints": 6046,
+          "gamesBack": 7,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Moon Missiles",
+          "manager": "Bjorn",
+          "rank": 7,
+          "record": "10-14-1",
+          "winPercentage": 0.42,
+          "fantasyPoints": 5695,
+          "gamesBack": 7.5,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Boaf Squad",
+          "manager": "Pat",
+          "rank": 8,
+          "record": "10-15-0",
+          "winPercentage": 0.4,
+          "fantasyPoints": 5931,
+          "gamesBack": 8,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "My Dog",
+          "manager": "Jake",
+          "rank": 9,
+          "record": "10-15-0",
+          "winPercentage": 0.4,
+          "fantasyPoints": 5674,
+          "gamesBack": 8,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "So Due",
+          "manager": "Justin",
+          "rank": 10,
+          "record": "8-17-0",
+          "winPercentage": 0.32,
+          "fantasyPoints": 5548,
+          "gamesBack": 10,
+          "seasonFormat": "Head-to-Head"
+        }
+      ],
+      "champion": {
+        "name": "I’m not Witty Enough",
+        "manager": "AJ",
+        "rank": 1,
+        "record": "18-7-0",
+        "winPercentage": 0.72,
+        "fantasyPoints": 6339,
+        "gamesBack": 0,
+        "seasonFormat": "Head-to-Head"
+      },
+      "runnerUp": {
+        "name": "BK Fire",
+        "manager": "Brennan",
+        "rank": 2,
+        "record": "17-7-1",
+        "winPercentage": 0.7,
+        "fantasyPoints": 6528,
+        "gamesBack": 0.5,
+        "seasonFormat": "Head-to-Head"
+      },
+      "thirdPlace": {
+        "name": "MyMookie",
+        "manager": "Danny",
+        "rank": 3,
+        "record": "16-9-0",
+        "winPercentage": 0.64,
+        "fantasyPoints": 6162,
+        "gamesBack": 2,
+        "seasonFormat": "Head-to-Head"
+      }
+    },
+    {
+      "year": "2022",
+      "name": "2022 MLB  Joe Buck Sucks",
+      "leagueId": "13e6yr1okxw9m4bb",
+      "format": "Head-to-Head",
+      "teams": [
+        {
+          "name": "Ding Dings",
+          "manager": "Bjorn",
+          "rank": 1,
+          "record": "15-9-0",
+          "winPercentage": 0.625,
+          "fantasyPoints": 5909,
+          "gamesBack": 0,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "A. Judge’s Wisdom",
+          "manager": "Justin",
+          "rank": 2,
+          "record": "14-10-0",
+          "winPercentage": 0.583,
+          "fantasyPoints": 5921,
+          "gamesBack": 1,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Yor French Boys",
+          "manager": "Ray",
+          "rank": 3,
+          "record": "13-11-0",
+          "winPercentage": 0.542,
+          "fantasyPoints": 5668,
+          "gamesBack": 2,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "DKCR",
+          "manager": "Bobby",
+          "rank": 4,
+          "record": "13-11-0",
+          "winPercentage": 0.542,
+          "fantasyPoints": 5553,
+          "gamesBack": 2,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Deversity",
+          "manager": "Marcus",
+          "rank": 5,
+          "record": "13-11-0",
+          "winPercentage": 0.542,
+          "fantasyPoints": 5399,
+          "gamesBack": 2,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "🅄🅁 🄼🄾🄼",
+          "manager": "Danny",
+          "rank": 6,
+          "record": "12-12-0",
+          "winPercentage": 0.5,
+          "fantasyPoints": 5615,
+          "gamesBack": 3,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Haniger’s Law: 1 Ball, That’s All",
+          "manager": "AJ",
+          "rank": 7,
+          "record": "11-13-0",
+          "winPercentage": 0.458,
+          "fantasyPoints": 5536,
+          "gamesBack": 4,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "BK Last Placers",
+          "manager": "Jake",
+          "rank": 8,
+          "record": "10-14-0",
+          "winPercentage": 0.417,
+          "fantasyPoints": 5512,
+          "gamesBack": 5,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Boaf Squad",
+          "manager": "Pat",
+          "rank": 9,
+          "record": "10-14-0",
+          "winPercentage": 0.417,
+          "fantasyPoints": 5382,
+          "gamesBack": 5,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "BK Fire",
+          "manager": "Brennan",
+          "rank": 10,
+          "record": "9-15-0",
+          "winPercentage": 0.375,
+          "fantasyPoints": 5420,
+          "gamesBack": 6,
+          "seasonFormat": "Head-to-Head"
+        }
+      ],
+      "champion": {
+        "name": "Ding Dings",
+        "manager": "Bjorn",
+        "rank": 1,
+        "record": "15-9-0",
+        "winPercentage": 0.625,
+        "fantasyPoints": 5909,
+        "gamesBack": 0,
+        "seasonFormat": "Head-to-Head"
+      },
+      "runnerUp": {
+        "name": "A. Judge’s Wisdom",
+        "manager": "Justin",
+        "rank": 2,
+        "record": "14-10-0",
+        "winPercentage": 0.583,
+        "fantasyPoints": 5921,
+        "gamesBack": 1,
+        "seasonFormat": "Head-to-Head"
+      },
+      "thirdPlace": {
+        "name": "Yor French Boys",
+        "manager": "Ray",
+        "rank": 3,
+        "record": "13-11-0",
+        "winPercentage": 0.542,
+        "fantasyPoints": 5668,
+        "gamesBack": 2,
+        "seasonFormat": "Head-to-Head"
+      }
+    },
+    {
+      "year": "2021",
+      "name": "2021 MLB  Joe Buck Sucks",
+      "leagueId": "kcog4xfdkl9q0rs8",
+      "format": "Head-to-Head",
+      "teams": [
+        {
+          "name": "Teoscar Goes To...",
+          "manager": "Brennan",
+          "rank": 1,
+          "record": "17-8-0",
+          "winPercentage": 0.68,
+          "fantasyPoints": 6050,
+          "gamesBack": 0,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Yor French Boys",
+          "manager": "Ray",
+          "rank": 2,
+          "record": "16-9-0",
+          "winPercentage": 0.64,
+          "fantasyPoints": 5962,
+          "gamesBack": 1,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Who Needs Acuna",
+          "manager": "AJ",
+          "rank": 3,
+          "record": "15-10-0",
+          "winPercentage": 0.6,
+          "fantasyPoints": 6058,
+          "gamesBack": 2,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Urgent Care",
+          "manager": "Marcus",
+          "rank": 4,
+          "record": "14-10-1",
+          "winPercentage": 0.58,
+          "fantasyPoints": 5991,
+          "gamesBack": 2.5,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Bobby’s 4 game winning streak",
+          "manager": "Justin",
+          "rank": 5,
+          "record": "14-11-0",
+          "winPercentage": 0.56,
+          "fantasyPoints": 5973,
+          "gamesBack": 3,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "The Wise Guys",
+          "manager": "Bjorn",
+          "rank": 6,
+          "record": "12-12-1",
+          "winPercentage": 0.5,
+          "fantasyPoints": 5648,
+          "gamesBack": 4.5,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "DK Danny Last Placers",
+          "manager": "Jake",
+          "rank": 7,
+          "record": "10-15-0",
+          "winPercentage": 0.4,
+          "fantasyPoints": 6015,
+          "gamesBack": 7,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "OnlyPhams",
+          "manager": "Danny",
+          "rank": 8,
+          "record": "10-15-0",
+          "winPercentage": 0.4,
+          "fantasyPoints": 5752,
+          "gamesBack": 7,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Boaf Squad",
+          "manager": "Pat",
+          "rank": 9,
+          "record": "9-16-0",
+          "winPercentage": 0.36,
+          "fantasyPoints": 5314,
+          "gamesBack": 8,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Fucking Pat -_-",
+          "manager": "Bobby",
+          "rank": 10,
+          "record": "7-18-0",
+          "winPercentage": 0.28,
+          "fantasyPoints": 5761,
+          "gamesBack": 10,
+          "seasonFormat": "Head-to-Head"
+        }
+      ],
+      "champion": {
+        "name": "Teoscar Goes To...",
+        "manager": "Brennan",
+        "rank": 1,
+        "record": "17-8-0",
+        "winPercentage": 0.68,
+        "fantasyPoints": 6050,
+        "gamesBack": 0,
+        "seasonFormat": "Head-to-Head"
+      },
+      "runnerUp": {
+        "name": "Yor French Boys",
+        "manager": "Ray",
+        "rank": 2,
+        "record": "16-9-0",
+        "winPercentage": 0.64,
+        "fantasyPoints": 5962,
+        "gamesBack": 1,
+        "seasonFormat": "Head-to-Head"
+      },
+      "thirdPlace": {
+        "name": "Who Needs Acuna",
+        "manager": "AJ",
+        "rank": 3,
+        "record": "15-10-0",
+        "winPercentage": 0.6,
+        "fantasyPoints": 6058,
+        "gamesBack": 2,
+        "seasonFormat": "Head-to-Head"
+      }
+    },
+    {
+      "year": "2020",
+      "name": "2020 MLB  Joe Buck Sucks",
+      "leagueId": "o4x7hu98k6fgewdh",
+      "format": "Roto",
+      "teams": [
+        {
+          "name": "Boaf Squad",
+          "manager": "Pat",
+          "rank": 1,
+          "record": "51-21-0",
+          "winPercentage": 0.2305,
+          "fantasyPoints": 2305,
+          "gamesBack": 0,
+          "seasonFormat": "Roto"
+        },
+        {
+          "name": "Bryzzo",
+          "manager": "Jake",
+          "rank": 2,
+          "record": "48-24-0",
+          "winPercentage": 0.2441,
+          "fantasyPoints": 2441,
+          "gamesBack": 3,
+          "seasonFormat": "Roto"
+        },
+        {
+          "name": "Gleyber of Love",
+          "manager": "Brennan",
+          "rank": 3,
+          "record": "38-33-1",
+          "winPercentage": 0.215,
+          "fantasyPoints": 2150,
+          "gamesBack": 12.5,
+          "seasonFormat": "Roto"
+        },
+        {
+          "name": "Mr. Bohmbastic",
+          "manager": "Marcus",
+          "rank": 4,
+          "record": "36-34-2",
+          "winPercentage": 0.2279,
+          "fantasyPoints": 2279,
+          "gamesBack": 14,
+          "seasonFormat": "Roto"
+        },
+        {
+          "name": "Story Time!",
+          "manager": "Bjorn",
+          "rank": 5,
+          "record": "36-36-0",
+          "winPercentage": 0.2066,
+          "fantasyPoints": 2066,
+          "gamesBack": 15,
+          "seasonFormat": "Roto"
+        },
+        {
+          "name": "cuck mommy",
+          "manager": "Ray",
+          "rank": 6,
+          "record": "33-38-1",
+          "winPercentage": 0.2013,
+          "fantasyPoints": 2013,
+          "gamesBack": 17.5,
+          "seasonFormat": "Roto"
+        },
+        {
+          "name": "Bomba Squad",
+          "manager": "Bobby",
+          "rank": 7,
+          "record": "33-39-0",
+          "winPercentage": 0.2004,
+          "fantasyPoints": 2004,
+          "gamesBack": 18,
+          "seasonFormat": "Roto"
+        },
+        {
+          "name": "Dick Her, Son",
+          "manager": "Danny",
+          "rank": 8,
+          "record": "32-40-0",
+          "winPercentage": 0.2096,
+          "fantasyPoints": 2096,
+          "gamesBack": 19,
+          "seasonFormat": "Roto"
+        },
+        {
+          "name": "Munch Me Schmiddy",
+          "manager": "Justin",
+          "rank": 9,
+          "record": "31-41-0",
+          "winPercentage": 0.204,
+          "fantasyPoints": 2040,
+          "gamesBack": 20,
+          "seasonFormat": "Roto"
+        },
+        {
+          "name": "Red Rockets",
+          "manager": "AJ",
+          "rank": 10,
+          "record": "19-51-2",
+          "winPercentage": 0.1972,
+          "fantasyPoints": 1972,
+          "gamesBack": 31,
+          "seasonFormat": "Roto"
+        }
+      ],
+      "champion": {
+        "name": "Boaf Squad",
+        "manager": "Pat",
+        "rank": 1,
+        "record": "51-21-0",
+        "winPercentage": 0.2305,
+        "fantasyPoints": 2305,
+        "gamesBack": 0,
+        "seasonFormat": "Roto"
+      },
+      "runnerUp": {
+        "name": "Bryzzo",
+        "manager": "Jake",
+        "rank": 2,
+        "record": "48-24-0",
+        "winPercentage": 0.2441,
+        "fantasyPoints": 2441,
+        "gamesBack": 3,
+        "seasonFormat": "Roto"
+      },
+      "thirdPlace": {
+        "name": "Gleyber of Love",
+        "manager": "Brennan",
+        "rank": 3,
+        "record": "38-33-1",
+        "winPercentage": 0.215,
+        "fantasyPoints": 2150,
+        "gamesBack": 12.5,
+        "seasonFormat": "Roto"
+      }
+    },
+    {
+      "year": "2019",
+      "name": "2019 MLB  Joe Buck Sucks",
+      "leagueId": "qlf1p1hnjow4nx9t",
+      "format": "Head-to-Head",
+      "teams": [
+        {
+          "name": "Dee's Nuts",
+          "manager": "Jake",
+          "rank": 1,
+          "record": "16-7-0",
+          "winPercentage": 0.696,
+          "fantasyPoints": 6235,
+          "gamesBack": 0,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Forgot About Trea",
+          "manager": "Brennan",
+          "rank": 2,
+          "record": "15-8-0",
+          "winPercentage": 0.652,
+          "fantasyPoints": 6581,
+          "gamesBack": 1,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Shit",
+          "manager": "Marcus",
+          "rank": 3,
+          "record": "14-9-0",
+          "winPercentage": 0.609,
+          "fantasyPoints": 6130,
+          "gamesBack": 2,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Boaf Squad",
+          "manager": "Pat",
+          "rank": 4,
+          "record": "12-11-0",
+          "winPercentage": 0.522,
+          "fantasyPoints": 6042,
+          "gamesBack": 4,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Bombers",
+          "manager": "Bobby",
+          "rank": 5,
+          "record": "12-11-0",
+          "winPercentage": 0.522,
+          "fantasyPoints": 5767,
+          "gamesBack": 4,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Christian Yelich",
+          "manager": "Danny",
+          "rank": 6,
+          "record": "11-12-0",
+          "winPercentage": 0.478,
+          "fantasyPoints": 6293,
+          "gamesBack": 5,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Gay Birdz <3",
+          "manager": "Bjorn",
+          "rank": 7,
+          "record": "11-12-0",
+          "winPercentage": 0.478,
+          "fantasyPoints": 6197,
+          "gamesBack": 5,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": ":(",
+          "manager": "Ray",
+          "rank": 8,
+          "record": "9-14-0",
+          "winPercentage": 0.391,
+          "fantasyPoints": 6131,
+          "gamesBack": 7,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Back Spasms",
+          "manager": "Justin",
+          "rank": 9,
+          "record": "8-15-0",
+          "winPercentage": 0.348,
+          "fantasyPoints": 6026,
+          "gamesBack": 8,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Vitamin Boys",
+          "manager": "Ben",
+          "rank": 10,
+          "record": "7-16-0",
+          "winPercentage": 0.304,
+          "fantasyPoints": 5394,
+          "gamesBack": 9,
+          "seasonFormat": "Head-to-Head"
+        }
+      ],
+      "champion": {
+        "name": "Dee's Nuts",
+        "manager": "Jake",
+        "rank": 1,
+        "record": "16-7-0",
+        "winPercentage": 0.696,
+        "fantasyPoints": 6235,
+        "gamesBack": 0,
+        "seasonFormat": "Head-to-Head"
+      },
+      "runnerUp": {
+        "name": "Forgot About Trea",
+        "manager": "Brennan",
+        "rank": 2,
+        "record": "15-8-0",
+        "winPercentage": 0.652,
+        "fantasyPoints": 6581,
+        "gamesBack": 1,
+        "seasonFormat": "Head-to-Head"
+      },
+      "thirdPlace": {
+        "name": "Shit",
+        "manager": "Marcus",
+        "rank": 3,
+        "record": "14-9-0",
+        "winPercentage": 0.609,
+        "fantasyPoints": 6130,
+        "gamesBack": 2,
+        "seasonFormat": "Head-to-Head"
+      }
+    },
+    {
+      "year": "2018",
+      "name": "2018 MLB  Joe Buck Sucks",
+      "leagueId": "u6yaky2bjcplrw14",
+      "format": "Head-to-Head",
+      "teams": [
+        {
+          "name": "Windows Down N, Cruz",
+          "manager": "Jake",
+          "rank": 1,
+          "record": "17-7-0",
+          "winPercentage": 0.708,
+          "fantasyPoints": 5874,
+          "gamesBack": 0,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Mookie Khrisp",
+          "manager": "Danny",
+          "rank": 2,
+          "record": "16-8-0",
+          "winPercentage": 0.667,
+          "fantasyPoints": 6476,
+          "gamesBack": 1,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Hakuna Matata",
+          "manager": "Bobby",
+          "rank": 3,
+          "record": "14-10-0",
+          "winPercentage": 0.583,
+          "fantasyPoints": 5826,
+          "gamesBack": 3,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Devout to Trout",
+          "manager": "Marcus",
+          "rank": 4,
+          "record": "14-10-0",
+          "winPercentage": 0.583,
+          "fantasyPoints": 6118,
+          "gamesBack": 3,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Manny 911",
+          "manager": "Brennan",
+          "rank": 5,
+          "record": "13-11-0",
+          "winPercentage": 0.542,
+          "fantasyPoints": 5986,
+          "gamesBack": 4,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Vitamin Boys",
+          "manager": "Ben",
+          "rank": 6,
+          "record": "12-12-0",
+          "winPercentage": 0.5,
+          "fantasyPoints": 5737,
+          "gamesBack": 5,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "The Space Force",
+          "manager": "Bjorn",
+          "rank": 7,
+          "record": "11-13-0",
+          "winPercentage": 0.458,
+          "fantasyPoints": 5648,
+          "gamesBack": 6,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Habaez Smodozeir",
+          "manager": "Justin",
+          "rank": 8,
+          "record": "10-14-0",
+          "winPercentage": 0.417,
+          "fantasyPoints": 5562,
+          "gamesBack": 7,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Boaf Squad",
+          "manager": "Pat",
+          "rank": 9,
+          "record": "10-14-0",
+          "winPercentage": 0.417,
+          "fantasyPoints": 5299,
+          "gamesBack": 7,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "D.Ray. Last Placers",
+          "manager": "Ray",
+          "rank": 10,
+          "record": "3-21-0",
+          "winPercentage": 0.125,
+          "fantasyPoints": 5407,
+          "gamesBack": 14,
+          "seasonFormat": "Head-to-Head"
+        }
+      ],
+      "champion": {
+        "name": "Windows Down N, Cruz",
+        "manager": "Jake",
+        "rank": 1,
+        "record": "17-7-0",
+        "winPercentage": 0.708,
+        "fantasyPoints": 5874,
+        "gamesBack": 0,
+        "seasonFormat": "Head-to-Head"
+      },
+      "runnerUp": {
+        "name": "Mookie Khrisp",
+        "manager": "Danny",
+        "rank": 2,
+        "record": "16-8-0",
+        "winPercentage": 0.667,
+        "fantasyPoints": 6476,
+        "gamesBack": 1,
+        "seasonFormat": "Head-to-Head"
+      },
+      "thirdPlace": {
+        "name": "Hakuna Matata",
+        "manager": "Bobby",
+        "rank": 3,
+        "record": "14-10-0",
+        "winPercentage": 0.583,
+        "fantasyPoints": 5826,
+        "gamesBack": 3,
+        "seasonFormat": "Head-to-Head"
+      }
+    },
+    {
+      "year": "2017",
+      "name": "2017 MLB  Joe Buck Sucks",
+      "leagueId": "apl5cn2ciyuis67t",
+      "format": "Head-to-Head",
+      "teams": [
+        {
+          "name": "The Hippopotamuses",
+          "manager": "Ray",
+          "rank": 1,
+          "record": "18-5-0",
+          "winPercentage": 0.783,
+          "fantasyPoints": 6244,
+          "gamesBack": 0,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "That Thot Tho",
+          "manager": "Marcus",
+          "rank": 2,
+          "record": "13-8-2",
+          "winPercentage": 0.609,
+          "fantasyPoints": 5861,
+          "gamesBack": 4,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Silence of the Lamb",
+          "manager": "Brennan",
+          "rank": 3,
+          "record": "13-10-0",
+          "winPercentage": 0.565,
+          "fantasyPoints": 5849,
+          "gamesBack": 5,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Smooth Sailing",
+          "manager": "Danny",
+          "rank": 4,
+          "record": "12-10-1",
+          "winPercentage": 0.543,
+          "fantasyPoints": 6175,
+          "gamesBack": 5.5,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Boaf Squad",
+          "manager": "Pat",
+          "rank": 5,
+          "record": "11-10-2",
+          "winPercentage": 0.522,
+          "fantasyPoints": 5811,
+          "gamesBack": 6,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Year of the Cock",
+          "manager": "Bobby",
+          "rank": 6,
+          "record": "11-11-1",
+          "winPercentage": 0.5,
+          "fantasyPoints": 6046,
+          "gamesBack": 6.5,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "The Shawshank Redemption",
+          "manager": "Bjorn",
+          "rank": 7,
+          "record": "10-13-0",
+          "winPercentage": 0.435,
+          "fantasyPoints": 5826,
+          "gamesBack": 8,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Vitamin Boys",
+          "manager": "Ben",
+          "rank": 8,
+          "record": "8-13-2",
+          "winPercentage": 0.391,
+          "fantasyPoints": 5671,
+          "gamesBack": 9,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Domikipnis",
+          "manager": "Justin",
+          "rank": 9,
+          "record": "9-14-0",
+          "winPercentage": 0.391,
+          "fantasyPoints": 5475,
+          "gamesBack": 9,
+          "seasonFormat": "Head-to-Head"
+        },
+        {
+          "name": "Disabled Veterans",
+          "manager": "Jake",
+          "rank": 10,
+          "record": "6-17-0",
+          "winPercentage": 0.261,
+          "fantasyPoints": 5276,
+          "gamesBack": 12,
+          "seasonFormat": "Head-to-Head"
+        }
+      ],
+      "champion": {
+        "name": "The Hippopotamuses",
+        "manager": "Ray",
+        "rank": 1,
+        "record": "18-5-0",
+        "winPercentage": 0.783,
+        "fantasyPoints": 6244,
+        "gamesBack": 0,
+        "seasonFormat": "Head-to-Head"
+      },
+      "runnerUp": {
+        "name": "That Thot Tho",
+        "manager": "Marcus",
+        "rank": 2,
+        "record": "13-8-2",
+        "winPercentage": 0.609,
+        "fantasyPoints": 5861,
+        "gamesBack": 4,
+        "seasonFormat": "Head-to-Head"
+      },
+      "thirdPlace": {
+        "name": "Silence of the Lamb",
+        "manager": "Brennan",
+        "rank": 3,
+        "record": "13-10-0",
+        "winPercentage": 0.565,
+        "fantasyPoints": 5849,
+        "gamesBack": 5,
+        "seasonFormat": "Head-to-Head"
+      }
+    }
+  ],
+  "managers": [
+    {
+      "name": "Pat",
+      "active": "2017 - Present",
+      "seasons": 8,
+      "careerRecord": "78-89-2",
+      "winPercentage": "0.467",
+      "avgFantasyPoints": "5209",
+      "championships": 2,
+      "topThreeFinishes": 2,
+      "bestFinish": "1 (2024)",
+      "worstFinish": "9 (2022)",
+      "teams": [
+        {
+          "year": "2024",
+          "name": "Boaf Squad",
+          "rank": 1,
+          "record": "16-9-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2023",
+          "name": "Boaf Squad",
+          "rank": 8,
+          "record": "10-15-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2022",
+          "name": "Boaf Squad",
+          "rank": 9,
+          "record": "10-14-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2021",
+          "name": "Boaf Squad",
+          "rank": 9,
+          "record": "9-16-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2020",
+          "name": "Boaf Squad",
+          "rank": 1,
+          "record": "51-21-0",
+          "format": "Roto",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2019",
+          "name": "Boaf Squad",
+          "rank": 4,
+          "record": "12-11-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2018",
+          "name": "Boaf Squad",
+          "rank": 9,
+          "record": "10-14-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2017",
+          "name": "Boaf Squad",
+          "rank": 5,
+          "record": "11-10-2",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        }
+      ]
+    },
+    {
+      "name": "Jake",
+      "active": "2017 - Present",
+      "seasons": 8,
+      "careerRecord": "78-91-0",
+      "winPercentage": "0.462",
+      "avgFantasyPoints": "5322",
+      "championships": 2,
+      "topThreeFinishes": 3,
+      "bestFinish": "1 (2019)",
+      "worstFinish": "10 (2017)",
+      "teams": [
+        {
+          "year": "2024",
+          "name": "Strait Bussin",
+          "rank": 9,
+          "record": "9-16-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2023",
+          "name": "My Dog",
+          "rank": 9,
+          "record": "10-15-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2022",
+          "name": "BK Last Placers",
+          "rank": 8,
+          "record": "10-14-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2021",
+          "name": "DK Danny Last Placers",
+          "rank": 7,
+          "record": "10-15-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2020",
+          "name": "Bryzzo",
+          "rank": 2,
+          "record": "48-24-0",
+          "format": "Roto",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2019",
+          "name": "Dee's Nuts",
+          "rank": 1,
+          "record": "16-7-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2018",
+          "name": "Windows Down N, Cruz",
+          "rank": 1,
+          "record": "17-7-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2017",
+          "name": "Disabled Veterans",
+          "rank": 10,
+          "record": "6-17-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        }
+      ]
+    },
+    {
+      "name": "Brennan",
+      "active": "2017 - Present",
+      "seasons": 8,
+      "careerRecord": "99-69-1",
+      "winPercentage": "0.589",
+      "avgFantasyPoints": "5584",
+      "championships": 1,
+      "topThreeFinishes": 6,
+      "bestFinish": "1 (2021)",
+      "worstFinish": "10 (2022)",
+      "teams": [
+        {
+          "year": "2024",
+          "name": "Damn Duran",
+          "rank": 2,
+          "record": "15-10-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2023",
+          "name": "BK Fire",
+          "rank": 2,
+          "record": "17-7-1",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2022",
+          "name": "BK Fire",
+          "rank": 10,
+          "record": "9-15-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2021",
+          "name": "Teoscar Goes To...",
+          "rank": 1,
+          "record": "17-8-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2020",
+          "name": "Gleyber of Love",
+          "rank": 3,
+          "record": "38-33-1",
+          "format": "Roto",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2019",
+          "name": "Forgot About Trea",
+          "rank": 2,
+          "record": "15-8-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2018",
+          "name": "Manny 911",
+          "rank": 5,
+          "record": "13-11-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2017",
+          "name": "Silence of the Lamb",
+          "rank": 3,
+          "record": "13-10-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        }
+      ]
+    },
+    {
+      "name": "AJ",
+      "active": "2020 - Present",
+      "seasons": 5,
+      "careerRecord": "51-48-0",
+      "winPercentage": "0.515",
+      "avgFantasyPoints": "5044",
+      "championships": 1,
+      "topThreeFinishes": 2,
+      "bestFinish": "1 (2023)",
+      "worstFinish": "10 (2024)",
+      "teams": [
+        {
+          "year": "2024",
+          "name": "I’m not Witty Enough",
+          "rank": 10,
+          "record": "7-18-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2023",
+          "name": "I’m not Witty Enough",
+          "rank": 1,
+          "record": "18-7-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2022",
+          "name": "Haniger’s Law: 1 Ball, That’s All",
+          "rank": 7,
+          "record": "11-13-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2021",
+          "name": "Who Needs Acuna",
+          "rank": 3,
+          "record": "15-10-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2020",
+          "name": "Red Rockets",
+          "rank": 10,
+          "record": "19-51-2",
+          "format": "Roto",
+          "fantasyPoints": 0
+        }
+      ]
+    },
+    {
+      "name": "Bjorn",
+      "active": "2017 - Present",
+      "seasons": 8,
+      "careerRecord": "83-84-2",
+      "winPercentage": "0.497",
+      "avgFantasyPoints": "5373",
+      "championships": 1,
+      "topThreeFinishes": 1,
+      "bestFinish": "1 (2022)",
+      "worstFinish": "7 (2023)",
+      "teams": [
+        {
+          "year": "2024",
+          "name": "GAUZH",
+          "rank": 4,
+          "record": "14-11-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2023",
+          "name": "Moon Missiles",
+          "rank": 7,
+          "record": "10-14-1",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2022",
+          "name": "Ding Dings",
+          "rank": 1,
+          "record": "15-9-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2021",
+          "name": "The Wise Guys",
+          "rank": 6,
+          "record": "12-12-1",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2020",
+          "name": "Story Time!",
+          "rank": 5,
+          "record": "36-36-0",
+          "format": "Roto",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2019",
+          "name": "Gay Birdz <3",
+          "rank": 7,
+          "record": "11-12-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2018",
+          "name": "The Space Force",
+          "rank": 7,
+          "record": "11-13-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2017",
+          "name": "The Shawshank Redemption",
+          "rank": 7,
+          "record": "10-13-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        }
+      ]
+    },
+    {
+      "name": "Ray",
+      "active": "2017 - Present",
+      "seasons": 8,
+      "careerRecord": "82-87-0",
+      "winPercentage": "0.485",
+      "avgFantasyPoints": "5382",
+      "championships": 1,
+      "topThreeFinishes": 3,
+      "bestFinish": "1 (2017)",
+      "worstFinish": "10 (2018)",
+      "teams": [
+        {
+          "year": "2024",
+          "name": "Horus",
+          "rank": 7,
+          "record": "12-13-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2023",
+          "name": "Ray's Team",
+          "rank": 5,
+          "record": "11-14-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2022",
+          "name": "Yor French Boys",
+          "rank": 3,
+          "record": "13-11-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2021",
+          "name": "Yor French Boys",
+          "rank": 2,
+          "record": "16-9-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2020",
+          "name": "cuck mommy",
+          "rank": 6,
+          "record": "33-38-1",
+          "format": "Roto",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2019",
+          "name": ":(",
+          "rank": 8,
+          "record": "9-14-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2018",
+          "name": "D.Ray. Last Placers",
+          "rank": 10,
+          "record": "3-21-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2017",
+          "name": "The Hippopotamuses",
+          "rank": 1,
+          "record": "18-5-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        }
+      ]
+    },
+    {
+      "name": "Marcus",
+      "active": "2017 - Present",
+      "seasons": 8,
+      "careerRecord": "93-73-3",
+      "winPercentage": "0.559",
+      "avgFantasyPoints": "5465",
+      "championships": 0,
+      "topThreeFinishes": 2,
+      "bestFinish": "2 (2017)",
+      "worstFinish": "6 (2023)",
+      "teams": [
+        {
+          "year": "2024",
+          "name": "Nepo Baby Jr",
+          "rank": 5,
+          "record": "14-11-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2023",
+          "name": "We Lose These",
+          "rank": 6,
+          "record": "11-14-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2022",
+          "name": "Deversity",
+          "rank": 5,
+          "record": "13-11-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2021",
+          "name": "Urgent Care",
+          "rank": 4,
+          "record": "14-10-1",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2020",
+          "name": "Mr. Bohmbastic",
+          "rank": 4,
+          "record": "36-34-2",
+          "format": "Roto",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2019",
+          "name": "Shit",
+          "rank": 3,
+          "record": "14-9-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2018",
+          "name": "Devout to Trout",
+          "rank": 4,
+          "record": "14-10-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2017",
+          "name": "That Thot Tho",
+          "rank": 2,
+          "record": "13-8-2",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        }
+      ]
+    },
+    {
+      "name": "Danny",
+      "active": "2017 - Present",
+      "seasons": 8,
+      "careerRecord": "91-77-1",
+      "winPercentage": "0.541",
+      "avgFantasyPoints": "5554",
+      "championships": 0,
+      "topThreeFinishes": 3,
+      "bestFinish": "2 (2018)",
+      "worstFinish": "8 (2021)",
+      "teams": [
+        {
+          "year": "2024",
+          "name": "marcus pilled",
+          "rank": 3,
+          "record": "14-11-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2023",
+          "name": "MyMookie",
+          "rank": 3,
+          "record": "16-9-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2022",
+          "name": "🅄🅁 🄼🄾🄼",
+          "rank": 6,
+          "record": "12-12-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2021",
+          "name": "OnlyPhams",
+          "rank": 8,
+          "record": "10-15-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2020",
+          "name": "Dick Her, Son",
+          "rank": 8,
+          "record": "32-40-0",
+          "format": "Roto",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2019",
+          "name": "Christian Yelich",
+          "rank": 6,
+          "record": "11-12-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2018",
+          "name": "Mookie Khrisp",
+          "rank": 2,
+          "record": "16-8-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2017",
+          "name": "Smooth Sailing",
+          "rank": 4,
+          "record": "12-10-1",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        }
+      ]
+    },
+    {
+      "name": "Bobby",
+      "active": "2017 - Present",
+      "seasons": 8,
+      "careerRecord": "82-85-2",
+      "winPercentage": "0.491",
+      "avgFantasyPoints": "5309",
+      "championships": 0,
+      "topThreeFinishes": 1,
+      "bestFinish": "3 (2018)",
+      "worstFinish": "10 (2021)",
+      "teams": [
+        {
+          "year": "2024",
+          "name": "Savages",
+          "rank": 6,
+          "record": "12-12-1",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2023",
+          "name": "Kong Army",
+          "rank": 4,
+          "record": "13-12-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2022",
+          "name": "DKCR",
+          "rank": 4,
+          "record": "13-11-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2021",
+          "name": "Fucking Pat -_-",
+          "rank": 10,
+          "record": "7-18-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2020",
+          "name": "Bomba Squad",
+          "rank": 7,
+          "record": "33-39-0",
+          "format": "Roto",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2019",
+          "name": "Bombers",
+          "rank": 5,
+          "record": "12-11-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2018",
+          "name": "Hakuna Matata",
+          "rank": 3,
+          "record": "14-10-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2017",
+          "name": "Year of the Cock",
+          "rank": 6,
+          "record": "11-11-1",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        }
+      ]
+    },
+    {
+      "name": "Justin",
+      "active": "2017 - Present",
+      "seasons": 8,
+      "careerRecord": "74-94-1",
+      "winPercentage": "0.441",
+      "avgFantasyPoints": "5264",
+      "championships": 0,
+      "topThreeFinishes": 1,
+      "bestFinish": "2 (2022)",
+      "worstFinish": "10 (2023)",
+      "teams": [
+        {
+          "year": "2024",
+          "name": "Lawrence Butler",
+          "rank": 8,
+          "record": "11-13-1",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2023",
+          "name": "So Due",
+          "rank": 10,
+          "record": "8-17-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2022",
+          "name": "A. Judge’s Wisdom",
+          "rank": 2,
+          "record": "14-10-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2021",
+          "name": "Bobby’s 4 game winning streak",
+          "rank": 5,
+          "record": "14-11-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2020",
+          "name": "Munch Me Schmiddy",
+          "rank": 9,
+          "record": "31-41-0",
+          "format": "Roto",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2019",
+          "name": "Back Spasms",
+          "rank": 9,
+          "record": "8-15-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2018",
+          "name": "Habaez Smodozeir",
+          "rank": 8,
+          "record": "10-14-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2017",
+          "name": "Domikipnis",
+          "rank": 9,
+          "record": "9-14-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        }
+      ]
+    },
+    {
+      "name": "Ben",
+      "active": "2017 - 2019",
+      "seasons": 3,
+      "careerRecord": "27-41-2",
+      "winPercentage": "0.400",
+      "avgFantasyPoints": "5601",
+      "championships": 0,
+      "topThreeFinishes": 0,
+      "bestFinish": "6 (2018)",
+      "worstFinish": "10 (2019)",
+      "teams": [
+        {
+          "year": "2019",
+          "name": "Vitamin Boys",
+          "rank": 10,
+          "record": "7-16-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2018",
+          "name": "Vitamin Boys",
+          "rank": 6,
+          "record": "12-12-0",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        },
+        {
+          "year": "2017",
+          "name": "Vitamin Boys",
+          "rank": 8,
+          "record": "8-13-2",
+          "format": "Head-to-Head",
+          "fantasyPoints": 0
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "totalSeasons": 8,
+    "totalManagers": 11,
+    "championsByManager": {
+      "AJ": 1,
+      "Ben": 0,
+      "Bjorn": 1,
+      "Bobby": 0,
+      "Brennan": 1,
+      "Danny": 0,
+      "Jake": 2,
+      "Justin": 0,
+      "Marcus": 0,
+      "Pat": 2,
+      "Ray": 1
+    },
+    "topThreeFinishesByManager": {
+      "AJ": 2,
+      "Ben": 0,
+      "Bjorn": 1,
+      "Bobby": 1,
+      "Brennan": 6,
+      "Danny": 3,
+      "Jake": 3,
+      "Justin": 1,
+      "Marcus": 2,
+      "Pat": 2,
+      "Ray": 3
+    }
+  }
+}

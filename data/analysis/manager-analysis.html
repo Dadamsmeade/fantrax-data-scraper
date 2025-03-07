@@ -1,0 +1,1270 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Joe Buck Sucks Fantasy Baseball League - Manager Analysis</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+            h1, h2, h3 {
+                color: #1a237e;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 20px;
+            }
+            th, td {
+                padding: 8px 10px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+            th {
+                background-color: #f5f5f5;
+            }
+            .manager {
+                margin-bottom: 30px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                padding: 15px;
+            }
+            .roto-season {
+                background-color: #f9f9ff;
+            }
+            .stat-highlight {
+                font-weight: bold;
+                color: #1a237e;
+            }
+            .chart-container {
+                height: 300px;
+                margin-bottom: 30px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Joe Buck Sucks Fantasy Baseball League - Manager Analysis</h1>
+        
+        <h2>Manager Performance Summary</h2>
+        <table>
+            <tr>
+                <th>Manager</th>
+                <th>Seasons</th>
+                <th>Record</th>
+                <th>Win %</th>
+                <th>Avg Rank</th>
+                <th>Best</th>
+                <th>Worst</th>
+                <th>Avg Points</th>
+            </tr>
+    
+            <tr>
+                <td>Brennan</td>
+                <td>8 (7 H2H, 1 Roto)</td>
+                <td>99-69-1</td>
+                <td>0.589</td>
+                <td class="stat-highlight">3.50</td>
+                <td>1 (2021)</td>
+                <td>10 (2022)</td>
+                <td>5,583.75</td>
+            </tr>
+            
+            <tr>
+                <td>Marcus</td>
+                <td>8 (7 H2H, 1 Roto)</td>
+                <td>93-73-3</td>
+                <td>0.559</td>
+                <td class="stat-highlight">4.13</td>
+                <td>2 (2017)</td>
+                <td>6 (2023)</td>
+                <td>5,465.13</td>
+            </tr>
+            
+            <tr>
+                <td>Danny</td>
+                <td>8 (7 H2H, 1 Roto)</td>
+                <td>91-77-1</td>
+                <td>0.541</td>
+                <td class="stat-highlight">5.00</td>
+                <td>2 (2018)</td>
+                <td>8 (2021)</td>
+                <td>5,554</td>
+            </tr>
+            
+            <tr>
+                <td>Ray</td>
+                <td>8 (7 H2H, 1 Roto)</td>
+                <td>82-87-0</td>
+                <td>0.485</td>
+                <td class="stat-highlight">5.25</td>
+                <td>1 (2017)</td>
+                <td>10 (2018)</td>
+                <td>5,381.88</td>
+            </tr>
+            
+            <tr>
+                <td>Bjorn</td>
+                <td>8 (7 H2H, 1 Roto)</td>
+                <td>83-84-2</td>
+                <td>0.497</td>
+                <td class="stat-highlight">5.50</td>
+                <td>1 (2022)</td>
+                <td>7 (2023)</td>
+                <td>5,372.75</td>
+            </tr>
+            
+            <tr>
+                <td>Bobby</td>
+                <td>8 (7 H2H, 1 Roto)</td>
+                <td>82-85-2</td>
+                <td>0.491</td>
+                <td class="stat-highlight">5.63</td>
+                <td>3 (2018)</td>
+                <td>10 (2021)</td>
+                <td>5,308.75</td>
+            </tr>
+            
+            <tr>
+                <td>Pat</td>
+                <td>8 (7 H2H, 1 Roto)</td>
+                <td>78-89-2</td>
+                <td>0.467</td>
+                <td class="stat-highlight">5.75</td>
+                <td>1 (2024)</td>
+                <td>9 (2022)</td>
+                <td>5,208.88</td>
+            </tr>
+            
+            <tr>
+                <td>Jake</td>
+                <td>8 (7 H2H, 1 Roto)</td>
+                <td>78-91-0</td>
+                <td>0.462</td>
+                <td class="stat-highlight">5.88</td>
+                <td>1 (2019)</td>
+                <td>10 (2017)</td>
+                <td>5,321.75</td>
+            </tr>
+            
+            <tr>
+                <td>AJ</td>
+                <td>5 (4 H2H, 1 Roto)</td>
+                <td>51-48-0</td>
+                <td>0.515</td>
+                <td class="stat-highlight">6.20</td>
+                <td>1 (2023)</td>
+                <td>10 (2024)</td>
+                <td>5,043.8</td>
+            </tr>
+            
+            <tr>
+                <td>Justin</td>
+                <td>8 (7 H2H, 1 Roto)</td>
+                <td>74-94-1</td>
+                <td>0.441</td>
+                <td class="stat-highlight">7.50</td>
+                <td>2 (2022)</td>
+                <td>10 (2023)</td>
+                <td>5,263.75</td>
+            </tr>
+            
+            <tr>
+                <td>Ben</td>
+                <td>3 (3 H2H, 0 Roto)</td>
+                <td>27-41-2</td>
+                <td>0.400</td>
+                <td class="stat-highlight">8.00</td>
+                <td>6 (2018)</td>
+                <td>10 (2019)</td>
+                <td>5,600.67</td>
+            </tr>
+            
+        </table>
+        
+        <h2>Individual Manager Profiles</h2>
+    
+            <div class="manager">
+                <h3>AJ</h3>
+                <p><strong>Active:</strong> 2020 - Present</p>
+                <p><strong>Seasons:</strong> 5 (4 Head-to-Head, 1 Roto)</p>
+                <p><strong>Record:</strong> 51-48-0 (0.515)</p>
+                <p><strong>Average Rank:</strong> <span class="stat-highlight">6.20</span></p>
+                <p><strong>Best Finish:</strong> 1 (2023)</p>
+                <p><strong>Worst Finish:</strong> 10 (2024)</p>
+                <p><strong>Average Fantasy Points:</strong> 5,043.8</p>
+                
+                <h4>Season by Season Results</h4>
+                <table>
+                    <tr>
+                        <th>Year</th>
+                        <th>Team</th>
+                        <th>Rank</th>
+                        <th>Record</th>
+                        <th>Win %</th>
+                        <th>Format</th>
+                        <th>Fantasy Points</th>
+                    </tr>
+            
+                <tr class="">
+                    <td>2024</td>
+                    <td>I’m not Witty Enough</td>
+                    <td>10</td>
+                    <td>7-18-0</td>
+                    <td>0.28</td>
+                    <td>Head-to-Head</td>
+                    <td>5,314</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2023</td>
+                    <td>I’m not Witty Enough</td>
+                    <td>1</td>
+                    <td>18-7-0</td>
+                    <td>0.72</td>
+                    <td>Head-to-Head</td>
+                    <td>6,339</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2022</td>
+                    <td>Haniger’s Law: 1 Ball, That’s All</td>
+                    <td>7</td>
+                    <td>11-13-0</td>
+                    <td>0.458</td>
+                    <td>Head-to-Head</td>
+                    <td>5,536</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2021</td>
+                    <td>Who Needs Acuna</td>
+                    <td>3</td>
+                    <td>15-10-0</td>
+                    <td>0.6</td>
+                    <td>Head-to-Head</td>
+                    <td>6,058</td>
+                </tr>
+                
+                <tr class="roto-season">
+                    <td>2020</td>
+                    <td>Red Rockets</td>
+                    <td>10</td>
+                    <td>19-51-2</td>
+                    <td>0.278</td>
+                    <td>Roto</td>
+                    <td>1,972</td>
+                </tr>
+                
+                </table>
+            </div>
+            
+            <div class="manager">
+                <h3>Ben</h3>
+                <p><strong>Active:</strong> 2017 - 2019</p>
+                <p><strong>Seasons:</strong> 3 (3 Head-to-Head, 0 Roto)</p>
+                <p><strong>Record:</strong> 27-41-2 (0.400)</p>
+                <p><strong>Average Rank:</strong> <span class="stat-highlight">8.00</span></p>
+                <p><strong>Best Finish:</strong> 6 (2018)</p>
+                <p><strong>Worst Finish:</strong> 10 (2019)</p>
+                <p><strong>Average Fantasy Points:</strong> 5,600.67</p>
+                
+                <h4>Season by Season Results</h4>
+                <table>
+                    <tr>
+                        <th>Year</th>
+                        <th>Team</th>
+                        <th>Rank</th>
+                        <th>Record</th>
+                        <th>Win %</th>
+                        <th>Format</th>
+                        <th>Fantasy Points</th>
+                    </tr>
+            
+                <tr class="">
+                    <td>2019</td>
+                    <td>Vitamin Boys</td>
+                    <td>10</td>
+                    <td>7-16-0</td>
+                    <td>0.304</td>
+                    <td>Head-to-Head</td>
+                    <td>5,394</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2018</td>
+                    <td>Vitamin Boys</td>
+                    <td>6</td>
+                    <td>12-12-0</td>
+                    <td>0.5</td>
+                    <td>Head-to-Head</td>
+                    <td>5,737</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2017</td>
+                    <td>Vitamin Boys</td>
+                    <td>8</td>
+                    <td>8-13-2</td>
+                    <td>0.391</td>
+                    <td>Head-to-Head</td>
+                    <td>5,671</td>
+                </tr>
+                
+                </table>
+            </div>
+            
+            <div class="manager">
+                <h3>Bjorn</h3>
+                <p><strong>Active:</strong> 2017 - Present</p>
+                <p><strong>Seasons:</strong> 8 (7 Head-to-Head, 1 Roto)</p>
+                <p><strong>Record:</strong> 83-84-2 (0.497)</p>
+                <p><strong>Average Rank:</strong> <span class="stat-highlight">5.50</span></p>
+                <p><strong>Best Finish:</strong> 1 (2022)</p>
+                <p><strong>Worst Finish:</strong> 7 (2023)</p>
+                <p><strong>Average Fantasy Points:</strong> 5,372.75</p>
+                
+                <h4>Season by Season Results</h4>
+                <table>
+                    <tr>
+                        <th>Year</th>
+                        <th>Team</th>
+                        <th>Rank</th>
+                        <th>Record</th>
+                        <th>Win %</th>
+                        <th>Format</th>
+                        <th>Fantasy Points</th>
+                    </tr>
+            
+                <tr class="">
+                    <td>2024</td>
+                    <td>GAUZH</td>
+                    <td>4</td>
+                    <td>14-11-0</td>
+                    <td>0.56</td>
+                    <td>Head-to-Head</td>
+                    <td>5,993</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2023</td>
+                    <td>Moon Missiles</td>
+                    <td>7</td>
+                    <td>10-14-1</td>
+                    <td>0.42</td>
+                    <td>Head-to-Head</td>
+                    <td>5,695</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2022</td>
+                    <td>Ding Dings</td>
+                    <td>1</td>
+                    <td>15-9-0</td>
+                    <td>0.625</td>
+                    <td>Head-to-Head</td>
+                    <td>5,909</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2021</td>
+                    <td>The Wise Guys</td>
+                    <td>6</td>
+                    <td>12-12-1</td>
+                    <td>0.5</td>
+                    <td>Head-to-Head</td>
+                    <td>5,648</td>
+                </tr>
+                
+                <tr class="roto-season">
+                    <td>2020</td>
+                    <td>Story Time!</td>
+                    <td>5</td>
+                    <td>36-36-0</td>
+                    <td>0.5</td>
+                    <td>Roto</td>
+                    <td>2,066</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2019</td>
+                    <td>Gay Birdz <3</td>
+                    <td>7</td>
+                    <td>11-12-0</td>
+                    <td>0.478</td>
+                    <td>Head-to-Head</td>
+                    <td>6,197</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2018</td>
+                    <td>The Space Force</td>
+                    <td>7</td>
+                    <td>11-13-0</td>
+                    <td>0.458</td>
+                    <td>Head-to-Head</td>
+                    <td>5,648</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2017</td>
+                    <td>The Shawshank Redemption</td>
+                    <td>7</td>
+                    <td>10-13-0</td>
+                    <td>0.435</td>
+                    <td>Head-to-Head</td>
+                    <td>5,826</td>
+                </tr>
+                
+                </table>
+            </div>
+            
+            <div class="manager">
+                <h3>Bobby</h3>
+                <p><strong>Active:</strong> 2017 - Present</p>
+                <p><strong>Seasons:</strong> 8 (7 Head-to-Head, 1 Roto)</p>
+                <p><strong>Record:</strong> 82-85-2 (0.491)</p>
+                <p><strong>Average Rank:</strong> <span class="stat-highlight">5.63</span></p>
+                <p><strong>Best Finish:</strong> 3 (2018)</p>
+                <p><strong>Worst Finish:</strong> 10 (2021)</p>
+                <p><strong>Average Fantasy Points:</strong> 5,308.75</p>
+                
+                <h4>Season by Season Results</h4>
+                <table>
+                    <tr>
+                        <th>Year</th>
+                        <th>Team</th>
+                        <th>Rank</th>
+                        <th>Record</th>
+                        <th>Win %</th>
+                        <th>Format</th>
+                        <th>Fantasy Points</th>
+                    </tr>
+            
+                <tr class="">
+                    <td>2024</td>
+                    <td>Savages</td>
+                    <td>6</td>
+                    <td>12-12-1</td>
+                    <td>0.5</td>
+                    <td>Head-to-Head</td>
+                    <td>5,778</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2023</td>
+                    <td>Kong Army</td>
+                    <td>4</td>
+                    <td>13-12-0</td>
+                    <td>0.52</td>
+                    <td>Head-to-Head</td>
+                    <td>5,735</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2022</td>
+                    <td>DKCR</td>
+                    <td>4</td>
+                    <td>13-11-0</td>
+                    <td>0.542</td>
+                    <td>Head-to-Head</td>
+                    <td>5,553</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2021</td>
+                    <td>Fucking Pat -_-</td>
+                    <td>10</td>
+                    <td>7-18-0</td>
+                    <td>0.28</td>
+                    <td>Head-to-Head</td>
+                    <td>5,761</td>
+                </tr>
+                
+                <tr class="roto-season">
+                    <td>2020</td>
+                    <td>Bomba Squad</td>
+                    <td>7</td>
+                    <td>33-39-0</td>
+                    <td>0.458</td>
+                    <td>Roto</td>
+                    <td>2,004</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2019</td>
+                    <td>Bombers</td>
+                    <td>5</td>
+                    <td>12-11-0</td>
+                    <td>0.522</td>
+                    <td>Head-to-Head</td>
+                    <td>5,767</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2018</td>
+                    <td>Hakuna Matata</td>
+                    <td>3</td>
+                    <td>14-10-0</td>
+                    <td>0.583</td>
+                    <td>Head-to-Head</td>
+                    <td>5,826</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2017</td>
+                    <td>Year of the Cock</td>
+                    <td>6</td>
+                    <td>11-11-1</td>
+                    <td>0.5</td>
+                    <td>Head-to-Head</td>
+                    <td>6,046</td>
+                </tr>
+                
+                </table>
+            </div>
+            
+            <div class="manager">
+                <h3>Brennan</h3>
+                <p><strong>Active:</strong> 2017 - Present</p>
+                <p><strong>Seasons:</strong> 8 (7 Head-to-Head, 1 Roto)</p>
+                <p><strong>Record:</strong> 99-69-1 (0.589)</p>
+                <p><strong>Average Rank:</strong> <span class="stat-highlight">3.50</span></p>
+                <p><strong>Best Finish:</strong> 1 (2021)</p>
+                <p><strong>Worst Finish:</strong> 10 (2022)</p>
+                <p><strong>Average Fantasy Points:</strong> 5,583.75</p>
+                
+                <h4>Season by Season Results</h4>
+                <table>
+                    <tr>
+                        <th>Year</th>
+                        <th>Team</th>
+                        <th>Rank</th>
+                        <th>Record</th>
+                        <th>Win %</th>
+                        <th>Format</th>
+                        <th>Fantasy Points</th>
+                    </tr>
+            
+                <tr class="">
+                    <td>2024</td>
+                    <td>Damn Duran</td>
+                    <td>2</td>
+                    <td>15-10-0</td>
+                    <td>0.6</td>
+                    <td>Head-to-Head</td>
+                    <td>6,106</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2023</td>
+                    <td>BK Fire</td>
+                    <td>2</td>
+                    <td>17-7-1</td>
+                    <td>0.7</td>
+                    <td>Head-to-Head</td>
+                    <td>6,528</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2022</td>
+                    <td>BK Fire</td>
+                    <td>10</td>
+                    <td>9-15-0</td>
+                    <td>0.375</td>
+                    <td>Head-to-Head</td>
+                    <td>5,420</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2021</td>
+                    <td>Teoscar Goes To...</td>
+                    <td>1</td>
+                    <td>17-8-0</td>
+                    <td>0.68</td>
+                    <td>Head-to-Head</td>
+                    <td>6,050</td>
+                </tr>
+                
+                <tr class="roto-season">
+                    <td>2020</td>
+                    <td>Gleyber of Love</td>
+                    <td>3</td>
+                    <td>38-33-1</td>
+                    <td>0.535</td>
+                    <td>Roto</td>
+                    <td>2,150</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2019</td>
+                    <td>Forgot About Trea</td>
+                    <td>2</td>
+                    <td>15-8-0</td>
+                    <td>0.652</td>
+                    <td>Head-to-Head</td>
+                    <td>6,581</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2018</td>
+                    <td>Manny 911</td>
+                    <td>5</td>
+                    <td>13-11-0</td>
+                    <td>0.542</td>
+                    <td>Head-to-Head</td>
+                    <td>5,986</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2017</td>
+                    <td>Silence of the Lamb</td>
+                    <td>3</td>
+                    <td>13-10-0</td>
+                    <td>0.565</td>
+                    <td>Head-to-Head</td>
+                    <td>5,849</td>
+                </tr>
+                
+                </table>
+            </div>
+            
+            <div class="manager">
+                <h3>Danny</h3>
+                <p><strong>Active:</strong> 2017 - Present</p>
+                <p><strong>Seasons:</strong> 8 (7 Head-to-Head, 1 Roto)</p>
+                <p><strong>Record:</strong> 91-77-1 (0.541)</p>
+                <p><strong>Average Rank:</strong> <span class="stat-highlight">5.00</span></p>
+                <p><strong>Best Finish:</strong> 2 (2018)</p>
+                <p><strong>Worst Finish:</strong> 8 (2021)</p>
+                <p><strong>Average Fantasy Points:</strong> 5,554</p>
+                
+                <h4>Season by Season Results</h4>
+                <table>
+                    <tr>
+                        <th>Year</th>
+                        <th>Team</th>
+                        <th>Rank</th>
+                        <th>Record</th>
+                        <th>Win %</th>
+                        <th>Format</th>
+                        <th>Fantasy Points</th>
+                    </tr>
+            
+                <tr class="">
+                    <td>2024</td>
+                    <td>marcus pilled</td>
+                    <td>3</td>
+                    <td>14-11-0</td>
+                    <td>0.56</td>
+                    <td>Head-to-Head</td>
+                    <td>5,863</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2023</td>
+                    <td>MyMookie</td>
+                    <td>3</td>
+                    <td>16-9-0</td>
+                    <td>0.64</td>
+                    <td>Head-to-Head</td>
+                    <td>6,162</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2022</td>
+                    <td>🅄🅁 🄼🄾🄼</td>
+                    <td>6</td>
+                    <td>12-12-0</td>
+                    <td>0.5</td>
+                    <td>Head-to-Head</td>
+                    <td>5,615</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2021</td>
+                    <td>OnlyPhams</td>
+                    <td>8</td>
+                    <td>10-15-0</td>
+                    <td>0.4</td>
+                    <td>Head-to-Head</td>
+                    <td>5,752</td>
+                </tr>
+                
+                <tr class="roto-season">
+                    <td>2020</td>
+                    <td>Dick Her, Son</td>
+                    <td>8</td>
+                    <td>32-40-0</td>
+                    <td>0.444</td>
+                    <td>Roto</td>
+                    <td>2,096</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2019</td>
+                    <td>Christian Yelich</td>
+                    <td>6</td>
+                    <td>11-12-0</td>
+                    <td>0.478</td>
+                    <td>Head-to-Head</td>
+                    <td>6,293</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2018</td>
+                    <td>Mookie Khrisp</td>
+                    <td>2</td>
+                    <td>16-8-0</td>
+                    <td>0.667</td>
+                    <td>Head-to-Head</td>
+                    <td>6,476</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2017</td>
+                    <td>Smooth Sailing</td>
+                    <td>4</td>
+                    <td>12-10-1</td>
+                    <td>0.543</td>
+                    <td>Head-to-Head</td>
+                    <td>6,175</td>
+                </tr>
+                
+                </table>
+            </div>
+            
+            <div class="manager">
+                <h3>Jake</h3>
+                <p><strong>Active:</strong> 2017 - Present</p>
+                <p><strong>Seasons:</strong> 8 (7 Head-to-Head, 1 Roto)</p>
+                <p><strong>Record:</strong> 78-91-0 (0.462)</p>
+                <p><strong>Average Rank:</strong> <span class="stat-highlight">5.88</span></p>
+                <p><strong>Best Finish:</strong> 1 (2019)</p>
+                <p><strong>Worst Finish:</strong> 10 (2017)</p>
+                <p><strong>Average Fantasy Points:</strong> 5,321.75</p>
+                
+                <h4>Season by Season Results</h4>
+                <table>
+                    <tr>
+                        <th>Year</th>
+                        <th>Team</th>
+                        <th>Rank</th>
+                        <th>Record</th>
+                        <th>Win %</th>
+                        <th>Format</th>
+                        <th>Fantasy Points</th>
+                    </tr>
+            
+                <tr class="">
+                    <td>2024</td>
+                    <td>Strait Bussin</td>
+                    <td>9</td>
+                    <td>9-16-0</td>
+                    <td>0.36</td>
+                    <td>Head-to-Head</td>
+                    <td>5,547</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2023</td>
+                    <td>My Dog</td>
+                    <td>9</td>
+                    <td>10-15-0</td>
+                    <td>0.4</td>
+                    <td>Head-to-Head</td>
+                    <td>5,674</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2022</td>
+                    <td>BK Last Placers</td>
+                    <td>8</td>
+                    <td>10-14-0</td>
+                    <td>0.417</td>
+                    <td>Head-to-Head</td>
+                    <td>5,512</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2021</td>
+                    <td>DK Danny Last Placers</td>
+                    <td>7</td>
+                    <td>10-15-0</td>
+                    <td>0.4</td>
+                    <td>Head-to-Head</td>
+                    <td>6,015</td>
+                </tr>
+                
+                <tr class="roto-season">
+                    <td>2020</td>
+                    <td>Bryzzo</td>
+                    <td>2</td>
+                    <td>48-24-0</td>
+                    <td>0.667</td>
+                    <td>Roto</td>
+                    <td>2,441</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2019</td>
+                    <td>Dee's Nuts</td>
+                    <td>1</td>
+                    <td>16-7-0</td>
+                    <td>0.696</td>
+                    <td>Head-to-Head</td>
+                    <td>6,235</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2018</td>
+                    <td>Windows Down N, Cruz</td>
+                    <td>1</td>
+                    <td>17-7-0</td>
+                    <td>0.708</td>
+                    <td>Head-to-Head</td>
+                    <td>5,874</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2017</td>
+                    <td>Disabled Veterans</td>
+                    <td>10</td>
+                    <td>6-17-0</td>
+                    <td>0.261</td>
+                    <td>Head-to-Head</td>
+                    <td>5,276</td>
+                </tr>
+                
+                </table>
+            </div>
+            
+            <div class="manager">
+                <h3>Justin</h3>
+                <p><strong>Active:</strong> 2017 - Present</p>
+                <p><strong>Seasons:</strong> 8 (7 Head-to-Head, 1 Roto)</p>
+                <p><strong>Record:</strong> 74-94-1 (0.441)</p>
+                <p><strong>Average Rank:</strong> <span class="stat-highlight">7.50</span></p>
+                <p><strong>Best Finish:</strong> 2 (2022)</p>
+                <p><strong>Worst Finish:</strong> 10 (2023)</p>
+                <p><strong>Average Fantasy Points:</strong> 5,263.75</p>
+                
+                <h4>Season by Season Results</h4>
+                <table>
+                    <tr>
+                        <th>Year</th>
+                        <th>Team</th>
+                        <th>Rank</th>
+                        <th>Record</th>
+                        <th>Win %</th>
+                        <th>Format</th>
+                        <th>Fantasy Points</th>
+                    </tr>
+            
+                <tr class="">
+                    <td>2024</td>
+                    <td>Lawrence Butler</td>
+                    <td>8</td>
+                    <td>11-13-1</td>
+                    <td>0.46</td>
+                    <td>Head-to-Head</td>
+                    <td>5,565</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2023</td>
+                    <td>So Due</td>
+                    <td>10</td>
+                    <td>8-17-0</td>
+                    <td>0.32</td>
+                    <td>Head-to-Head</td>
+                    <td>5,548</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2022</td>
+                    <td>A. Judge’s Wisdom</td>
+                    <td>2</td>
+                    <td>14-10-0</td>
+                    <td>0.583</td>
+                    <td>Head-to-Head</td>
+                    <td>5,921</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2021</td>
+                    <td>Bobby’s 4 game winning streak</td>
+                    <td>5</td>
+                    <td>14-11-0</td>
+                    <td>0.56</td>
+                    <td>Head-to-Head</td>
+                    <td>5,973</td>
+                </tr>
+                
+                <tr class="roto-season">
+                    <td>2020</td>
+                    <td>Munch Me Schmiddy</td>
+                    <td>9</td>
+                    <td>31-41-0</td>
+                    <td>0.431</td>
+                    <td>Roto</td>
+                    <td>2,040</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2019</td>
+                    <td>Back Spasms</td>
+                    <td>9</td>
+                    <td>8-15-0</td>
+                    <td>0.348</td>
+                    <td>Head-to-Head</td>
+                    <td>6,026</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2018</td>
+                    <td>Habaez Smodozeir</td>
+                    <td>8</td>
+                    <td>10-14-0</td>
+                    <td>0.417</td>
+                    <td>Head-to-Head</td>
+                    <td>5,562</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2017</td>
+                    <td>Domikipnis</td>
+                    <td>9</td>
+                    <td>9-14-0</td>
+                    <td>0.391</td>
+                    <td>Head-to-Head</td>
+                    <td>5,475</td>
+                </tr>
+                
+                </table>
+            </div>
+            
+            <div class="manager">
+                <h3>Marcus</h3>
+                <p><strong>Active:</strong> 2017 - Present</p>
+                <p><strong>Seasons:</strong> 8 (7 Head-to-Head, 1 Roto)</p>
+                <p><strong>Record:</strong> 93-73-3 (0.559)</p>
+                <p><strong>Average Rank:</strong> <span class="stat-highlight">4.13</span></p>
+                <p><strong>Best Finish:</strong> 2 (2017)</p>
+                <p><strong>Worst Finish:</strong> 6 (2023)</p>
+                <p><strong>Average Fantasy Points:</strong> 5,465.13</p>
+                
+                <h4>Season by Season Results</h4>
+                <table>
+                    <tr>
+                        <th>Year</th>
+                        <th>Team</th>
+                        <th>Rank</th>
+                        <th>Record</th>
+                        <th>Win %</th>
+                        <th>Format</th>
+                        <th>Fantasy Points</th>
+                    </tr>
+            
+                <tr class="">
+                    <td>2024</td>
+                    <td>Nepo Baby Jr</td>
+                    <td>5</td>
+                    <td>14-11-0</td>
+                    <td>0.56</td>
+                    <td>Head-to-Head</td>
+                    <td>5,897</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2023</td>
+                    <td>We Lose These</td>
+                    <td>6</td>
+                    <td>11-14-0</td>
+                    <td>0.44</td>
+                    <td>Head-to-Head</td>
+                    <td>6,046</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2022</td>
+                    <td>Deversity</td>
+                    <td>5</td>
+                    <td>13-11-0</td>
+                    <td>0.542</td>
+                    <td>Head-to-Head</td>
+                    <td>5,399</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2021</td>
+                    <td>Urgent Care</td>
+                    <td>4</td>
+                    <td>14-10-1</td>
+                    <td>0.58</td>
+                    <td>Head-to-Head</td>
+                    <td>5,991</td>
+                </tr>
+                
+                <tr class="roto-season">
+                    <td>2020</td>
+                    <td>Mr. Bohmbastic</td>
+                    <td>4</td>
+                    <td>36-34-2</td>
+                    <td>0.514</td>
+                    <td>Roto</td>
+                    <td>2,279</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2019</td>
+                    <td>Shit</td>
+                    <td>3</td>
+                    <td>14-9-0</td>
+                    <td>0.609</td>
+                    <td>Head-to-Head</td>
+                    <td>6,130</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2018</td>
+                    <td>Devout to Trout</td>
+                    <td>4</td>
+                    <td>14-10-0</td>
+                    <td>0.583</td>
+                    <td>Head-to-Head</td>
+                    <td>6,118</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2017</td>
+                    <td>That Thot Tho</td>
+                    <td>2</td>
+                    <td>13-8-2</td>
+                    <td>0.609</td>
+                    <td>Head-to-Head</td>
+                    <td>5,861</td>
+                </tr>
+                
+                </table>
+            </div>
+            
+            <div class="manager">
+                <h3>Pat</h3>
+                <p><strong>Active:</strong> 2017 - Present</p>
+                <p><strong>Seasons:</strong> 8 (7 Head-to-Head, 1 Roto)</p>
+                <p><strong>Record:</strong> 78-89-2 (0.467)</p>
+                <p><strong>Average Rank:</strong> <span class="stat-highlight">5.75</span></p>
+                <p><strong>Best Finish:</strong> 1 (2024)</p>
+                <p><strong>Worst Finish:</strong> 9 (2022)</p>
+                <p><strong>Average Fantasy Points:</strong> 5,208.88</p>
+                
+                <h4>Season by Season Results</h4>
+                <table>
+                    <tr>
+                        <th>Year</th>
+                        <th>Team</th>
+                        <th>Rank</th>
+                        <th>Record</th>
+                        <th>Win %</th>
+                        <th>Format</th>
+                        <th>Fantasy Points</th>
+                    </tr>
+            
+                <tr class="">
+                    <td>2024</td>
+                    <td>Boaf Squad</td>
+                    <td>1</td>
+                    <td>16-9-0</td>
+                    <td>0.64</td>
+                    <td>Head-to-Head</td>
+                    <td>5,587</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2023</td>
+                    <td>Boaf Squad</td>
+                    <td>8</td>
+                    <td>10-15-0</td>
+                    <td>0.4</td>
+                    <td>Head-to-Head</td>
+                    <td>5,931</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2022</td>
+                    <td>Boaf Squad</td>
+                    <td>9</td>
+                    <td>10-14-0</td>
+                    <td>0.417</td>
+                    <td>Head-to-Head</td>
+                    <td>5,382</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2021</td>
+                    <td>Boaf Squad</td>
+                    <td>9</td>
+                    <td>9-16-0</td>
+                    <td>0.36</td>
+                    <td>Head-to-Head</td>
+                    <td>5,314</td>
+                </tr>
+                
+                <tr class="roto-season">
+                    <td>2020</td>
+                    <td>Boaf Squad</td>
+                    <td>1</td>
+                    <td>51-21-0</td>
+                    <td>0.708</td>
+                    <td>Roto</td>
+                    <td>2,305</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2019</td>
+                    <td>Boaf Squad</td>
+                    <td>4</td>
+                    <td>12-11-0</td>
+                    <td>0.522</td>
+                    <td>Head-to-Head</td>
+                    <td>6,042</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2018</td>
+                    <td>Boaf Squad</td>
+                    <td>9</td>
+                    <td>10-14-0</td>
+                    <td>0.417</td>
+                    <td>Head-to-Head</td>
+                    <td>5,299</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2017</td>
+                    <td>Boaf Squad</td>
+                    <td>5</td>
+                    <td>11-10-2</td>
+                    <td>0.522</td>
+                    <td>Head-to-Head</td>
+                    <td>5,811</td>
+                </tr>
+                
+                </table>
+            </div>
+            
+            <div class="manager">
+                <h3>Ray</h3>
+                <p><strong>Active:</strong> 2017 - Present</p>
+                <p><strong>Seasons:</strong> 8 (7 Head-to-Head, 1 Roto)</p>
+                <p><strong>Record:</strong> 82-87-0 (0.485)</p>
+                <p><strong>Average Rank:</strong> <span class="stat-highlight">5.25</span></p>
+                <p><strong>Best Finish:</strong> 1 (2017)</p>
+                <p><strong>Worst Finish:</strong> 10 (2018)</p>
+                <p><strong>Average Fantasy Points:</strong> 5,381.88</p>
+                
+                <h4>Season by Season Results</h4>
+                <table>
+                    <tr>
+                        <th>Year</th>
+                        <th>Team</th>
+                        <th>Rank</th>
+                        <th>Record</th>
+                        <th>Win %</th>
+                        <th>Format</th>
+                        <th>Fantasy Points</th>
+                    </tr>
+            
+                <tr class="">
+                    <td>2024</td>
+                    <td>Horus</td>
+                    <td>7</td>
+                    <td>12-13-0</td>
+                    <td>0.48</td>
+                    <td>Head-to-Head</td>
+                    <td>5,790</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2023</td>
+                    <td>Ray's Team</td>
+                    <td>5</td>
+                    <td>11-14-0</td>
+                    <td>0.44</td>
+                    <td>Head-to-Head</td>
+                    <td>5,840</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2022</td>
+                    <td>Yor French Boys</td>
+                    <td>3</td>
+                    <td>13-11-0</td>
+                    <td>0.542</td>
+                    <td>Head-to-Head</td>
+                    <td>5,668</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2021</td>
+                    <td>Yor French Boys</td>
+                    <td>2</td>
+                    <td>16-9-0</td>
+                    <td>0.64</td>
+                    <td>Head-to-Head</td>
+                    <td>5,962</td>
+                </tr>
+                
+                <tr class="roto-season">
+                    <td>2020</td>
+                    <td>cuck mommy</td>
+                    <td>6</td>
+                    <td>33-38-1</td>
+                    <td>0.465</td>
+                    <td>Roto</td>
+                    <td>2,013</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2019</td>
+                    <td>:(</td>
+                    <td>8</td>
+                    <td>9-14-0</td>
+                    <td>0.391</td>
+                    <td>Head-to-Head</td>
+                    <td>6,131</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2018</td>
+                    <td>D.Ray. Last Placers</td>
+                    <td>10</td>
+                    <td>3-21-0</td>
+                    <td>0.125</td>
+                    <td>Head-to-Head</td>
+                    <td>5,407</td>
+                </tr>
+                
+                <tr class="">
+                    <td>2017</td>
+                    <td>The Hippopotamuses</td>
+                    <td>1</td>
+                    <td>18-5-0</td>
+                    <td>0.783</td>
+                    <td>Head-to-Head</td>
+                    <td>6,244</td>
+                </tr>
+                
+                </table>
+            </div>
+            
+    </body>
+    </html>
+    

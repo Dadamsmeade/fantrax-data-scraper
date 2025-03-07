@@ -64,6 +64,9 @@ async function generateLeagueReport() {
             // Get season stats
             const seasonStats = await dbService.seasonStats.getStatsBySeason(season.id);
 
+            // Check if this is the 2020 season (special handling)
+            const is2020Season = season.year === '2020';
+
             // Process and combine data
             const seasonTeams = [];
 
@@ -73,14 +76,22 @@ async function generateLeagueReport() {
 
                 if (!standing) continue;
 
+                let winPercentage = standing.win_percentage;
+
+                // For 2020, use fantasy points to determine ranking instead of win/loss
+                if (is2020Season && stats) {
+                    winPercentage = stats.fantasy_points / 10000; // Normalize to similar scale
+                }
+
                 const teamData = {
                     name: team.name,
                     manager: team.manager_name || 'Unknown',
                     rank: standing.rank,
                     record: `${standing.wins}-${standing.losses}-${standing.ties}`,
-                    winPercentage: standing.win_percentage,
+                    winPercentage: winPercentage,
                     fantasyPoints: stats ? stats.fantasy_points : 0,
-                    gamesBack: standing.games_back
+                    gamesBack: standing.games_back,
+                    seasonFormat: is2020Season ? 'Roto' : 'Head-to-Head'
                 };
 
                 seasonTeams.push(teamData);
@@ -107,6 +118,7 @@ async function generateLeagueReport() {
                 year: season.year,
                 name: season.name,
                 leagueId: season.league_id,
+                format: is2020Season ? 'Roto' : 'Head-to-Head',
                 teams: seasonTeams,
                 champion: seasonTeams.length > 0 ? seasonTeams[0] : null,
                 runnerUp: seasonTeams.length > 1 ? seasonTeams[1] : null,
@@ -123,7 +135,7 @@ async function generateLeagueReport() {
         for (const manager of managers) {
             // Get all teams managed by this person
             const managerTeams = await dbService.db.all(`
-                SELECT t.*, s.year, st.rank, st.wins, st.losses, st.ties, st.win_percentage
+                SELECT t.*, s.year, s.id as season_id, st.rank, st.wins, st.losses, st.ties, st.win_percentage
                 FROM teams t
                 JOIN seasons s ON t.season_id = s.id
                 LEFT JOIN standings st ON t.id = st.team_id AND t.season_id = st.season_id
@@ -136,15 +148,31 @@ async function generateLeagueReport() {
             let totalLosses = 0;
             let totalTies = 0;
             let totalSeasons = 0;
+            let totalPoints = 0;
             let bestRank = { rank: 999, year: '' };
             let worstRank = { rank: 0, year: '' };
 
-            managerTeams.forEach(team => {
+            // Process each team
+            for (const team of managerTeams) {
                 if (team.rank) {
                     totalSeasons++;
-                    totalWins += team.wins || 0;
-                    totalLosses += team.losses || 0;
-                    totalTies += team.ties || 0;
+
+                    // For 2020, don't count win/loss records in career totals
+                    if (team.year !== '2020') {
+                        totalWins += team.wins || 0;
+                        totalLosses += team.losses || 0;
+                        totalTies += team.ties || 0;
+                    }
+
+                    // Get fantasy points for this team
+                    const seasonStat = await dbService.db.get(`
+                        SELECT fantasy_points FROM season_stats
+                        WHERE season_id = ? AND team_id = ?
+                    `, [team.season_id, team.id]);
+
+                    if (seasonStat) {
+                        totalPoints += seasonStat.fantasy_points;
+                    }
 
                     if (team.rank < bestRank.rank) {
                         bestRank = { rank: team.rank, year: team.year };
@@ -154,12 +182,16 @@ async function generateLeagueReport() {
                         worstRank = { rank: team.rank, year: team.year };
                     }
                 }
-            });
+            }
 
             const totalGames = totalWins + totalLosses + totalTies;
             const winPercentage = totalGames > 0
                 ? ((totalWins + (totalTies * 0.5)) / totalGames).toFixed(3)
                 : '0.000';
+
+            const avgFantasyPoints = totalSeasons > 0
+                ? (totalPoints / totalSeasons).toFixed(0)
+                : 0;
 
             // Build manager data
             const managerData = {
@@ -168,16 +200,29 @@ async function generateLeagueReport() {
                 seasons: totalSeasons,
                 careerRecord: `${totalWins}-${totalLosses}-${totalTies}`,
                 winPercentage: winPercentage,
+                avgFantasyPoints: avgFantasyPoints,
                 championships: report.summary.championsByManager[manager.name] || 0,
                 topThreeFinishes: report.summary.topThreeFinishesByManager[manager.name] || 0,
                 bestFinish: bestRank.rank < 999 ? `${bestRank.rank} (${bestRank.year})` : 'N/A',
                 worstFinish: worstRank.rank > 0 ? `${worstRank.rank} (${worstRank.year})` : 'N/A',
-                teams: managerTeams.map(team => ({
-                    year: team.year,
-                    name: team.name,
-                    rank: team.rank || 'Unknown',
-                    record: team.wins ? `${team.wins}-${team.losses}-${team.ties}` : 'Unknown'
-                }))
+                teams: managerTeams.map(team => {
+                    // Get fantasy points for this team
+                    let fantasyPoints = 0;
+                    const seasonStat = managerTeams.find(t =>
+                        t.id === team.id && t.season_id === team.season_id);
+                    if (seasonStat && seasonStat.fantasy_points) {
+                        fantasyPoints = seasonStat.fantasy_points;
+                    }
+
+                    return {
+                        year: team.year,
+                        name: team.name,
+                        rank: team.rank || 'Unknown',
+                        record: team.wins ? `${team.wins}-${team.losses}-${team.ties}` : 'Unknown',
+                        format: team.year === '2020' ? 'Roto' : 'Head-to-Head',
+                        fantasyPoints: fantasyPoints
+                    };
+                })
             };
 
             report.managers.push(managerData);
@@ -269,6 +314,13 @@ async function generateHtmlReport(report) {
             .third-place {
                 color: #cd7f32; /* bronze */
             }
+            .roto-season {
+                background-color: #f9f9ff;
+            }
+            .stats-highlight {
+                font-weight: bold;
+                color: #1a237e;
+            }
         </style>
     </head>
     <body>
@@ -285,19 +337,25 @@ async function generateHtmlReport(report) {
                 <th>Manager</th>
                 <th>Championships</th>
                 <th>Top 3 Finishes</th>
+                <th>Avg Fantasy Points</th>
             </tr>
     `;
 
     // Add championship data
     Object.keys(report.summary.championsByManager)
-        .filter(manager => report.summary.championsByManager[manager] > 0)
+        .filter(manager => {
+            const managerObj = report.managers.find(m => m.name === manager);
+            return managerObj && managerObj.seasons > 0;
+        })
         .sort((a, b) => report.summary.championsByManager[b] - report.summary.championsByManager[a])
         .forEach(manager => {
+            const managerObj = report.managers.find(m => m.name === manager);
             html += `
             <tr>
                 <td>${manager}</td>
                 <td>${report.summary.championsByManager[manager]}</td>
                 <td>${report.summary.topThreeFinishesByManager[manager]}</td>
+                <td>${managerObj ? managerObj.avgFantasyPoints : 'N/A'}</td>
             </tr>
             `;
         });
@@ -310,16 +368,18 @@ async function generateHtmlReport(report) {
 
     // Add season data
     report.seasons.forEach(season => {
+        const isRotoSeason = season.format === 'Roto';
+
         html += `
-        <div class="season">
-            <h3>${season.year} Season</h3>
+        <div class="season ${isRotoSeason ? 'roto-season' : ''}">
+            <h3>${season.year} Season ${isRotoSeason ? '(Roto Format)' : ''}</h3>
             <table>
                 <tr>
                     <th>Rank</th>
                     <th>Team</th>
                     <th>Manager</th>
                     <th>Record</th>
-                    <th>Win %</th>
+                    ${isRotoSeason ? '<th>Fantasy Points</th>' : '<th>Win %</th>'}
                     <th>GB</th>
                 </tr>
         `;
@@ -336,7 +396,7 @@ async function generateHtmlReport(report) {
                 <td>${team.name}</td>
                 <td>${team.manager}</td>
                 <td>${team.record}</td>
-                <td>${team.winPercentage}</td>
+                <td>${isRotoSeason ? team.fantasyPoints.toLocaleString() : team.winPercentage}</td>
                 <td>${team.gamesBack}</td>
             </tr>
             `;
@@ -359,6 +419,7 @@ async function generateHtmlReport(report) {
             <h3>${manager.name}</h3>
             <p><strong>Active:</strong> ${manager.active}</p>
             <p><strong>Career Record:</strong> ${manager.careerRecord} (${manager.winPercentage})</p>
+            <p><strong>Avg Fantasy Points:</strong> <span class="stats-highlight">${manager.avgFantasyPoints}</span></p>
             <p><strong>Championships:</strong> ${manager.championships}</p>
             <p><strong>Top 3 Finishes:</strong> ${manager.topThreeFinishes}</p>
             <p><strong>Best Finish:</strong> ${manager.bestFinish}</p>
@@ -371,17 +432,23 @@ async function generateHtmlReport(report) {
                     <th>Team Name</th>
                     <th>Finish</th>
                     <th>Record</th>
+                    <th>Format</th>
+                    <th>Fantasy Points</th>
                 </tr>
         `;
 
         manager.teams.forEach(team => {
             const isChampion = team.rank === 1;
+            const isRotoSeason = team.format === 'Roto';
+
             html += `
-            <tr>
+            <tr ${isRotoSeason ? 'class="roto-season"' : ''}>
                 <td>${team.year}</td>
                 <td>${team.name}</td>
                 <td>${isChampion ? '🏆 ' : ''}${team.rank}</td>
                 <td>${team.record}</td>
+                <td>${team.format}</td>
+                <td>${team.fantasyPoints ? team.fantasyPoints.toLocaleString() : 'N/A'}</td>
             </tr>
             `;
         });

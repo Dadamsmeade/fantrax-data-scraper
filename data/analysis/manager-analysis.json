@@ -1,0 +1,1168 @@
+[
+  {
+    "id": 3,
+    "name": "Brennan",
+    "activeSince": 2017,
+    "activeUntil": "Present",
+    "seasons": 8,
+    "wins": 99,
+    "losses": 69,
+    "ties": 1,
+    "winPercentage": "0.589",
+    "avgRank": "3.50",
+    "bestRank": {
+      "rank": 1,
+      "year": "2021"
+    },
+    "worstRank": {
+      "rank": 10,
+      "year": "2022"
+    },
+    "totalFantasyPoints": "44670.00",
+    "avgFantasyPointsPerSeason": "5583.75",
+    "seasonStats": [
+      {
+        "year": "2024",
+        "teamName": "Damn Duran",
+        "rank": 2,
+        "wins": 15,
+        "losses": 10,
+        "ties": 0,
+        "winPercentage": 0.6,
+        "fantasyPoints": 6106,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2023",
+        "teamName": "BK Fire",
+        "rank": 2,
+        "wins": 17,
+        "losses": 7,
+        "ties": 1,
+        "winPercentage": 0.7,
+        "fantasyPoints": 6528,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2022",
+        "teamName": "BK Fire",
+        "rank": 10,
+        "wins": 9,
+        "losses": 15,
+        "ties": 0,
+        "winPercentage": 0.375,
+        "fantasyPoints": 5420,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2021",
+        "teamName": "Teoscar Goes To...",
+        "rank": 1,
+        "wins": 17,
+        "losses": 8,
+        "ties": 0,
+        "winPercentage": 0.68,
+        "fantasyPoints": 6050,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2020",
+        "teamName": "Gleyber of Love",
+        "rank": 3,
+        "wins": 38,
+        "losses": 33,
+        "ties": 1,
+        "winPercentage": 0.535,
+        "fantasyPoints": 2150,
+        "format": "Roto"
+      },
+      {
+        "year": "2019",
+        "teamName": "Forgot About Trea",
+        "rank": 2,
+        "wins": 15,
+        "losses": 8,
+        "ties": 0,
+        "winPercentage": 0.652,
+        "fantasyPoints": 6581,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2018",
+        "teamName": "Manny 911",
+        "rank": 5,
+        "wins": 13,
+        "losses": 11,
+        "ties": 0,
+        "winPercentage": 0.542,
+        "fantasyPoints": 5986,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2017",
+        "teamName": "Silence of the Lamb",
+        "rank": 3,
+        "wins": 13,
+        "losses": 10,
+        "ties": 0,
+        "winPercentage": 0.565,
+        "fantasyPoints": 5849,
+        "format": "Head-to-Head"
+      }
+    ],
+    "rotoSeasons": 1,
+    "h2hSeasons": 7
+  },
+  {
+    "id": 1,
+    "name": "Marcus",
+    "activeSince": 2017,
+    "activeUntil": "Present",
+    "seasons": 8,
+    "wins": 93,
+    "losses": 73,
+    "ties": 3,
+    "winPercentage": "0.559",
+    "avgRank": "4.13",
+    "bestRank": {
+      "rank": 2,
+      "year": "2017"
+    },
+    "worstRank": {
+      "rank": 6,
+      "year": "2023"
+    },
+    "totalFantasyPoints": "43721.00",
+    "avgFantasyPointsPerSeason": "5465.13",
+    "seasonStats": [
+      {
+        "year": "2024",
+        "teamName": "Nepo Baby Jr",
+        "rank": 5,
+        "wins": 14,
+        "losses": 11,
+        "ties": 0,
+        "winPercentage": 0.56,
+        "fantasyPoints": 5897,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2023",
+        "teamName": "We Lose These",
+        "rank": 6,
+        "wins": 11,
+        "losses": 14,
+        "ties": 0,
+        "winPercentage": 0.44,
+        "fantasyPoints": 6046,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2022",
+        "teamName": "Deversity",
+        "rank": 5,
+        "wins": 13,
+        "losses": 11,
+        "ties": 0,
+        "winPercentage": 0.542,
+        "fantasyPoints": 5399,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2021",
+        "teamName": "Urgent Care",
+        "rank": 4,
+        "wins": 14,
+        "losses": 10,
+        "ties": 1,
+        "winPercentage": 0.58,
+        "fantasyPoints": 5991,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2020",
+        "teamName": "Mr. Bohmbastic",
+        "rank": 4,
+        "wins": 36,
+        "losses": 34,
+        "ties": 2,
+        "winPercentage": 0.514,
+        "fantasyPoints": 2279,
+        "format": "Roto"
+      },
+      {
+        "year": "2019",
+        "teamName": "Shit",
+        "rank": 3,
+        "wins": 14,
+        "losses": 9,
+        "ties": 0,
+        "winPercentage": 0.609,
+        "fantasyPoints": 6130,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2018",
+        "teamName": "Devout to Trout",
+        "rank": 4,
+        "wins": 14,
+        "losses": 10,
+        "ties": 0,
+        "winPercentage": 0.583,
+        "fantasyPoints": 6118,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2017",
+        "teamName": "That Thot Tho",
+        "rank": 2,
+        "wins": 13,
+        "losses": 8,
+        "ties": 2,
+        "winPercentage": 0.609,
+        "fantasyPoints": 5861,
+        "format": "Head-to-Head"
+      }
+    ],
+    "rotoSeasons": 1,
+    "h2hSeasons": 7
+  },
+  {
+    "id": 2,
+    "name": "Danny",
+    "activeSince": 2017,
+    "activeUntil": "Present",
+    "seasons": 8,
+    "wins": 91,
+    "losses": 77,
+    "ties": 1,
+    "winPercentage": "0.541",
+    "avgRank": "5.00",
+    "bestRank": {
+      "rank": 2,
+      "year": "2018"
+    },
+    "worstRank": {
+      "rank": 8,
+      "year": "2021"
+    },
+    "totalFantasyPoints": "44432.00",
+    "avgFantasyPointsPerSeason": "5554.00",
+    "seasonStats": [
+      {
+        "year": "2024",
+        "teamName": "marcus pilled",
+        "rank": 3,
+        "wins": 14,
+        "losses": 11,
+        "ties": 0,
+        "winPercentage": 0.56,
+        "fantasyPoints": 5863,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2023",
+        "teamName": "MyMookie",
+        "rank": 3,
+        "wins": 16,
+        "losses": 9,
+        "ties": 0,
+        "winPercentage": 0.64,
+        "fantasyPoints": 6162,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2022",
+        "teamName": "🅄🅁 🄼🄾🄼",
+        "rank": 6,
+        "wins": 12,
+        "losses": 12,
+        "ties": 0,
+        "winPercentage": 0.5,
+        "fantasyPoints": 5615,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2021",
+        "teamName": "OnlyPhams",
+        "rank": 8,
+        "wins": 10,
+        "losses": 15,
+        "ties": 0,
+        "winPercentage": 0.4,
+        "fantasyPoints": 5752,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2020",
+        "teamName": "Dick Her, Son",
+        "rank": 8,
+        "wins": 32,
+        "losses": 40,
+        "ties": 0,
+        "winPercentage": 0.444,
+        "fantasyPoints": 2096,
+        "format": "Roto"
+      },
+      {
+        "year": "2019",
+        "teamName": "Christian Yelich",
+        "rank": 6,
+        "wins": 11,
+        "losses": 12,
+        "ties": 0,
+        "winPercentage": 0.478,
+        "fantasyPoints": 6293,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2018",
+        "teamName": "Mookie Khrisp",
+        "rank": 2,
+        "wins": 16,
+        "losses": 8,
+        "ties": 0,
+        "winPercentage": 0.667,
+        "fantasyPoints": 6476,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2017",
+        "teamName": "Smooth Sailing",
+        "rank": 4,
+        "wins": 12,
+        "losses": 10,
+        "ties": 1,
+        "winPercentage": 0.543,
+        "fantasyPoints": 6175,
+        "format": "Head-to-Head"
+      }
+    ],
+    "rotoSeasons": 1,
+    "h2hSeasons": 7
+  },
+  {
+    "id": 11,
+    "name": "AJ",
+    "activeSince": 2020,
+    "activeUntil": "Present",
+    "seasons": 5,
+    "wins": 51,
+    "losses": 48,
+    "ties": 0,
+    "winPercentage": "0.515",
+    "avgRank": "6.20",
+    "bestRank": {
+      "rank": 1,
+      "year": "2023"
+    },
+    "worstRank": {
+      "rank": 10,
+      "year": "2024"
+    },
+    "totalFantasyPoints": "25219.00",
+    "avgFantasyPointsPerSeason": "5043.80",
+    "seasonStats": [
+      {
+        "year": "2024",
+        "teamName": "I’m not Witty Enough",
+        "rank": 10,
+        "wins": 7,
+        "losses": 18,
+        "ties": 0,
+        "winPercentage": 0.28,
+        "fantasyPoints": 5314,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2023",
+        "teamName": "I’m not Witty Enough",
+        "rank": 1,
+        "wins": 18,
+        "losses": 7,
+        "ties": 0,
+        "winPercentage": 0.72,
+        "fantasyPoints": 6339,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2022",
+        "teamName": "Haniger’s Law: 1 Ball, That’s All",
+        "rank": 7,
+        "wins": 11,
+        "losses": 13,
+        "ties": 0,
+        "winPercentage": 0.458,
+        "fantasyPoints": 5536,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2021",
+        "teamName": "Who Needs Acuna",
+        "rank": 3,
+        "wins": 15,
+        "losses": 10,
+        "ties": 0,
+        "winPercentage": 0.6,
+        "fantasyPoints": 6058,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2020",
+        "teamName": "Red Rockets",
+        "rank": 10,
+        "wins": 19,
+        "losses": 51,
+        "ties": 2,
+        "winPercentage": 0.278,
+        "fantasyPoints": 1972,
+        "format": "Roto"
+      }
+    ],
+    "rotoSeasons": 1,
+    "h2hSeasons": 4
+  },
+  {
+    "id": 8,
+    "name": "Bjorn",
+    "activeSince": 2017,
+    "activeUntil": "Present",
+    "seasons": 8,
+    "wins": 83,
+    "losses": 84,
+    "ties": 2,
+    "winPercentage": "0.497",
+    "avgRank": "5.50",
+    "bestRank": {
+      "rank": 1,
+      "year": "2022"
+    },
+    "worstRank": {
+      "rank": 7,
+      "year": "2023"
+    },
+    "totalFantasyPoints": "42982.00",
+    "avgFantasyPointsPerSeason": "5372.75",
+    "seasonStats": [
+      {
+        "year": "2024",
+        "teamName": "GAUZH",
+        "rank": 4,
+        "wins": 14,
+        "losses": 11,
+        "ties": 0,
+        "winPercentage": 0.56,
+        "fantasyPoints": 5993,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2023",
+        "teamName": "Moon Missiles",
+        "rank": 7,
+        "wins": 10,
+        "losses": 14,
+        "ties": 1,
+        "winPercentage": 0.42,
+        "fantasyPoints": 5695,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2022",
+        "teamName": "Ding Dings",
+        "rank": 1,
+        "wins": 15,
+        "losses": 9,
+        "ties": 0,
+        "winPercentage": 0.625,
+        "fantasyPoints": 5909,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2021",
+        "teamName": "The Wise Guys",
+        "rank": 6,
+        "wins": 12,
+        "losses": 12,
+        "ties": 1,
+        "winPercentage": 0.5,
+        "fantasyPoints": 5648,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2020",
+        "teamName": "Story Time!",
+        "rank": 5,
+        "wins": 36,
+        "losses": 36,
+        "ties": 0,
+        "winPercentage": 0.5,
+        "fantasyPoints": 2066,
+        "format": "Roto"
+      },
+      {
+        "year": "2019",
+        "teamName": "Gay Birdz <3",
+        "rank": 7,
+        "wins": 11,
+        "losses": 12,
+        "ties": 0,
+        "winPercentage": 0.478,
+        "fantasyPoints": 6197,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2018",
+        "teamName": "The Space Force",
+        "rank": 7,
+        "wins": 11,
+        "losses": 13,
+        "ties": 0,
+        "winPercentage": 0.458,
+        "fantasyPoints": 5648,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2017",
+        "teamName": "The Shawshank Redemption",
+        "rank": 7,
+        "wins": 10,
+        "losses": 13,
+        "ties": 0,
+        "winPercentage": 0.435,
+        "fantasyPoints": 5826,
+        "format": "Head-to-Head"
+      }
+    ],
+    "rotoSeasons": 1,
+    "h2hSeasons": 7
+  },
+  {
+    "id": 9,
+    "name": "Bobby",
+    "activeSince": 2017,
+    "activeUntil": "Present",
+    "seasons": 8,
+    "wins": 82,
+    "losses": 85,
+    "ties": 2,
+    "winPercentage": "0.491",
+    "avgRank": "5.63",
+    "bestRank": {
+      "rank": 3,
+      "year": "2018"
+    },
+    "worstRank": {
+      "rank": 10,
+      "year": "2021"
+    },
+    "totalFantasyPoints": "42470.00",
+    "avgFantasyPointsPerSeason": "5308.75",
+    "seasonStats": [
+      {
+        "year": "2024",
+        "teamName": "Savages",
+        "rank": 6,
+        "wins": 12,
+        "losses": 12,
+        "ties": 1,
+        "winPercentage": 0.5,
+        "fantasyPoints": 5778,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2023",
+        "teamName": "Kong Army",
+        "rank": 4,
+        "wins": 13,
+        "losses": 12,
+        "ties": 0,
+        "winPercentage": 0.52,
+        "fantasyPoints": 5735,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2022",
+        "teamName": "DKCR",
+        "rank": 4,
+        "wins": 13,
+        "losses": 11,
+        "ties": 0,
+        "winPercentage": 0.542,
+        "fantasyPoints": 5553,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2021",
+        "teamName": "Fucking Pat -_-",
+        "rank": 10,
+        "wins": 7,
+        "losses": 18,
+        "ties": 0,
+        "winPercentage": 0.28,
+        "fantasyPoints": 5761,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2020",
+        "teamName": "Bomba Squad",
+        "rank": 7,
+        "wins": 33,
+        "losses": 39,
+        "ties": 0,
+        "winPercentage": 0.458,
+        "fantasyPoints": 2004,
+        "format": "Roto"
+      },
+      {
+        "year": "2019",
+        "teamName": "Bombers",
+        "rank": 5,
+        "wins": 12,
+        "losses": 11,
+        "ties": 0,
+        "winPercentage": 0.522,
+        "fantasyPoints": 5767,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2018",
+        "teamName": "Hakuna Matata",
+        "rank": 3,
+        "wins": 14,
+        "losses": 10,
+        "ties": 0,
+        "winPercentage": 0.583,
+        "fantasyPoints": 5826,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2017",
+        "teamName": "Year of the Cock",
+        "rank": 6,
+        "wins": 11,
+        "losses": 11,
+        "ties": 1,
+        "winPercentage": 0.5,
+        "fantasyPoints": 6046,
+        "format": "Head-to-Head"
+      }
+    ],
+    "rotoSeasons": 1,
+    "h2hSeasons": 7
+  },
+  {
+    "id": 7,
+    "name": "Ray",
+    "activeSince": 2017,
+    "activeUntil": "Present",
+    "seasons": 8,
+    "wins": 82,
+    "losses": 87,
+    "ties": 0,
+    "winPercentage": "0.485",
+    "avgRank": "5.25",
+    "bestRank": {
+      "rank": 1,
+      "year": "2017"
+    },
+    "worstRank": {
+      "rank": 10,
+      "year": "2018"
+    },
+    "totalFantasyPoints": "43055.00",
+    "avgFantasyPointsPerSeason": "5381.88",
+    "seasonStats": [
+      {
+        "year": "2024",
+        "teamName": "Horus",
+        "rank": 7,
+        "wins": 12,
+        "losses": 13,
+        "ties": 0,
+        "winPercentage": 0.48,
+        "fantasyPoints": 5790,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2023",
+        "teamName": "Ray's Team",
+        "rank": 5,
+        "wins": 11,
+        "losses": 14,
+        "ties": 0,
+        "winPercentage": 0.44,
+        "fantasyPoints": 5840,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2022",
+        "teamName": "Yor French Boys",
+        "rank": 3,
+        "wins": 13,
+        "losses": 11,
+        "ties": 0,
+        "winPercentage": 0.542,
+        "fantasyPoints": 5668,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2021",
+        "teamName": "Yor French Boys",
+        "rank": 2,
+        "wins": 16,
+        "losses": 9,
+        "ties": 0,
+        "winPercentage": 0.64,
+        "fantasyPoints": 5962,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2020",
+        "teamName": "cuck mommy",
+        "rank": 6,
+        "wins": 33,
+        "losses": 38,
+        "ties": 1,
+        "winPercentage": 0.465,
+        "fantasyPoints": 2013,
+        "format": "Roto"
+      },
+      {
+        "year": "2019",
+        "teamName": ":(",
+        "rank": 8,
+        "wins": 9,
+        "losses": 14,
+        "ties": 0,
+        "winPercentage": 0.391,
+        "fantasyPoints": 6131,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2018",
+        "teamName": "D.Ray. Last Placers",
+        "rank": 10,
+        "wins": 3,
+        "losses": 21,
+        "ties": 0,
+        "winPercentage": 0.125,
+        "fantasyPoints": 5407,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2017",
+        "teamName": "The Hippopotamuses",
+        "rank": 1,
+        "wins": 18,
+        "losses": 5,
+        "ties": 0,
+        "winPercentage": 0.783,
+        "fantasyPoints": 6244,
+        "format": "Head-to-Head"
+      }
+    ],
+    "rotoSeasons": 1,
+    "h2hSeasons": 7
+  },
+  {
+    "id": 6,
+    "name": "Pat",
+    "activeSince": 2017,
+    "activeUntil": "Present",
+    "seasons": 8,
+    "wins": 78,
+    "losses": 89,
+    "ties": 2,
+    "winPercentage": "0.467",
+    "avgRank": "5.75",
+    "bestRank": {
+      "rank": 1,
+      "year": "2024"
+    },
+    "worstRank": {
+      "rank": 9,
+      "year": "2022"
+    },
+    "totalFantasyPoints": "41671.00",
+    "avgFantasyPointsPerSeason": "5208.88",
+    "seasonStats": [
+      {
+        "year": "2024",
+        "teamName": "Boaf Squad",
+        "rank": 1,
+        "wins": 16,
+        "losses": 9,
+        "ties": 0,
+        "winPercentage": 0.64,
+        "fantasyPoints": 5587,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2023",
+        "teamName": "Boaf Squad",
+        "rank": 8,
+        "wins": 10,
+        "losses": 15,
+        "ties": 0,
+        "winPercentage": 0.4,
+        "fantasyPoints": 5931,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2022",
+        "teamName": "Boaf Squad",
+        "rank": 9,
+        "wins": 10,
+        "losses": 14,
+        "ties": 0,
+        "winPercentage": 0.417,
+        "fantasyPoints": 5382,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2021",
+        "teamName": "Boaf Squad",
+        "rank": 9,
+        "wins": 9,
+        "losses": 16,
+        "ties": 0,
+        "winPercentage": 0.36,
+        "fantasyPoints": 5314,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2020",
+        "teamName": "Boaf Squad",
+        "rank": 1,
+        "wins": 51,
+        "losses": 21,
+        "ties": 0,
+        "winPercentage": 0.708,
+        "fantasyPoints": 2305,
+        "format": "Roto"
+      },
+      {
+        "year": "2019",
+        "teamName": "Boaf Squad",
+        "rank": 4,
+        "wins": 12,
+        "losses": 11,
+        "ties": 0,
+        "winPercentage": 0.522,
+        "fantasyPoints": 6042,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2018",
+        "teamName": "Boaf Squad",
+        "rank": 9,
+        "wins": 10,
+        "losses": 14,
+        "ties": 0,
+        "winPercentage": 0.417,
+        "fantasyPoints": 5299,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2017",
+        "teamName": "Boaf Squad",
+        "rank": 5,
+        "wins": 11,
+        "losses": 10,
+        "ties": 2,
+        "winPercentage": 0.522,
+        "fantasyPoints": 5811,
+        "format": "Head-to-Head"
+      }
+    ],
+    "rotoSeasons": 1,
+    "h2hSeasons": 7
+  },
+  {
+    "id": 4,
+    "name": "Jake",
+    "activeSince": 2017,
+    "activeUntil": "Present",
+    "seasons": 8,
+    "wins": 78,
+    "losses": 91,
+    "ties": 0,
+    "winPercentage": "0.462",
+    "avgRank": "5.88",
+    "bestRank": {
+      "rank": 1,
+      "year": "2019"
+    },
+    "worstRank": {
+      "rank": 10,
+      "year": "2017"
+    },
+    "totalFantasyPoints": "42574.00",
+    "avgFantasyPointsPerSeason": "5321.75",
+    "seasonStats": [
+      {
+        "year": "2024",
+        "teamName": "Strait Bussin",
+        "rank": 9,
+        "wins": 9,
+        "losses": 16,
+        "ties": 0,
+        "winPercentage": 0.36,
+        "fantasyPoints": 5547,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2023",
+        "teamName": "My Dog",
+        "rank": 9,
+        "wins": 10,
+        "losses": 15,
+        "ties": 0,
+        "winPercentage": 0.4,
+        "fantasyPoints": 5674,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2022",
+        "teamName": "BK Last Placers",
+        "rank": 8,
+        "wins": 10,
+        "losses": 14,
+        "ties": 0,
+        "winPercentage": 0.417,
+        "fantasyPoints": 5512,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2021",
+        "teamName": "DK Danny Last Placers",
+        "rank": 7,
+        "wins": 10,
+        "losses": 15,
+        "ties": 0,
+        "winPercentage": 0.4,
+        "fantasyPoints": 6015,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2020",
+        "teamName": "Bryzzo",
+        "rank": 2,
+        "wins": 48,
+        "losses": 24,
+        "ties": 0,
+        "winPercentage": 0.667,
+        "fantasyPoints": 2441,
+        "format": "Roto"
+      },
+      {
+        "year": "2019",
+        "teamName": "Dee's Nuts",
+        "rank": 1,
+        "wins": 16,
+        "losses": 7,
+        "ties": 0,
+        "winPercentage": 0.696,
+        "fantasyPoints": 6235,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2018",
+        "teamName": "Windows Down N, Cruz",
+        "rank": 1,
+        "wins": 17,
+        "losses": 7,
+        "ties": 0,
+        "winPercentage": 0.708,
+        "fantasyPoints": 5874,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2017",
+        "teamName": "Disabled Veterans",
+        "rank": 10,
+        "wins": 6,
+        "losses": 17,
+        "ties": 0,
+        "winPercentage": 0.261,
+        "fantasyPoints": 5276,
+        "format": "Head-to-Head"
+      }
+    ],
+    "rotoSeasons": 1,
+    "h2hSeasons": 7
+  },
+  {
+    "id": 5,
+    "name": "Justin",
+    "activeSince": 2017,
+    "activeUntil": "Present",
+    "seasons": 8,
+    "wins": 74,
+    "losses": 94,
+    "ties": 1,
+    "winPercentage": "0.441",
+    "avgRank": "7.50",
+    "bestRank": {
+      "rank": 2,
+      "year": "2022"
+    },
+    "worstRank": {
+      "rank": 10,
+      "year": "2023"
+    },
+    "totalFantasyPoints": "42110.00",
+    "avgFantasyPointsPerSeason": "5263.75",
+    "seasonStats": [
+      {
+        "year": "2024",
+        "teamName": "Lawrence Butler",
+        "rank": 8,
+        "wins": 11,
+        "losses": 13,
+        "ties": 1,
+        "winPercentage": 0.46,
+        "fantasyPoints": 5565,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2023",
+        "teamName": "So Due",
+        "rank": 10,
+        "wins": 8,
+        "losses": 17,
+        "ties": 0,
+        "winPercentage": 0.32,
+        "fantasyPoints": 5548,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2022",
+        "teamName": "A. Judge’s Wisdom",
+        "rank": 2,
+        "wins": 14,
+        "losses": 10,
+        "ties": 0,
+        "winPercentage": 0.583,
+        "fantasyPoints": 5921,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2021",
+        "teamName": "Bobby’s 4 game winning streak",
+        "rank": 5,
+        "wins": 14,
+        "losses": 11,
+        "ties": 0,
+        "winPercentage": 0.56,
+        "fantasyPoints": 5973,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2020",
+        "teamName": "Munch Me Schmiddy",
+        "rank": 9,
+        "wins": 31,
+        "losses": 41,
+        "ties": 0,
+        "winPercentage": 0.431,
+        "fantasyPoints": 2040,
+        "format": "Roto"
+      },
+      {
+        "year": "2019",
+        "teamName": "Back Spasms",
+        "rank": 9,
+        "wins": 8,
+        "losses": 15,
+        "ties": 0,
+        "winPercentage": 0.348,
+        "fantasyPoints": 6026,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2018",
+        "teamName": "Habaez Smodozeir",
+        "rank": 8,
+        "wins": 10,
+        "losses": 14,
+        "ties": 0,
+        "winPercentage": 0.417,
+        "fantasyPoints": 5562,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2017",
+        "teamName": "Domikipnis",
+        "rank": 9,
+        "wins": 9,
+        "losses": 14,
+        "ties": 0,
+        "winPercentage": 0.391,
+        "fantasyPoints": 5475,
+        "format": "Head-to-Head"
+      }
+    ],
+    "rotoSeasons": 1,
+    "h2hSeasons": 7
+  },
+  {
+    "id": 10,
+    "name": "Ben",
+    "activeSince": 2017,
+    "activeUntil": 2019,
+    "seasons": 3,
+    "wins": 27,
+    "losses": 41,
+    "ties": 2,
+    "winPercentage": "0.400",
+    "avgRank": "8.00",
+    "bestRank": {
+      "rank": 6,
+      "year": "2018"
+    },
+    "worstRank": {
+      "rank": 10,
+      "year": "2019"
+    },
+    "totalFantasyPoints": "16802.00",
+    "avgFantasyPointsPerSeason": "5600.67",
+    "seasonStats": [
+      {
+        "year": "2019",
+        "teamName": "Vitamin Boys",
+        "rank": 10,
+        "wins": 7,
+        "losses": 16,
+        "ties": 0,
+        "winPercentage": 0.304,
+        "fantasyPoints": 5394,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2018",
+        "teamName": "Vitamin Boys",
+        "rank": 6,
+        "wins": 12,
+        "losses": 12,
+        "ties": 0,
+        "winPercentage": 0.5,
+        "fantasyPoints": 5737,
+        "format": "Head-to-Head"
+      },
+      {
+        "year": "2017",
+        "teamName": "Vitamin Boys",
+        "rank": 8,
+        "wins": 8,
+        "losses": 13,
+        "ties": 2,
+        "winPercentage": 0.391,
+        "fantasyPoints": 5671,
+        "format": "Head-to-Head"
+      }
+    ],
+    "rotoSeasons": 0,
+    "h2hSeasons": 3
+  }
+]

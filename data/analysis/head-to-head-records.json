@@ -1,0 +1,794 @@
+{
+  "AJ": {
+    "Ben": {
+      "record": "0-0-0",
+      "winPct": "0.000",
+      "totalGames": 0,
+      "avgPointsFor": "0.0",
+      "avgPointsAgainst": "0.0"
+    },
+    "Bjorn": {
+      "record": "4-8-0",
+      "winPct": "0.333",
+      "totalGames": 12,
+      "avgPointsFor": "217.3",
+      "avgPointsAgainst": "216.9"
+    },
+    "Bobby": {
+      "record": "5-5-0",
+      "winPct": "0.500",
+      "totalGames": 10,
+      "avgPointsFor": "219.9",
+      "avgPointsAgainst": "212.5"
+    },
+    "Brennan": {
+      "record": "4-7-0",
+      "winPct": "0.364",
+      "totalGames": 11,
+      "avgPointsFor": "216.5",
+      "avgPointsAgainst": "226.1"
+    },
+    "Danny": {
+      "record": "4-8-0",
+      "winPct": "0.333",
+      "totalGames": 12,
+      "avgPointsFor": "217.3",
+      "avgPointsAgainst": "218.6"
+    },
+    "Jake": {
+      "record": "8-3-0",
+      "winPct": "0.727",
+      "totalGames": 11,
+      "avgPointsFor": "217.7",
+      "avgPointsAgainst": "213.3"
+    },
+    "Justin": {
+      "record": "5-5-1",
+      "winPct": "0.500",
+      "totalGames": 11,
+      "avgPointsFor": "219.2",
+      "avgPointsAgainst": "216.3"
+    },
+    "Marcus": {
+      "record": "3-8-0",
+      "winPct": "0.273",
+      "totalGames": 11,
+      "avgPointsFor": "215.6",
+      "avgPointsAgainst": "218.9"
+    },
+    "Pat": {
+      "record": "7-3-0",
+      "winPct": "0.700",
+      "totalGames": 10,
+      "avgPointsFor": "217.0",
+      "avgPointsAgainst": "208.9"
+    },
+    "Ray": {
+      "record": "7-5-1",
+      "winPct": "0.577",
+      "totalGames": 13,
+      "avgPointsFor": "217.9",
+      "avgPointsAgainst": "216.8"
+    }
+  },
+  "Ben": {
+    "AJ": {
+      "record": "0-0-0",
+      "winPct": "0.000",
+      "totalGames": 0,
+      "avgPointsFor": "0.0",
+      "avgPointsAgainst": "0.0"
+    },
+    "Bjorn": {
+      "record": "4-5-0",
+      "winPct": "0.444",
+      "totalGames": 9,
+      "avgPointsFor": "222.8",
+      "avgPointsAgainst": "233.1"
+    },
+    "Bobby": {
+      "record": "3-4-0",
+      "winPct": "0.429",
+      "totalGames": 7,
+      "avgPointsFor": "222.0",
+      "avgPointsAgainst": "234.7"
+    },
+    "Brennan": {
+      "record": "3-4-0",
+      "winPct": "0.429",
+      "totalGames": 7,
+      "avgPointsFor": "222.9",
+      "avgPointsAgainst": "242.7"
+    },
+    "Danny": {
+      "record": "3-4-0",
+      "winPct": "0.429",
+      "totalGames": 7,
+      "avgPointsFor": "222.9",
+      "avgPointsAgainst": "248.0"
+    },
+    "Jake": {
+      "record": "3-4-1",
+      "winPct": "0.438",
+      "totalGames": 8,
+      "avgPointsFor": "222.3",
+      "avgPointsAgainst": "233.5"
+    },
+    "Justin": {
+      "record": "7-1-0",
+      "winPct": "0.875",
+      "totalGames": 8,
+      "avgPointsFor": "222.6",
+      "avgPointsAgainst": "229.6"
+    },
+    "Marcus": {
+      "record": "3-4-0",
+      "winPct": "0.429",
+      "totalGames": 7,
+      "avgPointsFor": "223.3",
+      "avgPointsAgainst": "241.5"
+    },
+    "Pat": {
+      "record": "6-2-0",
+      "winPct": "0.750",
+      "totalGames": 8,
+      "avgPointsFor": "223.4",
+      "avgPointsAgainst": "225.6"
+    },
+    "Ray": {
+      "record": "5-3-1",
+      "winPct": "0.611",
+      "totalGames": 9,
+      "avgPointsFor": "222.8",
+      "avgPointsAgainst": "235.8"
+    }
+  },
+  "Bjorn": {
+    "AJ": {
+      "record": "8-4-0",
+      "winPct": "0.667",
+      "totalGames": 12,
+      "avgPointsFor": "216.9",
+      "avgPointsAgainst": "217.3"
+    },
+    "Ben": {
+      "record": "5-4-0",
+      "winPct": "0.556",
+      "totalGames": 9,
+      "avgPointsFor": "233.1",
+      "avgPointsAgainst": "222.8"
+    },
+    "Bobby": {
+      "record": "12-6-2",
+      "winPct": "0.650",
+      "totalGames": 20,
+      "avgPointsFor": "222.2",
+      "avgPointsAgainst": "220.1"
+    },
+    "Brennan": {
+      "record": "8-10-1",
+      "winPct": "0.447",
+      "totalGames": 19,
+      "avgPointsFor": "223.7",
+      "avgPointsAgainst": "234.1"
+    },
+    "Danny": {
+      "record": "10-7-3",
+      "winPct": "0.575",
+      "totalGames": 20,
+      "avgPointsFor": "224.4",
+      "avgPointsAgainst": "231.6"
+    },
+    "Jake": {
+      "record": "10-8-1",
+      "winPct": "0.553",
+      "totalGames": 19,
+      "avgPointsFor": "222.0",
+      "avgPointsAgainst": "219.7"
+    },
+    "Justin": {
+      "record": "13-7-0",
+      "winPct": "0.650",
+      "totalGames": 20,
+      "avgPointsFor": "222.6",
+      "avgPointsAgainst": "220.0"
+    },
+    "Marcus": {
+      "record": "8-9-0",
+      "winPct": "0.471",
+      "totalGames": 17,
+      "avgPointsFor": "225.4",
+      "avgPointsAgainst": "231.6"
+    },
+    "Pat": {
+      "record": "13-7-0",
+      "winPct": "0.650",
+      "totalGames": 20,
+      "avgPointsFor": "224.2",
+      "avgPointsAgainst": "216.7"
+    },
+    "Ray": {
+      "record": "8-5-3",
+      "winPct": "0.594",
+      "totalGames": 16,
+      "avgPointsFor": "222.9",
+      "avgPointsAgainst": "223.9"
+    }
+  },
+  "Bobby": {
+    "AJ": {
+      "record": "5-5-0",
+      "winPct": "0.500",
+      "totalGames": 10,
+      "avgPointsFor": "212.5",
+      "avgPointsAgainst": "219.9"
+    },
+    "Ben": {
+      "record": "4-3-0",
+      "winPct": "0.571",
+      "totalGames": 7,
+      "avgPointsFor": "234.7",
+      "avgPointsAgainst": "222.0"
+    },
+    "Bjorn": {
+      "record": "6-12-2",
+      "winPct": "0.350",
+      "totalGames": 20,
+      "avgPointsFor": "220.1",
+      "avgPointsAgainst": "222.2"
+    },
+    "Brennan": {
+      "record": "8-10-1",
+      "winPct": "0.447",
+      "totalGames": 19,
+      "avgPointsFor": "221.8",
+      "avgPointsAgainst": "233.6"
+    },
+    "Danny": {
+      "record": "12-6-0",
+      "winPct": "0.667",
+      "totalGames": 18,
+      "avgPointsFor": "221.6",
+      "avgPointsAgainst": "231.1"
+    },
+    "Jake": {
+      "record": "10-11-1",
+      "winPct": "0.477",
+      "totalGames": 22,
+      "avgPointsFor": "222.3",
+      "avgPointsAgainst": "221.2"
+    },
+    "Justin": {
+      "record": "10-7-1",
+      "winPct": "0.583",
+      "totalGames": 18,
+      "avgPointsFor": "222.0",
+      "avgPointsAgainst": "221.4"
+    },
+    "Marcus": {
+      "record": "11-7-1",
+      "winPct": "0.605",
+      "totalGames": 19,
+      "avgPointsFor": "222.0",
+      "avgPointsAgainst": "228.5"
+    },
+    "Pat": {
+      "record": "10-8-1",
+      "winPct": "0.553",
+      "totalGames": 19,
+      "avgPointsFor": "220.9",
+      "avgPointsAgainst": "215.8"
+    },
+    "Ray": {
+      "record": "10-11-0",
+      "winPct": "0.476",
+      "totalGames": 21,
+      "avgPointsFor": "222.1",
+      "avgPointsAgainst": "225.0"
+    }
+  },
+  "Brennan": {
+    "AJ": {
+      "record": "7-4-0",
+      "winPct": "0.636",
+      "totalGames": 11,
+      "avgPointsFor": "226.1",
+      "avgPointsAgainst": "216.5"
+    },
+    "Ben": {
+      "record": "4-3-0",
+      "winPct": "0.571",
+      "totalGames": 7,
+      "avgPointsFor": "242.7",
+      "avgPointsAgainst": "222.9"
+    },
+    "Bjorn": {
+      "record": "10-8-1",
+      "winPct": "0.553",
+      "totalGames": 19,
+      "avgPointsFor": "234.1",
+      "avgPointsAgainst": "223.7"
+    },
+    "Bobby": {
+      "record": "10-8-1",
+      "winPct": "0.553",
+      "totalGames": 19,
+      "avgPointsFor": "233.6",
+      "avgPointsAgainst": "221.8"
+    },
+    "Danny": {
+      "record": "12-9-1",
+      "winPct": "0.568",
+      "totalGames": 22,
+      "avgPointsFor": "235.2",
+      "avgPointsAgainst": "231.1"
+    },
+    "Jake": {
+      "record": "8-10-1",
+      "winPct": "0.447",
+      "totalGames": 19,
+      "avgPointsFor": "234.8",
+      "avgPointsAgainst": "220.6"
+    },
+    "Justin": {
+      "record": "10-6-3",
+      "winPct": "0.605",
+      "totalGames": 19,
+      "avgPointsFor": "231.9",
+      "avgPointsAgainst": "220.9"
+    },
+    "Marcus": {
+      "record": "12-9-1",
+      "winPct": "0.568",
+      "totalGames": 22,
+      "avgPointsFor": "235.4",
+      "avgPointsAgainst": "229.8"
+    },
+    "Pat": {
+      "record": "14-3-1",
+      "winPct": "0.806",
+      "totalGames": 18,
+      "avgPointsFor": "234.7",
+      "avgPointsAgainst": "215.5"
+    },
+    "Ray": {
+      "record": "13-7-1",
+      "winPct": "0.643",
+      "totalGames": 21,
+      "avgPointsFor": "234.7",
+      "avgPointsAgainst": "226.7"
+    }
+  },
+  "Danny": {
+    "AJ": {
+      "record": "8-4-0",
+      "winPct": "0.667",
+      "totalGames": 12,
+      "avgPointsFor": "218.6",
+      "avgPointsAgainst": "217.3"
+    },
+    "Ben": {
+      "record": "4-3-0",
+      "winPct": "0.571",
+      "totalGames": 7,
+      "avgPointsFor": "248.0",
+      "avgPointsAgainst": "222.9"
+    },
+    "Bjorn": {
+      "record": "7-10-3",
+      "winPct": "0.425",
+      "totalGames": 20,
+      "avgPointsFor": "231.6",
+      "avgPointsAgainst": "224.4"
+    },
+    "Bobby": {
+      "record": "6-12-0",
+      "winPct": "0.333",
+      "totalGames": 18,
+      "avgPointsFor": "231.1",
+      "avgPointsAgainst": "221.6"
+    },
+    "Brennan": {
+      "record": "9-12-1",
+      "winPct": "0.432",
+      "totalGames": 22,
+      "avgPointsFor": "231.1",
+      "avgPointsAgainst": "235.2"
+    },
+    "Jake": {
+      "record": "8-10-2",
+      "winPct": "0.450",
+      "totalGames": 20,
+      "avgPointsFor": "233.1",
+      "avgPointsAgainst": "222.5"
+    },
+    "Justin": {
+      "record": "12-5-0",
+      "winPct": "0.706",
+      "totalGames": 17,
+      "avgPointsFor": "229.2",
+      "avgPointsAgainst": "219.2"
+    },
+    "Marcus": {
+      "record": "10-9-0",
+      "winPct": "0.526",
+      "totalGames": 19,
+      "avgPointsFor": "231.2",
+      "avgPointsAgainst": "229.8"
+    },
+    "Pat": {
+      "record": "8-11-1",
+      "winPct": "0.425",
+      "totalGames": 20,
+      "avgPointsFor": "230.5",
+      "avgPointsAgainst": "215.8"
+    },
+    "Ray": {
+      "record": "6-13-2",
+      "winPct": "0.333",
+      "totalGames": 21,
+      "avgPointsFor": "231.3",
+      "avgPointsAgainst": "225.3"
+    }
+  },
+  "Jake": {
+    "AJ": {
+      "record": "3-8-0",
+      "winPct": "0.273",
+      "totalGames": 11,
+      "avgPointsFor": "213.3",
+      "avgPointsAgainst": "217.7"
+    },
+    "Ben": {
+      "record": "4-3-1",
+      "winPct": "0.563",
+      "totalGames": 8,
+      "avgPointsFor": "233.5",
+      "avgPointsAgainst": "222.3"
+    },
+    "Bjorn": {
+      "record": "8-10-1",
+      "winPct": "0.447",
+      "totalGames": 19,
+      "avgPointsFor": "219.7",
+      "avgPointsAgainst": "222.0"
+    },
+    "Bobby": {
+      "record": "11-10-1",
+      "winPct": "0.523",
+      "totalGames": 22,
+      "avgPointsFor": "221.2",
+      "avgPointsAgainst": "222.3"
+    },
+    "Brennan": {
+      "record": "10-8-1",
+      "winPct": "0.553",
+      "totalGames": 19,
+      "avgPointsFor": "220.6",
+      "avgPointsAgainst": "234.8"
+    },
+    "Danny": {
+      "record": "10-8-2",
+      "winPct": "0.550",
+      "totalGames": 20,
+      "avgPointsFor": "222.5",
+      "avgPointsAgainst": "233.1"
+    },
+    "Justin": {
+      "record": "7-12-0",
+      "winPct": "0.368",
+      "totalGames": 19,
+      "avgPointsFor": "221.5",
+      "avgPointsAgainst": "220.8"
+    },
+    "Marcus": {
+      "record": "8-9-1",
+      "winPct": "0.472",
+      "totalGames": 18,
+      "avgPointsFor": "220.0",
+      "avgPointsAgainst": "228.5"
+    },
+    "Pat": {
+      "record": "6-13-0",
+      "winPct": "0.316",
+      "totalGames": 19,
+      "avgPointsFor": "221.3",
+      "avgPointsAgainst": "217.2"
+    },
+    "Ray": {
+      "record": "6-12-0",
+      "winPct": "0.333",
+      "totalGames": 18,
+      "avgPointsFor": "221.4",
+      "avgPointsAgainst": "226.7"
+    }
+  },
+  "Justin": {
+    "AJ": {
+      "record": "5-5-1",
+      "winPct": "0.500",
+      "totalGames": 11,
+      "avgPointsFor": "216.3",
+      "avgPointsAgainst": "219.2"
+    },
+    "Ben": {
+      "record": "1-7-0",
+      "winPct": "0.125",
+      "totalGames": 8,
+      "avgPointsFor": "229.6",
+      "avgPointsAgainst": "222.6"
+    },
+    "Bjorn": {
+      "record": "7-13-0",
+      "winPct": "0.350",
+      "totalGames": 20,
+      "avgPointsFor": "220.0",
+      "avgPointsAgainst": "222.6"
+    },
+    "Bobby": {
+      "record": "7-10-1",
+      "winPct": "0.417",
+      "totalGames": 18,
+      "avgPointsFor": "221.4",
+      "avgPointsAgainst": "222.0"
+    },
+    "Brennan": {
+      "record": "6-10-3",
+      "winPct": "0.395",
+      "totalGames": 19,
+      "avgPointsFor": "220.9",
+      "avgPointsAgainst": "231.9"
+    },
+    "Danny": {
+      "record": "5-12-0",
+      "winPct": "0.294",
+      "totalGames": 17,
+      "avgPointsFor": "219.2",
+      "avgPointsAgainst": "229.2"
+    },
+    "Jake": {
+      "record": "12-7-0",
+      "winPct": "0.632",
+      "totalGames": 19,
+      "avgPointsFor": "220.8",
+      "avgPointsAgainst": "221.5"
+    },
+    "Marcus": {
+      "record": "7-12-2",
+      "winPct": "0.381",
+      "totalGames": 21,
+      "avgPointsFor": "221.0",
+      "avgPointsAgainst": "229.3"
+    },
+    "Pat": {
+      "record": "7-12-1",
+      "winPct": "0.375",
+      "totalGames": 20,
+      "avgPointsFor": "220.0",
+      "avgPointsAgainst": "214.7"
+    },
+    "Ray": {
+      "record": "7-9-2",
+      "winPct": "0.444",
+      "totalGames": 18,
+      "avgPointsFor": "222.2",
+      "avgPointsAgainst": "224.9"
+    }
+  },
+  "Marcus": {
+    "AJ": {
+      "record": "8-3-0",
+      "winPct": "0.727",
+      "totalGames": 11,
+      "avgPointsFor": "218.9",
+      "avgPointsAgainst": "215.6"
+    },
+    "Ben": {
+      "record": "4-3-0",
+      "winPct": "0.571",
+      "totalGames": 7,
+      "avgPointsFor": "241.5",
+      "avgPointsAgainst": "223.3"
+    },
+    "Bjorn": {
+      "record": "9-8-0",
+      "winPct": "0.529",
+      "totalGames": 17,
+      "avgPointsFor": "231.6",
+      "avgPointsAgainst": "225.4"
+    },
+    "Bobby": {
+      "record": "7-11-1",
+      "winPct": "0.395",
+      "totalGames": 19,
+      "avgPointsFor": "228.5",
+      "avgPointsAgainst": "222.0"
+    },
+    "Brennan": {
+      "record": "9-12-1",
+      "winPct": "0.432",
+      "totalGames": 22,
+      "avgPointsFor": "229.8",
+      "avgPointsAgainst": "235.4"
+    },
+    "Danny": {
+      "record": "9-10-0",
+      "winPct": "0.474",
+      "totalGames": 19,
+      "avgPointsFor": "229.8",
+      "avgPointsAgainst": "231.2"
+    },
+    "Jake": {
+      "record": "9-8-1",
+      "winPct": "0.528",
+      "totalGames": 18,
+      "avgPointsFor": "228.5",
+      "avgPointsAgainst": "220.0"
+    },
+    "Justin": {
+      "record": "12-7-2",
+      "winPct": "0.619",
+      "totalGames": 21,
+      "avgPointsFor": "229.3",
+      "avgPointsAgainst": "221.0"
+    },
+    "Pat": {
+      "record": "9-9-2",
+      "winPct": "0.500",
+      "totalGames": 20,
+      "avgPointsFor": "229.8",
+      "avgPointsAgainst": "216.5"
+    },
+    "Ray": {
+      "record": "11-9-0",
+      "winPct": "0.550",
+      "totalGames": 20,
+      "avgPointsFor": "227.2",
+      "avgPointsAgainst": "222.2"
+    }
+  },
+  "Pat": {
+    "AJ": {
+      "record": "3-7-0",
+      "winPct": "0.300",
+      "totalGames": 10,
+      "avgPointsFor": "208.9",
+      "avgPointsAgainst": "217.0"
+    },
+    "Ben": {
+      "record": "2-6-0",
+      "winPct": "0.250",
+      "totalGames": 8,
+      "avgPointsFor": "225.6",
+      "avgPointsAgainst": "223.4"
+    },
+    "Bjorn": {
+      "record": "7-13-0",
+      "winPct": "0.350",
+      "totalGames": 20,
+      "avgPointsFor": "216.7",
+      "avgPointsAgainst": "224.2"
+    },
+    "Bobby": {
+      "record": "8-10-1",
+      "winPct": "0.447",
+      "totalGames": 19,
+      "avgPointsFor": "215.8",
+      "avgPointsAgainst": "220.9"
+    },
+    "Brennan": {
+      "record": "3-14-1",
+      "winPct": "0.194",
+      "totalGames": 18,
+      "avgPointsFor": "215.5",
+      "avgPointsAgainst": "234.7"
+    },
+    "Danny": {
+      "record": "11-8-1",
+      "winPct": "0.575",
+      "totalGames": 20,
+      "avgPointsFor": "215.8",
+      "avgPointsAgainst": "230.5"
+    },
+    "Jake": {
+      "record": "13-6-0",
+      "winPct": "0.684",
+      "totalGames": 19,
+      "avgPointsFor": "217.2",
+      "avgPointsAgainst": "221.3"
+    },
+    "Justin": {
+      "record": "12-7-1",
+      "winPct": "0.625",
+      "totalGames": 20,
+      "avgPointsFor": "214.7",
+      "avgPointsAgainst": "220.0"
+    },
+    "Marcus": {
+      "record": "9-9-2",
+      "winPct": "0.500",
+      "totalGames": 20,
+      "avgPointsFor": "216.5",
+      "avgPointsAgainst": "229.8"
+    },
+    "Ray": {
+      "record": "8-9-0",
+      "winPct": "0.471",
+      "totalGames": 17,
+      "avgPointsFor": "213.8",
+      "avgPointsAgainst": "223.1"
+    }
+  },
+  "Ray": {
+    "AJ": {
+      "record": "5-7-1",
+      "winPct": "0.423",
+      "totalGames": 13,
+      "avgPointsFor": "216.8",
+      "avgPointsAgainst": "217.9"
+    },
+    "Ben": {
+      "record": "3-5-1",
+      "winPct": "0.389",
+      "totalGames": 9,
+      "avgPointsFor": "235.8",
+      "avgPointsAgainst": "222.8"
+    },
+    "Bjorn": {
+      "record": "5-8-3",
+      "winPct": "0.406",
+      "totalGames": 16,
+      "avgPointsFor": "223.9",
+      "avgPointsAgainst": "222.9"
+    },
+    "Bobby": {
+      "record": "11-10-0",
+      "winPct": "0.524",
+      "totalGames": 21,
+      "avgPointsFor": "225.0",
+      "avgPointsAgainst": "222.1"
+    },
+    "Brennan": {
+      "record": "7-13-1",
+      "winPct": "0.357",
+      "totalGames": 21,
+      "avgPointsFor": "226.7",
+      "avgPointsAgainst": "234.7"
+    },
+    "Danny": {
+      "record": "13-6-2",
+      "winPct": "0.667",
+      "totalGames": 21,
+      "avgPointsFor": "225.3",
+      "avgPointsAgainst": "231.3"
+    },
+    "Jake": {
+      "record": "12-6-0",
+      "winPct": "0.667",
+      "totalGames": 18,
+      "avgPointsFor": "226.7",
+      "avgPointsAgainst": "221.4"
+    },
+    "Justin": {
+      "record": "9-7-2",
+      "winPct": "0.556",
+      "totalGames": 18,
+      "avgPointsFor": "224.9",
+      "avgPointsAgainst": "222.2"
+    },
+    "Marcus": {
+      "record": "9-11-0",
+      "winPct": "0.450",
+      "totalGames": 20,
+      "avgPointsFor": "222.2",
+      "avgPointsAgainst": "227.2"
+    },
+    "Pat": {
+      "record": "9-8-0",
+      "winPct": "0.529",
+      "totalGames": 17,
+      "avgPointsFor": "223.1",
+      "avgPointsAgainst": "213.8"
+    }
+  }
+}
