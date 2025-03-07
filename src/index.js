@@ -25,12 +25,12 @@ const SEASONS = [
 
 // Select which seasons to scrape
 // Set to empty array to scrape all seasons
-const YEARS_TO_SCRAPE = ['2024']; // Example: only scrape 2024 and 2023
+const YEARS_TO_SCRAPE = ['2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017', ]; // Example: only scrape 2024 and 2023
 
 // Choose which data types to scrape
 const DATA_TYPES = {
-    SCHEDULE: false,     // Scrape schedule data
-    STANDINGS: false,    // Scrape standings data
+    SCHEDULE: true,     // Scrape schedule data
+    STANDINGS: true,    // Scrape standings data
     SEASON_STATS: true  // Scrape season stats data
 };
 

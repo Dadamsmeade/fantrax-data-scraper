@@ -13,9 +13,9 @@ async function scrapeStandings(page, leagueId) {
     console.log(`Scraping standings for league: ${leagueId}`);
 
     // Add this before your page.evaluate() calls
-    page.on('console', msg => {
-        console.log(`BROWSER: ${msg.text()}`);
-    });
+    // page.on('console', msg => {
+    //     console.log(`BROWSER: ${msg.text()}`);
+    // });
 
     try {
         // Navigate to the standings page
@@ -25,7 +25,7 @@ async function scrapeStandings(page, leagueId) {
 
         // Add a delay to ensure Angular has time to render components
         console.log('Waiting for page to fully render...');
-        await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 30000)));
+        await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 6000)));
 
         // Take a screenshot
         await takeScreenshot(page, 'standings-page');

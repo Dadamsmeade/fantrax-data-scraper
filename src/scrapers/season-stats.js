@@ -13,9 +13,9 @@ async function scrapeSeasonStats(page, leagueId) {
     console.log(`Scraping season stats for league: ${leagueId}`);
 
     // Add this before your page.evaluate() calls
-    page.on('console', msg => {
-        console.log(`BROWSER: ${msg.text()}`);
-    });
+    // page.on('console', msg => {
+    //     console.log(`BROWSER: ${msg.text()}`);
+    // });
 
     try {
         // Navigate to the season stats page
@@ -25,7 +25,7 @@ async function scrapeSeasonStats(page, leagueId) {
 
         // Add a delay to ensure Angular has time to render components
         console.log('Waiting for season stats page to fully render...');
-        await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 20000)));
+        await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 6000)));
 
         // Wait for any tabs to be available and click on the Season Stats tab if needed
         try {
@@ -162,7 +162,7 @@ async function scrapeSeasonStats(page, leagueId) {
                         console.log(`Processing team: ${teamName} (${teamId})`);
 
                         // Find corresponding data cells
-                        const dataRowCells = Array.from(tables[0].querySelectorAll(`section > div > table > tr:nth-child(${i + 1}) > td`));
+                        const dataRowCells = Array.from(tables[0].querySelectorAll(`section > div > table > tr:nth-child(${i + 2}) > td`));
 
                         // Check for number of cells and log what we found
                         console.log(`Found ${dataRowCells.length} data cells for team ${teamName}`);

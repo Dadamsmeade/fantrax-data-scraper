@@ -151,7 +151,7 @@ class SeasonStatsDb {
                     `, [
                         seasonId, teamId, fantasyPoints, adjustments, totalPoints,
                         fantasyPointsPerGame, gamesPlayed, hittingPoints,
-                        teamPitchingPoints, waiverPosition, projectedBudgetLeft
+                        teamPitchingPoints, waiverPosition, pointsBehindLeader
                     ]);
                 }
                 processedCount++;
