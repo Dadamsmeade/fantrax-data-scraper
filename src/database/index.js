@@ -6,6 +6,7 @@ const StandingsDb = require('./standingsDb');       // Add this import
 const SeasonStatsDb = require('./seasonStatsDb');   // Add this import
 const HittingStatsDb = require('./hittingStatsDb'); // Add this import
 const PitchingStatsDb = require('./pitchingStatsDb'); // Add this import
+const PlayerStatsDb = require('./playerStatsDb');   // Add the new player stats DB
 
 /**
  * Database service that provides access to all database operations
@@ -20,6 +21,7 @@ class DatabaseService {
         this.seasonStats = null;     // New
         this.hittingStats = null;    // New
         this.pitchingStats = null;   // New
+        this.playerStats = null;     // Add the new player stats DB
         this.initialized = false;
     }
 
@@ -40,6 +42,7 @@ class DatabaseService {
             this.seasonStats = new SeasonStatsDb(this.db);     // New
             this.hittingStats = new HittingStatsDb(this.db);   // New
             this.pitchingStats = new PitchingStatsDb(this.db); // New
+            this.playerStats = new PlayerStatsDb(this.db);     // Initialize the player stats DB
 
             this.initialized = true;
             return this;
@@ -232,6 +235,151 @@ class DatabaseService {
             }
         } catch (error) {
             console.error(`Error saving standings data for season ID ${seasonId}:`, error);
+            throw error;
+        }
+    }
+
+    /**
+     * Save player daily stats to the database
+     * @param {Object} data - Scraped player stats data
+     * @param {string} date - Date in YYYY-MM-DD format
+     * @param {number} seasonId - Season ID
+     * @returns {Promise<Object>} Results of the save operation
+     */
+    async savePlayerDailyStats(data, date, seasonId) {
+        if (!this.initialized) {
+            await this.initialize();
+        }
+
+        if (!data || data.length === 0) {
+            console.log(`No player stats data to save for date ${date}`);
+            return { playerStats: 0, teamStats: 0, matchups: 0 };
+        }
+
+        try {
+            // Begin transaction
+            await this.db.run('BEGIN TRANSACTION');
+            let transactionStarted = true;
+            console.log(`Starting transaction for saving player stats for date ${date}`);
+
+            try {
+                // First, delete any existing data for this date/season
+                await this.playerStats.deleteStatsByDate(date, seasonId);
+
+                // Process player stats for each team
+                let playerStatsCount = 0;
+                let teamStatsCount = 0;
+
+                for (const teamData of data) {
+                    console.log(`Processing player stats for team ${teamData.teamName}`);
+
+                    // Get the fantasy team ID from database
+                    const team = await this.db.get(
+                        'SELECT id FROM teams WHERE team_id = ? AND season_id = ?',
+                        [teamData.teamId, seasonId]
+                    );
+
+                    if (!team) {
+                        console.warn(`Team not found for ID ${teamData.teamId} in season ${seasonId}`);
+                        continue;
+                    }
+
+                    const teamId = team.id;
+
+                    // Process hitting players
+                    for (const player of teamData.hittingPlayers) {
+                        try {
+                            const playerStat = {
+                                date,
+                                player_id: player.playerId,
+                                mlb_team: player.mlbTeam,
+                                fantasy_team_id: teamId,
+                                season_id: seasonId,
+                                period_number: teamData.periodNumber,
+                                position_played: player.positionPlayed,
+                                active: player.active,
+                                ab: player.ab,
+                                h: player.h,
+                                r: player.r,
+                                singles: player.singles,
+                                doubles: player.doubles,
+                                triples: player.triples,
+                                hr: player.hr,
+                                rbi: player.rbi,
+                                bb: player.bb,
+                                sb: player.sb,
+                                cs: player.cs,
+                                fantasy_points: player.fantasyPoints
+                            };
+
+                            await this.playerStats.upsertPlayerStat(playerStat);
+                            playerStatsCount++;
+                        } catch (error) {
+                            console.error(`Error saving player stat: ${error.message}`);
+                        }
+                    }
+
+                    // Process pitching stats
+                    for (const pitcher of teamData.pitchingPlayers) {
+                        try {
+                            const pitcherStat = {
+                                date,
+                                player_id: 'TmP_' + teamId, // Team pitching doesn't have player ID
+                                mlb_team: pitcher.teamName,
+                                fantasy_team_id: teamId,
+                                season_id: seasonId,
+                                period_number: teamData.periodNumber,
+                                position_played: pitcher.positionPlayed,
+                                active: pitcher.active,
+                                wins: pitcher.wins,
+                                innings_pitched: pitcher.ip,
+                                earned_runs: pitcher.earned_runs,
+                                hits_allowed: pitcher.hits_allowed,
+                                bb_allowed: pitcher.bb_allowed,
+                                h_plus_bb: pitcher.h_plus_bb,
+                                strikeouts: pitcher.strikeouts,
+                                fantasy_points: pitcher.fantasyPoints
+                            };
+
+                            await this.playerStats.upsertPlayerStat(pitcherStat);
+                            playerStatsCount++;
+                        } catch (error) {
+                            console.error(`Error saving pitching stat: ${error.message}`);
+                        }
+                    }
+
+                    // Update team daily stats
+                    try {
+                        await this.playerStats.updateTeamDailyStats(date, teamId, seasonId);
+                        teamStatsCount++;
+                    } catch (error) {
+                        console.error(`Error updating team stats: ${error.message}`);
+                    }
+                }
+
+                // Update matchup results
+                const matchupsUpdated = await this.playerStats.updateMatchupDailyResults(date, seasonId);
+
+                // Commit transaction
+                await this.db.run('COMMIT');
+                transactionStarted = false;
+
+                console.log(`Successfully saved ${playerStatsCount} player stats and ${teamStatsCount} team stats for date ${date}`);
+                return { playerStats: playerStatsCount, teamStats: teamStatsCount, matchups: matchupsUpdated };
+            } catch (error) {
+                // Only try to rollback if we started the transaction
+                if (transactionStarted) {
+                    try {
+                        console.log('Rolling back transaction due to error');
+                        await this.db.run('ROLLBACK');
+                    } catch (rollbackError) {
+                        console.error('Error during rollback:', rollbackError);
+                    }
+                }
+                throw error;
+            }
+        } catch (error) {
+            console.error(`Error saving player stats data for date ${date}:`, error);
             throw error;
         }
     }
