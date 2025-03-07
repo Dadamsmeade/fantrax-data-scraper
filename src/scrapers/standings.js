@@ -12,15 +12,20 @@ const path = require('path');
 async function scrapeStandings(page, leagueId) {
     console.log(`Scraping standings for league: ${leagueId}`);
 
+    // Add this before your page.evaluate() calls
+    page.on('console', msg => {
+        console.log(`BROWSER: ${msg.text()}`);
+    });
+
     try {
         // Navigate to the standings page
-        const url = `${FANTRAX_BASE_URL}/fantasy/league/${leagueId}/standings;view=COMBINED`;
+        const url = `${FANTRAX_BASE_URL}/fantasy/league/${leagueId}/standings`;
         console.log(`Navigating to: ${url}`);
         await page.goto(url, { waitUntil: 'networkidle2' });
 
-        // Add a delay to ensure page has time to render completely
+        // Add a delay to ensure Angular has time to render components
         console.log('Waiting for page to fully render...');
-        await page.waitForTimeout(3000);
+        await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 30000)));
 
         // Take a screenshot
         await takeScreenshot(page, 'standings-page');
@@ -32,127 +37,177 @@ async function scrapeStandings(page, leagueId) {
         await fs.writeFile(path.join(debugDir, `standings-page-${leagueId}.html`), content);
         console.log('Saved HTML content for debugging');
 
-        // First, check if we can find the table structure
-        const tableExists = await page.evaluate(() => {
-            return !!document.querySelector('.ultimate-table');
+        // Log DOM hierarchy to understand the structure
+        const domStructure = await page.evaluate(() => {
+            // Find the ultimate table
+            const table = document.querySelector('.ultimate-table');
+            if (!table) return { error: 'No ultimate table found' };
+
+            // Check if we have a section with aside
+            const section = table.querySelector('section');
+            if (!section) return { error: 'No section found in ultimate table' };
+
+            const aside = section.querySelector('aside');
+            if (!aside) return { error: 'No aside found in section' };
+
+            // Log what classes and children the aside has
+            return {
+                asideChildCount: aside.childElementCount,
+                tdCount: aside.querySelectorAll('td').length,
+                teamLinkCount: aside.querySelectorAll('a[href*="teamId="]').length,
+                rankCount: aside.querySelectorAll('b').length,
+                allTeamRows: [...aside.children].map(child => {
+                    const teamLink = child.querySelector('a[href*="teamId="]');
+                    const rankEl = child.querySelector('b');
+                    return {
+                        tagName: child.tagName,
+                        hasTeamLink: !!teamLink,
+                        teamName: teamLink ? teamLink.textContent.trim() : null,
+                        hasRank: !!rankEl,
+                        rankText: rankEl ? rankEl.textContent.trim() : null
+                    };
+                })
+            };
         });
 
-        if (!tableExists) {
-            console.error('Could not find standings table on the page');
-            return [];
-        }
+        console.log('DOM Structure:', JSON.stringify(domStructure, null, 2));
 
-        console.log('Found standings table, extracting data...');
-
-        // Extract standings data
+        // Extract standings data using page.evaluate with improved row selection
         const standingsData = await page.evaluate(() => {
-            // Initialize array to hold standings data
             const standings = [];
 
-            // Helper function to safely extract text content
-            const getText = (element) => element ? element.textContent.trim() : '';
-
-            // Helper function to safely parse numbers
-            const parseNumber = (text, defaultValue = 0) => {
-                if (!text) return defaultValue;
-                const cleaned = text.replace(/,/g, '');
-                const parsed = parseFloat(cleaned);
-                return isNaN(parsed) ? defaultValue : parsed;
-            };
-
-            try {
-                // Find team container - typically the aside section in the ultimate table
-                const teamContainer = document.querySelector('.ultimate-table section aside');
-                if (!teamContainer) {
-                    console.error('Could not find team container');
-                    return standings;
-                }
-
-                // Find all team rows (TD elements that contain team links)
-                const teamRows = Array.from(teamContainer.querySelectorAll('td')).filter(td =>
-                    td.querySelector('a[href*="teamId="]')
-                );
-
-                console.log(`Found ${teamRows.length} team rows`);
-
-                // Find data table (where the stats are)
-                const dataTable = document.querySelector('.ultimate-table > section > div > table');
-                if (!dataTable) {
-                    console.error('Could not find data table');
-                    return standings;
-                }
-
-                // Find data rows
-                const dataRows = Array.from(dataTable.querySelectorAll('tr'));
-                console.log(`Found ${dataRows.length} data rows`);
-
-                // Process each team
-                teamRows.forEach((teamRow, index) => {
-                    try {
-                        // Extract rank
-                        const rankElement = teamRow.querySelector('b');
-                        const rank = getText(rankElement);
-
-                        // Extract team info
-                        const teamLink = teamRow.querySelector('a[href*="teamId="]');
-                        if (!teamLink) return;
-
-                        const teamName = getText(teamLink);
-                        const href = teamLink.getAttribute('href');
-                        const teamIdMatch = href.match(/teamId=([^&;]+)/);
-                        const teamId = teamIdMatch ? teamIdMatch[1] : '';
-
-                        console.log(`Processing team: ${teamName} (${teamId}), rank: ${rank}`);
-
-                        // Create basic team object - we'll add stats later
-                        const team = {
-                            teamId,
-                            teamName,
-                            rank: parseInt(rank) || 0
-                        };
-
-                        // Extract stats if we have matching data row
-                        if (index < dataRows.length) {
-                            const dataRow = dataRows[index];
-                            const cells = Array.from(dataRow.querySelectorAll('td'));
-
-                            if (cells.length >= 10) {
-                                // Basic stats - add more as needed
-                                team.wins = parseInt(getText(cells[0])) || 0;
-                                team.losses = parseInt(getText(cells[1])) || 0;
-                                team.ties = parseInt(getText(cells[2])) || 0;
-
-                                const winPctText = getText(cells[3]);
-                                team.winPercentage = parseNumber(winPctText);
-
-                                team.divisionRecord = getText(cells[4]);
-                                team.gamesBack = parseNumber(getText(cells[5]));
-                                team.waiverPosition = parseInt(getText(cells[6])) || 0;
-                                team.fantasyPointsFor = parseNumber(getText(cells[7]));
-                                team.fantasyPointsAgainst = parseNumber(getText(cells[8]));
-                                team.streak = getText(cells[9]);
-                            }
-                        }
-
-                        standings.push(team);
-                    } catch (error) {
-                        console.error(`Error processing team row ${index}:`, error.message);
-                    }
-                });
-
-                // Sort by rank for consistency
-                return standings.sort((a, b) => a.rank - b.rank);
-            } catch (error) {
-                console.error('Error extracting standings data:', error.message);
+            // Try to get all team rows using a more inclusive selector
+            const container = document.querySelector('.ultimate-table section aside');
+            if (!container) {
+                console.error('Could not find team container');
                 return standings;
             }
+
+            // Get all direct children of the aside element that could be team rows
+            const teamRows = Array.from(document.querySelectorAll('.ultimate-table section aside td'));
+            console.log(`Found ${teamRows.length} potential team rows`);
+
+            // Process each potential team row
+            for (let i = 0; i < teamRows.length; i++) {
+                try {
+                    const row = teamRows[i];
+
+                    // Skip if this is not a TD element
+                    if (row.tagName !== 'TD') {
+                        console.log(`Skipping non-TD element at index ${i}`);
+                        continue;
+                    }
+
+                    // Get team rank from any B element
+                    const rankElement = row.querySelector('b');
+                    const rank = rankElement ? rankElement.textContent.trim() : '';
+
+                    // Get team name and ID from the link
+                    const teamLink = row.querySelector('a[href*="teamId="]');
+                    if (!teamLink) {
+                        console.warn(`No team link found in row ${i}`);
+                        continue;
+                    }
+
+                    const href = teamLink.getAttribute('href');
+                    const teamIdMatch = href.match(/teamId=([^&;]+)/);
+                    if (!teamIdMatch) {
+                        console.warn(`No teamId found in href: ${href}`);
+                        continue;
+                    }
+
+                    const teamId = teamIdMatch[1];
+                    const teamName = teamLink.textContent.trim();
+
+                    console.log(`Processing team: ${teamName} (${teamId}), rank: ${rank}`);
+
+                    // Get the corresponding data row
+                    // The dataRowIndex is the actual index of this team row among TD elements
+                    const dataRowIndex = Array.from(document.querySelectorAll('.ultimate-table section aside td')).indexOf(row);
+                    console.log(`Data row index for ${teamName}: ${dataRowIndex}`);
+
+                    if (dataRowIndex === -1) {
+                        console.warn(`Could not determine data row index for team ${teamName}`);
+                        continue;
+                    }
+
+                    // Get data cells for this team
+                    const dataRowCells = Array.from(document.querySelectorAll(`.ultimate-table > section > div > table > tr:nth-child(${dataRowIndex + 2}) > td`));
+
+                    if (dataRowCells.length < 9) {
+                        console.warn(`Not enough data cells for team ${teamName}, found ${dataRowCells.length}`);
+                        continue;
+                    }
+
+                    // Extract data from cells (use try/catch for each to handle potential issues)
+                    let wins = 0, losses = 0, ties = 0, winPercentage = 0, divisionRecord = '',
+                        gamesBack = 0, waiverPosition = 0, fantasyPointsFor = 0, fantasyPointsAgainst = 0, streak = '';
+
+                    try {
+                        wins = parseInt(dataRowCells[0]?.textContent.trim()) || 0;
+                        losses = parseInt(dataRowCells[1]?.textContent.trim()) || 0;
+                        ties = parseInt(dataRowCells[2]?.textContent.trim()) || 0;
+
+                        const winPctText = dataRowCells[3]?.textContent.trim() || '0';
+                        winPercentage = parseFloat(winPctText.replace('.', '0.')) || 0;
+
+                        divisionRecord = dataRowCells[4]?.textContent.trim() || '';
+                        gamesBack = parseFloat(dataRowCells[5]?.textContent.trim()) || 0;
+                        waiverPosition = parseInt(dataRowCells[6]?.textContent.trim()) || 0;
+
+                        let fptsForText = dataRowCells[7]?.textContent.trim() || '0';
+                        let fptsAgainstText = dataRowCells[8]?.textContent.trim() || '0';
+
+                        fptsForText = fptsForText.replace(/,/g, '');
+                        fptsAgainstText = fptsAgainstText.replace(/,/g, '');
+
+                        fantasyPointsFor = parseFloat(fptsForText) || 0;
+                        fantasyPointsAgainst = parseFloat(fptsAgainstText) || 0;
+
+                        streak = dataRowCells[9]?.textContent.trim() || '';
+                    } catch (dataError) {
+                        console.error(`Error extracting data for team ${teamName}:`, dataError.message);
+                    }
+
+                    console.log(`Stats: ${wins}-${losses}-${ties}, FPts: ${fantasyPointsFor}, FPtsA: ${fantasyPointsAgainst}`);
+
+                    standings.push({
+                        teamId,
+                        teamName,
+                        rank,
+                        wins,
+                        losses,
+                        ties,
+                        winPercentage,
+                        divisionRecord,
+                        gamesBack,
+                        waiverPosition,
+                        fantasyPointsFor,
+                        fantasyPointsAgainst,
+                        streak
+                    });
+                } catch (error) {
+                    console.error(`Error processing team row ${i}:`, error.message);
+                }
+            }
+
+            // Sort by rank to ensure correct order
+            return standings.sort((a, b) => {
+                // Convert ranks to numbers for sorting
+                const rankA = parseInt(a.rank) || 0;
+                const rankB = parseInt(b.rank) || 0;
+                return rankA - rankB;
+            });
         });
 
-        console.log(`Extracted standings for ${standingsData.length} teams`);
+        console.log(`Scraped standings data for ${standingsData.length} teams`);
 
-        // Log a sample for verification
+        // Log all team ranks to verify we have all teams
+        console.log('All team ranks:', standingsData.map(team => team.rank).join(', '));
+
+        // Log some sample data to verify extraction
         if (standingsData.length > 0) {
-            console.log('First team data:', JSON.stringify(standingsData[0], null, 2));
+            console.log('Sample data from first team:', JSON.stringify(standingsData[0], null, 2));
         }
 
         return standingsData;

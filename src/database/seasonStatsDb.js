@@ -55,14 +55,14 @@ class SeasonStatsDb {
      * @param {number} stats.hittingPoints - Hitting points
      * @param {number} stats.teamPitchingPoints - Team pitching points
      * @param {number} stats.waiverPosition - Waiver wire position
-     * @param {number} stats.projectedBudgetLeft - Projected budget left
+     * @param {number} stats.pointsBehindLeader - Points behind leader
      * @returns {Promise<Object>} The inserted or updated season stats
      */
     async upsertSeasonStats(stats) {
         const {
             seasonId, teamId, fantasyPoints, adjustments, totalPoints,
             fantasyPointsPerGame, gamesPlayed, hittingPoints,
-            teamPitchingPoints, waiverPosition, projectedBudgetLeft
+            teamPitchingPoints, waiverPosition, pointsBehindLeader
         } = stats;
 
         // Validate required fields
@@ -80,12 +80,12 @@ class SeasonStatsDb {
                     UPDATE season_stats
                     SET fantasy_points = ?, adjustments = ?, total_points = ?,
                         fantasy_points_per_game = ?, games_played = ?, hitting_points = ?,
-                        team_pitching_points = ?, waiver_position = ?, projected_budget_left = ?
+                        team_pitching_points = ?, waiver_position = ?, points_behind_leader = ?
                     WHERE season_id = ? AND team_id = ?
                 `, [
                     fantasyPoints, adjustments, totalPoints,
                     fantasyPointsPerGame, gamesPlayed, hittingPoints,
-                    teamPitchingPoints, waiverPosition, projectedBudgetLeft,
+                    teamPitchingPoints, waiverPosition, pointsBehindLeader,
                     seasonId, teamId
                 ]);
             } else {
@@ -94,12 +94,12 @@ class SeasonStatsDb {
                     INSERT INTO season_stats (
                         season_id, team_id, fantasy_points, adjustments, total_points,
                         fantasy_points_per_game, games_played, hitting_points,
-                        team_pitching_points, waiver_position, projected_budget_left
+                        team_pitching_points, waiver_position, points_behind_leader
                     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 `, [
                     seasonId, teamId, fantasyPoints, adjustments, totalPoints,
                     fantasyPointsPerGame, gamesPlayed, hittingPoints,
-                    teamPitchingPoints, waiverPosition, projectedBudgetLeft
+                    teamPitchingPoints, waiverPosition, pointsBehindLeader
                 ]);
             }
 
@@ -120,7 +120,7 @@ class SeasonStatsDb {
                 const {
                     seasonId, teamId, fantasyPoints, adjustments, totalPoints,
                     fantasyPointsPerGame, gamesPlayed, hittingPoints,
-                    teamPitchingPoints, waiverPosition, projectedBudgetLeft
+                    teamPitchingPoints, waiverPosition, pointsBehindLeader
                 } = stats;
 
                 // Check if the stats record exists
@@ -132,12 +132,12 @@ class SeasonStatsDb {
                         UPDATE season_stats
                         SET fantasy_points = ?, adjustments = ?, total_points = ?,
                             fantasy_points_per_game = ?, games_played = ?, hitting_points = ?,
-                            team_pitching_points = ?, waiver_position = ?, projected_budget_left = ?
+                            team_pitching_points = ?, waiver_position = ?, points_behind_leader = ?
                         WHERE season_id = ? AND team_id = ?
                     `, [
                         fantasyPoints, adjustments, totalPoints,
                         fantasyPointsPerGame, gamesPlayed, hittingPoints,
-                        teamPitchingPoints, waiverPosition, projectedBudgetLeft,
+                        teamPitchingPoints, waiverPosition, pointsBehindLeader,
                         seasonId, teamId
                     ]);
                 } else {
@@ -146,7 +146,7 @@ class SeasonStatsDb {
                         INSERT INTO season_stats (
                             season_id, team_id, fantasy_points, adjustments, total_points,
                             fantasy_points_per_game, games_played, hitting_points,
-                            team_pitching_points, waiver_position, projected_budget_left
+                            team_pitching_points, waiver_position, points_behind_leader
                         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     `, [
                         seasonId, teamId, fantasyPoints, adjustments, totalPoints,

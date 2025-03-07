@@ -302,7 +302,7 @@ class DatabaseService {
                             hittingPoints: stat.hittingPoints,
                             teamPitchingPoints: stat.teamPitchingPoints,
                             waiverPosition: stat.waiverPosition,
-                            projectedBudgetLeft: stat.projectedBudgetLeft || 0
+                            pointsBehindLeader: stat.pointsBehindLeader || 0
                         });
                     } catch (err) {
                         console.error(`Error processing team stats for ${stat.teamName}:`, err.message);

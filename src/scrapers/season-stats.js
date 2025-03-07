@@ -12,6 +12,11 @@ const path = require('path');
 async function scrapeSeasonStats(page, leagueId) {
     console.log(`Scraping season stats for league: ${leagueId}`);
 
+    // Add this before your page.evaluate() calls
+    page.on('console', msg => {
+        console.log(`BROWSER: ${msg.text()}`);
+    });
+
     try {
         // Navigate to the season stats page
         const url = `${FANTRAX_BASE_URL}/fantasy/league/${leagueId}/standings;view=SEASON_STATS`;
@@ -19,8 +24,8 @@ async function scrapeSeasonStats(page, leagueId) {
         await page.goto(url, { waitUntil: 'networkidle2' });
 
         // Add a delay to ensure Angular has time to render components
-        console.log('Waiting for page to fully render...');
-        await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 3000)));
+        console.log('Waiting for season stats page to fully render...');
+        await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 20000)));
 
         // Wait for any tabs to be available and click on the Season Stats tab if needed
         try {
@@ -86,17 +91,21 @@ async function scrapeSeasonStats(page, leagueId) {
 
         // Log some DOM stats to help debug rendering issues
         const domStats = await page.evaluate(() => {
+            const tables = document.querySelectorAll('.ultimate-table');
             return {
-                teamRows: document.querySelectorAll('.ultimate-table section > aside > td').length,
-                dataRows: document.querySelectorAll('.ultimate-table > section > div > table > tr').length,
-                dataCells: document.querySelectorAll('.ultimate-table > section > div > table > tr > td').length,
-                tableHeaders: document.querySelectorAll('.ultimate-table > header th').length
+                teamRows: tables[0].querySelectorAll('section > aside > td').length,
+                dataRows: tables[0].querySelectorAll('section > div > table > tr').length,
+                dataCells: tables[0].querySelectorAll('section > div > table > tr > td').length,
+                tableHeaders: tables[0].querySelectorAll('header th').length
             };
         });
         console.log('DOM Statistics:', domStats);
 
         // Extract season stats data using page.evaluate with updated selectors for the Angular structure
         const stats = await page.evaluate(() => {
+
+            const tables = document.querySelectorAll('.ultimate-table');
+
             // Helper to parse numeric values
             const parseNumeric = (text) => {
                 if (!text) return 0;
@@ -113,7 +122,7 @@ async function scrapeSeasonStats(page, leagueId) {
             // Find all team rows in the standings table for Season Stats view
             const findTeamRows = () => {
                 // Look for team info in the side column
-                return Array.from(document.querySelectorAll('.ultimate-table section > aside > td'));
+                return Array.from(tables[0].querySelectorAll('section > aside > td'));
             };
 
             // Extract season stats from the Angular structure
@@ -153,13 +162,13 @@ async function scrapeSeasonStats(page, leagueId) {
                         console.log(`Processing team: ${teamName} (${teamId})`);
 
                         // Find corresponding data cells
-                        const dataRowCells = Array.from(document.querySelectorAll(`.ultimate-table > section > div > table > tr:nth-child(${i + 1}) > td`));
+                        const dataRowCells = Array.from(tables[0].querySelectorAll(`section > div > table > tr:nth-child(${i + 1}) > td`));
 
                         // Check for number of cells and log what we found
                         console.log(`Found ${dataRowCells.length} data cells for team ${teamName}`);
 
                         // Get headers to understand column order
-                        const headers = Array.from(document.querySelectorAll('.ultimate-table > header ._ut__head th')).map(th => th.textContent.trim());
+                        const headers = Array.from(tables[0].querySelectorAll('header ._ut__head th')).map(th => th.textContent.trim());
                         console.log(`Found ${headers.length} headers: ${headers.join(', ')}`);
 
                         // Default values if cells aren't found
@@ -171,7 +180,7 @@ async function scrapeSeasonStats(page, leagueId) {
                         let hittingPoints = 0;
                         let teamPitchingPoints = 0;
                         let waiverPosition = 0;
-                        let projectedBudgetLeft = 0;
+                        let pointsBehindLeader = 0;
 
                         // Try to extract data from cells based on what's available
                         if (dataRowCells.length > 0) {
@@ -184,6 +193,7 @@ async function scrapeSeasonStats(page, leagueId) {
                             let hitIndex = headers.findIndex(h => h.includes('Hit'));
                             let tpIndex = headers.findIndex(h => h.includes('TP'));
                             let wwIndex = headers.findIndex(h => h.includes('WW'));
+                            let pblIndex = headers.findIndex(h => h.includes('PBL'));
 
                             // If header detection doesn't work, use these default indices
                             if (fptsIndex === -1) fptsIndex = 0;
@@ -194,6 +204,9 @@ async function scrapeSeasonStats(page, leagueId) {
                             if (hitIndex === -1) hitIndex = 5;
                             if (tpIndex === -1) tpIndex = 6;
                             if (wwIndex === -1) wwIndex = 7;
+                            if (pblIndex === -1) pblIndex = 8;
+
+                            console.log("INDECES: ", parseNumeric(safeText(dataRowCells[fptsIndex])));
 
                             // Extract values with safeguards
                             if (fptsIndex >= 0 && fptsIndex < dataRowCells.length) {
@@ -228,9 +241,8 @@ async function scrapeSeasonStats(page, leagueId) {
                                 waiverPosition = parseInt(safeText(dataRowCells[wwIndex])) || 0;
                             }
 
-                            // Additional budget field if available
                             if (dataRowCells.length > 8) {
-                                projectedBudgetLeft = parseNumeric(safeText(dataRowCells[8]));
+                                pointsBehindLeader = parseNumeric(safeText(dataRowCells[pblIndex])) || 0;
                             }
                         }
 
@@ -247,7 +259,7 @@ async function scrapeSeasonStats(page, leagueId) {
                             hittingPoints,
                             teamPitchingPoints,
                             waiverPosition,
-                            projectedBudgetLeft
+                            pointsBehindLeader
                         });
                     } catch (error) {
                         console.error(`Error processing team row ${i}:`, error.message);
