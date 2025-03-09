@@ -36,7 +36,7 @@ const DATA_TYPES = {
     SEASON_STATS: false,  // Scrape season stats data
     ROSTERS: true,        // Scrape roster data
     ROSTER_OPTIONS: {     // Roster scraping options
-        startPeriod: 20,   // Start from this period (set to 1 to start from beginning)
+        startPeriod: 25,   // Start from this period (set to 1 to start from beginning)
         // endPeriod: 8,     // End at this period (comment out to use maxPeriods)
         maxPeriods: 10    // Maximum number of periods to scrape (ignored if endPeriod is set)
     }

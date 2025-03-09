@@ -329,6 +329,28 @@ async function scrapeLeagueRosters(page, leagueId, teams, dbService, seasonId, o
 
             // Scrape each period for this team
             for (let period = effectiveStartPeriod; period <= effectiveEndPeriod; period++) {
+                // Check if this is a playoff period
+                const periodSchedule = schedule.filter(entry => parseInt(entry.period_number, 10) === period);
+                const isPlayoffPeriod = periodSchedule.length > 0 &&
+                    (periodSchedule[0].period_type === 'Playoff' || periodSchedule[0].period_type === 'Championship');
+
+                // Skip this team for this period if it's a playoff period and the team isn't participating
+                if (isPlayoffPeriod) {
+                    const teamIdsInMatchups = new Set();
+
+                    periodSchedule.forEach(matchup => {
+                        teamIdsInMatchups.add(matchup.away_team_id);
+                        teamIdsInMatchups.add(matchup.home_team_id);
+                    });
+
+                    if (!teamIdsInMatchups.has(team.id)) {
+                        console.log(`Skipping team ${team.name} for ${periodSchedule[0].period_type} period ${period} as they are not participating`);
+                        continue;
+                    }
+
+                    console.log(`Team ${team.name} is participating in ${periodSchedule[0].period_type} period ${period}`);
+                }
+
                 console.log(`Scraping period ${period} for team ${team.name}`);
 
                 try {
