@@ -4,6 +4,7 @@ const { authenticateFantrax } = require('./auth');
 const { scrapeSchedule } = require('./scrapers/schedule');
 const { scrapeStandings } = require('./scrapers/standings');
 const { scrapeSeasonStats } = require('./scrapers/season-stats');
+const { scrapeLeagueRosters } = require('./scrapers/rosters');
 const dbService = require('./database');
 
 // Configuration
@@ -25,13 +26,15 @@ const SEASONS = [
 
 // Select which seasons to scrape
 // Set to empty array to scrape all seasons
-const YEARS_TO_SCRAPE = ['2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017', ]; // Example: only scrape 2024 and 2023
+const YEARS_TO_SCRAPE = ['2024']; // Example: only scrape 2024 and 2023
 
 // Choose which data types to scrape
 const DATA_TYPES = {
-    SCHEDULE: true,     // Scrape schedule data
-    STANDINGS: true,    // Scrape standings data
-    SEASON_STATS: true  // Scrape season stats data
+    SCHEDULE: false,      // Scrape schedule data
+    STANDINGS: false,     // Scrape standings data
+    SEASON_STATS: false,  // Scrape season stats data
+    ROSTERS: true,       // Scrape roster data
+    MAX_ROSTER_PERIODS: 10 // Maximum number of periods to scrape (for testing)
 };
 
 // Filter seasons based on YEARS_TO_SCRAPE
@@ -99,6 +102,11 @@ async function main() {
             // Scrape and save season stats data
             if (DATA_TYPES.SEASON_STATS) {
                 await processSeasonStatsData(page, season, seasonId);
+            }
+
+            // Scrape and save roster data
+            if (DATA_TYPES.ROSTERS) {
+                await processRosterData(page, season, seasonId, DATA_TYPES.MAX_ROSTER_PERIODS);
             }
         }
 
@@ -229,6 +237,67 @@ async function processSeasonStatsData(page, season, seasonId) {
 
     } catch (error) {
         console.error(`Error processing season stats for ${season.year} season:`, error.message);
+    }
+}
+
+/**
+ * Process roster data for a season
+ * @param {Page} page - Puppeteer page object
+ * @param {Object} season - Season object
+ * @param {number} seasonId - Season database ID
+ * @param {number} maxPeriods - Maximum number of periods to scrape (for testing)
+ */
+async function processRosterData(page, season, seasonId, maxPeriods = 1) {
+    console.log(`Scraping rosters for ${season.year} season (max periods: ${maxPeriods})...`);
+    try {
+        // Get teams for this season
+        const teams = await dbService.teams.getTeamsBySeason(seasonId);
+
+        if (teams.length === 0) {
+            console.warn(`No teams found for ${season.year} season, skipping roster scraping`);
+            return;
+        }
+
+        // Check if schedule data exists
+        const scheduleCount = await dbService.db.get(
+            'SELECT COUNT(*) as count FROM schedule WHERE season_id = ?',
+            [seasonId]
+        );
+
+        if (scheduleCount.count === 0) {
+            console.warn(`No schedule data found for ${season.year} season. Please scrape schedule data first.`);
+            return;
+        }
+
+        // Use the improved scraper that leverages existing schedule data
+        const rosterData = await scrapeLeagueRosters(
+            page,
+            season.leagueId,
+            teams,
+            dbService,
+            seasonId,
+            maxPeriods
+        );
+
+        if (rosterData.length === 0) {
+            console.warn(`No roster data found for ${season.year} season`);
+            return;
+        }
+
+        // Save roster data to database
+        console.log(`Saving ${rosterData.length} roster periods to database...`);
+        const result = await dbService.saveRosterData(
+            rosterData,
+            season.year,
+            season.leagueId
+        );
+
+        console.log(`Database update complete for ${season.year} rosters`);
+        console.log(`Processed ${result.processedRosters} team roster periods with ${result.processedEntries} entries`);
+        console.log(`Matched ${result.initialMatches + result.additionalMatches} players with MLB database (${result.unmatchedEntries} still unmatched)`);
+
+    } catch (error) {
+        console.error(`Error processing rosters for ${season.year} season:`, error.message);
     }
 }
 

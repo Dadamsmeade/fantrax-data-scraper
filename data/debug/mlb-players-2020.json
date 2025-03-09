@@ -32177,8 +32177,8 @@
       "initLastName": "R Jeffers",
       "fullFMLName": "Ryan Michael Jeffers",
       "fullLFMName": "Jeffers, Ryan Michael",
-      "strikeZoneTop": 3.31,
-      "strikeZoneBottom": 1.59
+      "strikeZoneTop": 3.32,
+      "strikeZoneBottom": 1.6
     },
     {
       "id": 502026,
@@ -62083,7 +62083,7 @@
       "birthCountry": "Japan",
       "height": "6' 2\"",
       "weight": 214,
-      "active": false,
+      "active": true,
       "currentTeam": {
         "id": 147,
         "name": "New York Yankees",
@@ -62103,7 +62103,6 @@
       "isPlayer": true,
       "isVerified": true,
       "pronunciation": "mahs-uh-hero tun-ah-kuh",
-      "lastPlayedDate": "2020-09-23",
       "mlbDebutDate": "2014-04-04",
       "batSide": {
         "code": "R",

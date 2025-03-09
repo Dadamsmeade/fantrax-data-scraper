@@ -6,7 +6,7 @@ const StandingsDb = require('./standingsDb');       // Add this import
 const SeasonStatsDb = require('./seasonStatsDb');   // Add this import
 const HittingStatsDb = require('./hittingStatsDb'); // Add this import
 const PitchingStatsDb = require('./pitchingStatsDb'); // Add this import
-const PlayerStatsDb = require('./playerStatsDb');   // Add the new player stats DB
+const RostersDb = require('./rostersDb'); // Add this import
 
 /**
  * Database service that provides access to all database operations
@@ -19,9 +19,7 @@ class DatabaseService {
         this.schedule = null;
         this.standings = null;       // New
         this.seasonStats = null;     // New
-        this.hittingStats = null;    // New
-        this.pitchingStats = null;   // New
-        this.playerStats = null;     // Add the new player stats DB
+        this.rosters = null;     // New
         this.initialized = false;
     }
 
@@ -42,7 +40,7 @@ class DatabaseService {
             this.seasonStats = new SeasonStatsDb(this.db);     // New
             this.hittingStats = new HittingStatsDb(this.db);   // New
             this.pitchingStats = new PitchingStatsDb(this.db); // New
-            this.playerStats = new PlayerStatsDb(this.db);     // Initialize the player stats DB
+            this.rosters = new RostersDb(this.db);
 
             this.initialized = true;
             return this;
@@ -239,414 +237,6 @@ class DatabaseService {
         }
     }
 
-    /**
-     * Save player daily stats to the database
-     * @param {Object} data - Scraped player stats data
-     * @param {string} date - Date in YYYY-MM-DD format
-     * @param {number} seasonId - Season ID
-     * @returns {Promise<Object>} Results of the save operation
-     */
-    async savePlayerDailyStats(data, date, seasonId) {
-        if (!this.initialized) {
-            await this.initialize();
-        }
-
-        if (!data || data.length === 0) {
-            console.log(`No player stats data to save for date ${date}`);
-            return { playerStats: 0, teamStats: 0, matchups: 0 };
-        }
-
-        try {
-            // Begin transaction
-            await this.db.run('BEGIN TRANSACTION');
-            let transactionStarted = true;
-            console.log(`Starting transaction for saving player stats for date ${date}`);
-
-            try {
-                // First, delete any existing data for this date/season - pass false to avoid nested transaction
-                await this.playerStats.deleteStatsByDate(date, seasonId, false);
-
-                // Process player stats for each team
-                let playerStatsCount = 0;
-                let teamStatsCount = 0;
-
-                for (const teamData of data) {
-                    console.log(`Processing player stats for team ${teamData.teamName}`);
-
-                    // Get the fantasy team ID from database
-                    const team = await this.db.get(
-                        'SELECT id FROM teams WHERE team_id = ? AND season_id = ?',
-                        [teamData.teamId, seasonId]
-                    );
-
-                    if (!team) {
-                        console.warn(`Team not found for ID ${teamData.teamId} in season ${seasonId}`);
-                        continue;
-                    }
-
-                    const teamId = team.id;
-
-                    // Process hitting players
-                    for (const player of teamData.hittingPlayers) {
-                        try {
-                            const playerStat = {
-                                date,
-                                player_id: player.playerId,
-                                mlb_team: player.mlbTeam,
-                                fantasy_team_id: teamId,
-                                season_id: seasonId,
-                                period_number: teamData.periodNumber,
-                                position_played: player.positionPlayed,
-                                active: player.active,
-                                ab: player.ab,
-                                h: player.h,
-                                r: player.r,
-                                singles: player.singles,
-                                doubles: player.doubles,
-                                triples: player.triples,
-                                hr: player.hr,
-                                rbi: player.rbi,
-                                bb: player.bb,
-                                sb: player.sb,
-                                cs: player.cs,
-                                fantasy_points: player.fantasyPoints
-                            };
-
-                            // Insert player directly without using withTransaction
-                            const existingStat = await this.db.get(
-                                'SELECT * FROM player_daily_stats WHERE date = ? AND player_id = ? AND fantasy_team_id = ?',
-                                [date, player.playerId, teamId]
-                            );
-
-                            if (existingStat) {
-                                // Update existing stat
-                                await this.db.run(`
-                                    UPDATE player_daily_stats
-                                    SET 
-                                        mlb_team = ?, season_id = ?, period_number = ?,
-                                        position_played = ?, active = ?,
-                                        ab = ?, h = ?, r = ?, singles = ?, doubles = ?,
-                                        triples = ?, hr = ?, rbi = ?, bb = ?, sb = ?, cs = ?,
-                                        fantasy_points = ?
-                                    WHERE date = ? AND player_id = ? AND fantasy_team_id = ?
-                                `, [
-                                    player.mlbTeam, seasonId, teamData.periodNumber,
-                                    player.positionPlayed, player.active,
-                                    player.ab, player.h, player.r, player.singles, player.doubles,
-                                    player.triples, player.hr, player.rbi, player.bb, player.sb, player.cs,
-                                    player.fantasyPoints,
-                                    date, player.playerId, teamId
-                                ]);
-                            } else {
-                                // Insert new stat
-                                await this.db.run(`
-                                    INSERT INTO player_daily_stats (
-                                        date, player_id, mlb_team, fantasy_team_id, season_id, period_number,
-                                        position_played, active, ab, h, r, singles, doubles, triples, hr, rbi,
-                                        bb, sb, cs, fantasy_points
-                                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                                `, [
-                                    date, player.playerId, player.mlbTeam, teamId, seasonId, teamData.periodNumber,
-                                    player.positionPlayed, player.active, player.ab, player.h, player.r,
-                                    player.singles, player.doubles, player.triples, player.hr, player.rbi,
-                                    player.bb, player.sb, player.cs, player.fantasyPoints
-                                ]);
-                            }
-
-                            playerStatsCount++;
-                        } catch (error) {
-                            console.error(`Error saving player stat: ${error.message}`);
-                        }
-                    }
-
-                    // Process pitching stats
-                    for (const pitcher of teamData.pitchingPlayers) {
-                        try {
-                            // Convert innings pitched to outs for easier calculations
-                            let ip_outs = 0;
-                            if (pitcher.ip) {
-                                const ipParts = pitcher.ip.toString().split('.');
-                                const fullInnings = parseInt(ipParts[0]) || 0;
-                                const partialInning = ipParts.length > 1 ? parseInt(ipParts[1]) || 0 : 0;
-                                ip_outs = (fullInnings * 3) + partialInning;
-                            }
-
-                            const pitcherId = 'TmP_' + teamId; // Team pitching doesn't have player ID
-
-                            // Insert pitcher directly without using withTransaction
-                            const existingStat = await this.db.get(
-                                'SELECT * FROM player_daily_stats WHERE date = ? AND player_id = ? AND fantasy_team_id = ?',
-                                [date, pitcherId, teamId]
-                            );
-
-                            if (existingStat) {
-                                // Update existing stat
-                                await this.db.run(`
-                                    UPDATE player_daily_stats
-                                    SET 
-                                        mlb_team = ?, season_id = ?, period_number = ?,
-                                        position_played = ?, active = ?,
-                                        wins = ?, innings_pitched = ?, ip_outs = ?, earned_runs = ?,
-                                        hits_allowed = ?, bb_allowed = ?, h_plus_bb = ?, k = ?,
-                                        fantasy_points = ?
-                                    WHERE date = ? AND player_id = ? AND fantasy_team_id = ?
-                                `, [
-                                    pitcher.teamName, seasonId, teamData.periodNumber,
-                                    'TmP', 1,
-                                    pitcher.wins, pitcher.ip, ip_outs, pitcher.earned_runs,
-                                    pitcher.hits_allowed, pitcher.bb_allowed, pitcher.h_plus_bb, pitcher.strikeouts,
-                                    pitcher.fantasyPoints,
-                                    date, pitcherId, teamId
-                                ]);
-                            } else {
-                                // Insert new stat
-                                await this.db.run(`
-                                    INSERT INTO player_daily_stats (
-                                        date, player_id, mlb_team, fantasy_team_id, season_id, period_number,
-                                        position_played, active, wins, innings_pitched, ip_outs, earned_runs,
-                                        hits_allowed, bb_allowed, h_plus_bb, k, fantasy_points
-                                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                                `, [
-                                    date, pitcherId, pitcher.teamName, teamId, seasonId, teamData.periodNumber,
-                                    'TmP', 1, pitcher.wins, pitcher.ip, ip_outs, pitcher.earned_runs,
-                                    pitcher.hits_allowed, pitcher.bb_allowed, pitcher.h_plus_bb, pitcher.strikeouts,
-                                    pitcher.fantasyPoints
-                                ]);
-                            }
-
-                            playerStatsCount++;
-                        } catch (error) {
-                            console.error(`Error saving pitching stat: ${error.message}`);
-                        }
-                    }
-
-                    // Update team daily stats - manually instead of using the method with transactions
-                    try {
-                        // Calculate hitting totals
-                        const hittingTotals = await this.db.get(`
-                            SELECT 
-                                SUM(ab) as at_bats,
-                                SUM(h) as hits,
-                                SUM(r) as runs,
-                                SUM(singles) as singles,
-                                SUM(doubles) as doubles,
-                                SUM(triples) as triples,
-                                SUM(hr) as home_runs,
-                                SUM(rbi) as rbis,
-                                SUM(bb) as walks,
-                                SUM(sb) as stolen_bases,
-                                SUM(cs) as caught_stealing,
-                                SUM(CASE WHEN position_played != 'TmP' THEN fantasy_points ELSE 0 END) as hitting_points
-                            FROM player_daily_stats
-                            WHERE date = ? AND fantasy_team_id = ? AND active = 1
-                        `, [date, teamId]);
-
-                        // Calculate pitching totals
-                        const pitchingTotals = await this.db.get(`
-                            SELECT 
-                                SUM(wins) as wins,
-                                SUM(ip_outs) as innings_pitched_outs,
-                                SUM(earned_runs) as earned_runs,
-                                SUM(h_plus_bb) as hits_plus_walks,
-                                SUM(k) as strikeouts,
-                                SUM(CASE WHEN position_played = 'TmP' THEN fantasy_points ELSE 0 END) as pitching_points
-                            FROM player_daily_stats
-                            WHERE date = ? AND fantasy_team_id = ? AND active = 1
-                        `, [date, teamId]);
-
-                        // Calculate total points
-                        const hittingPoints = hittingTotals.hitting_points || 0;
-                        const pitchingPoints = pitchingTotals.pitching_points || 0;
-                        const totalPoints = hittingPoints + pitchingPoints;
-
-                        // Get period number
-                        const periodData = await this.db.get(
-                            'SELECT period_number FROM player_daily_stats WHERE date = ? AND fantasy_team_id = ? LIMIT 1',
-                            [date, teamId]
-                        );
-                        const periodNumber = periodData ? periodData.period_number : null;
-
-                        // Update or insert team stats
-                        const existingTeamStat = await this.db.get(
-                            'SELECT * FROM fantasy_team_daily_stats WHERE date = ? AND fantasy_team_id = ?',
-                            [date, teamId]
-                        );
-
-                        if (existingTeamStat) {
-                            await this.db.run(`
-                                UPDATE fantasy_team_daily_stats
-                                SET 
-                                    at_bats = ?, hits = ?, runs = ?, singles = ?, doubles = ?,
-                                    triples = ?, home_runs = ?, rbis = ?, walks = ?,
-                                    stolen_bases = ?, caught_stealing = ?, wins = ?,
-                                    innings_pitched_outs = ?, earned_runs = ?, hits_plus_walks = ?,
-                                    strikeouts = ?, hitting_points = ?, pitching_points = ?, total_points = ?
-                                WHERE date = ? AND fantasy_team_id = ?
-                            `, [
-                                hittingTotals.at_bats || 0, hittingTotals.hits || 0, hittingTotals.runs || 0,
-                                hittingTotals.singles || 0, hittingTotals.doubles || 0, hittingTotals.triples || 0,
-                                hittingTotals.home_runs || 0, hittingTotals.rbis || 0, hittingTotals.walks || 0,
-                                hittingTotals.stolen_bases || 0, hittingTotals.caught_stealing || 0,
-                                pitchingTotals.wins || 0, pitchingTotals.innings_pitched_outs || 0,
-                                pitchingTotals.earned_runs || 0, pitchingTotals.hits_plus_walks || 0,
-                                pitchingTotals.strikeouts || 0, hittingPoints, pitchingPoints, totalPoints,
-                                date, teamId
-                            ]);
-                        } else {
-                            await this.db.run(`
-                                INSERT INTO fantasy_team_daily_stats (
-                                    date, fantasy_team_id, season_id, period_number, at_bats, hits, runs,
-                                    singles, doubles, triples, home_runs, rbis, walks, stolen_bases,
-                                    caught_stealing, wins, innings_pitched_outs, earned_runs, hits_plus_walks,
-                                    strikeouts, hitting_points, pitching_points, total_points
-                                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                            `, [
-                                date, teamId, seasonId, periodNumber,
-                                hittingTotals.at_bats || 0, hittingTotals.hits || 0, hittingTotals.runs || 0,
-                                hittingTotals.singles || 0, hittingTotals.doubles || 0, hittingTotals.triples || 0,
-                                hittingTotals.home_runs || 0, hittingTotals.rbis || 0, hittingTotals.walks || 0,
-                                hittingTotals.stolen_bases || 0, hittingTotals.caught_stealing || 0,
-                                pitchingTotals.wins || 0, pitchingTotals.innings_pitched_outs || 0,
-                                pitchingTotals.earned_runs || 0, pitchingTotals.hits_plus_walks || 0,
-                                pitchingTotals.strikeouts || 0, hittingPoints, pitchingPoints, totalPoints
-                            ]);
-                        }
-
-                        teamStatsCount++;
-                    } catch (error) {
-                        console.error(`Error updating team stats: ${error.message}`);
-                    }
-                }
-
-                // Update matchup results - manual implementation to avoid nested transactions
-                let matchupsUpdated = 0;
-                try {
-                    // Get period number
-                    const periodData = await this.db.get(
-                        'SELECT period_number FROM player_daily_stats WHERE date = ? AND season_id = ? LIMIT 1',
-                        [date, seasonId]
-                    );
-
-                    if (periodData && periodData.period_number) {
-                        const periodNumber = periodData.period_number;
-
-                        // Get matchups for this period
-                        const matchups = await this.db.all(`
-                            SELECT 
-                                s.id as matchup_id,
-                                s.away_team_id,
-                                s.home_team_id,
-                                s.period_number,
-                                s.matchup_id as fantrax_matchup_id
-                            FROM schedule s
-                            WHERE s.season_id = ? AND s.period_number = ?
-                        `, [seasonId, periodNumber]);
-
-                        if (matchups.length > 0) {
-                            // Get team daily stats
-                            const teamStats = await this.db.all(`
-                                SELECT 
-                                    fantasy_team_id,
-                                    total_points
-                                FROM fantasy_team_daily_stats
-                                WHERE date = ? AND season_id = ?
-                            `, [date, seasonId]);
-
-                            // Create a map of team ID to points
-                            const teamPointsMap = new Map();
-                            teamStats.forEach(stat => {
-                                teamPointsMap.set(stat.fantasy_team_id, stat.total_points);
-                            });
-
-                            // Update or insert matchup results
-                            for (const matchup of matchups) {
-                                const awayPoints = teamPointsMap.get(matchup.away_team_id) || 0;
-                                const homePoints = teamPointsMap.get(matchup.home_team_id) || 0;
-
-                                // Check if record exists
-                                const existingRecord = await this.db.get(`
-                                    SELECT * FROM matchup_daily_results 
-                                    WHERE date = ? AND away_team_id = ? AND home_team_id = ?
-                                `, [date, matchup.away_team_id, matchup.home_team_id]);
-
-                                if (existingRecord) {
-                                    // Update existing record
-                                    await this.db.run(`
-                                        UPDATE matchup_daily_results
-                                        SET 
-                                            season_id = ?,
-                                            period_number = ?,
-                                            matchup_id = ?,
-                                            away_points = ?,
-                                            home_points = ?
-                                        WHERE date = ? AND away_team_id = ? AND home_team_id = ?
-                                    `, [
-                                        seasonId,
-                                        periodNumber,
-                                        matchup.fantrax_matchup_id,
-                                        awayPoints,
-                                        homePoints,
-                                        date,
-                                        matchup.away_team_id,
-                                        matchup.home_team_id
-                                    ]);
-                                } else {
-                                    // Insert new record
-                                    await this.db.run(`
-                                        INSERT INTO matchup_daily_results (
-                                            date,
-                                            season_id,
-                                            period_number,
-                                            matchup_id,
-                                            away_team_id,
-                                            home_team_id,
-                                            away_points,
-                                            home_points
-                                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                                    `, [
-                                        date,
-                                        seasonId,
-                                        periodNumber,
-                                        matchup.fantrax_matchup_id,
-                                        matchup.away_team_id,
-                                        matchup.home_team_id,
-                                        awayPoints,
-                                        homePoints
-                                    ]);
-                                }
-
-                                matchupsUpdated++;
-                            }
-                        }
-                    }
-                } catch (error) {
-                    console.error(`Error updating matchup results: ${error.message}`);
-                }
-
-                // Commit transaction
-                await this.db.run('COMMIT');
-                transactionStarted = false;
-
-                console.log(`Successfully saved ${playerStatsCount} player stats and ${teamStatsCount} team stats for date ${date}`);
-                return { playerStats: playerStatsCount, teamStats: teamStatsCount, matchups: matchupsUpdated };
-            } catch (error) {
-                // Only try to rollback if we started the transaction
-                if (transactionStarted) {
-                    try {
-                        console.log('Rolling back transaction due to error');
-                        await this.db.run('ROLLBACK');
-                    } catch (rollbackError) {
-                        console.error('Error during rollback:', rollbackError);
-                    }
-                }
-                throw error;
-            }
-        } catch (error) {
-            console.error(`Error saving player stats data for date ${date}:`, error);
-            throw error;
-        }
-    }
-
     // Add a method to save season stats data
     async saveSeasonStatsData(data, seasonId) {
         if (!this.initialized) {
@@ -815,6 +405,104 @@ class DatabaseService {
             }
         } catch (error) {
             console.error(`Error saving season stats data for season ID ${seasonId}:`, error);
+            throw error;
+        }
+    }
+
+    // Add this new method to your DatabaseService class
+    /**
+     * Save roster data
+     * @param {Array} rosterData - Array of roster data objects from scraper
+     * @param {string} season - Season year
+     * @param {string} leagueId - Fantrax league ID
+     * @returns {Promise<Object>} Results of the save operation
+     */
+    async saveRosterData(rosterData, season, leagueId) {
+        if (!this.initialized) {
+            await this.initialize();
+        }
+
+        try {
+            // Get or create season
+            const dbSeason = await this.seasons.getSeasonByLeagueId(leagueId);
+            if (!dbSeason) {
+                throw new Error(`Season with league ID ${leagueId} not found`);
+            }
+
+            let processedEntries = 0;
+            let matchedPlayers = 0;
+
+            // Process each roster data object (each represents a team for a period)
+            for (const teamRoster of rosterData) {
+                const { periodNumber, teamId, players } = teamRoster;
+
+                // Convert player data to roster entries
+                const rosterEntries = [];
+
+                for (const player of players) {
+                    // Skip entries with missing essential data
+                    if (!player.playerName || !player.positionCode) continue;
+
+                    // Try to match player with MLB database
+                    let playerId = null;
+
+                    // Skip matching for team pitching
+                    if (player.type !== 'teamPitching') {
+                        // Try to find player by normalized name
+                        const normalizedName = player.normalizedName;
+
+                        // First try exact match on normalized name
+                        const playerMatch = await this.db.get(`
+                        SELECT id FROM players 
+                        WHERE normalized_full_name = ?
+                        LIMIT 1
+                    `, [normalizedName]);
+
+                        if (playerMatch) {
+                            playerId = playerMatch.id;
+                            matchedPlayers++;
+                        }
+                    }
+
+                    // Create roster entry
+                    rosterEntries.push({
+                        seasonId: dbSeason.id,
+                        teamId,
+                        periodNumber,
+                        playerId,
+                        positionCode: player.positionCode,
+                        rosterSlot: player.rosterSlot,
+                        isActive: player.isActive,
+                        playerName: player.playerName,
+                        playerNameNormalized: player.normalizedName,
+                        mlbTeam: player.mlbTeam,
+                        batSide: player.batSide,
+                        fantraxPlayerId: player.fantraxPlayerId
+                    });
+                }
+
+                // First clear any existing entries for this team/period
+                await this.rosters.deleteTeamPeriodRosters(teamId, periodNumber);
+
+                // Save all roster entries for this team/period
+                if (rosterEntries.length > 0) {
+                    const savedCount = await this.rosters.bulkUpsertRosterEntries(rosterEntries);
+                    processedEntries += savedCount;
+                }
+            }
+
+            // Try to match any remaining unmatched players
+            const matchingResults = await this.rosters.matchPlayerNames(dbSeason.id);
+
+            return {
+                processedRosters: rosterData.length,
+                processedEntries,
+                initialMatches: matchedPlayers,
+                additionalMatches: matchingResults.matched,
+                unmatchedEntries: matchingResults.stillUnmatched
+            };
+        } catch (error) {
+            console.error(`Error saving roster data for ${season}:`, error);
             throw error;
         }
     }

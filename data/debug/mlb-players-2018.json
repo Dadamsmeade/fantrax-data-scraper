@@ -66634,7 +66634,7 @@
       "birthCountry": "Japan",
       "height": "6' 2\"",
       "weight": 214,
-      "active": false,
+      "active": true,
       "currentTeam": {
         "id": 147,
         "name": "New York Yankees",
@@ -66654,7 +66654,6 @@
       "isPlayer": true,
       "isVerified": true,
       "pronunciation": "mahs-uh-hero tun-ah-kuh",
-      "lastPlayedDate": "2020-09-23",
       "mlbDebutDate": "2014-04-04",
       "batSide": {
         "code": "R",

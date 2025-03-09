@@ -4775,6 +4775,7 @@
         "description": "Left"
       },
       "nameFirstLast": "Alberto Baldonado",
+      "nameSlug": "alberto-baldonado-593604",
       "firstLastName": "Alberto Baldonado",
       "lastFirstName": "Baldonado, Alberto",
       "lastInitName": "Baldonado, A",
@@ -36241,8 +36242,8 @@
       "initLastName": "R Jeffers",
       "fullFMLName": "Ryan Michael Jeffers",
       "fullLFMName": "Jeffers, Ryan Michael",
-      "strikeZoneTop": 3.31,
-      "strikeZoneBottom": 1.59
+      "strikeZoneTop": 3.32,
+      "strikeZoneBottom": 1.6
     },
     {
       "id": 657228,
@@ -37500,7 +37501,7 @@
       "initLastName": "J Kelenic",
       "fullFMLName": "Jarred Robert Kelenic",
       "fullLFMName": "Kelenic, Jarred Robert",
-      "strikeZoneTop": 3.48,
+      "strikeZoneTop": 3.47,
       "strikeZoneBottom": 1.66
     },
     {

@@ -15,19 +15,27 @@ const DEBUG_DIR = path.join(__dirname, 'data/debug');
 // Ensure debug directory exists
 fs.ensureDirSync(DEBUG_DIR);
 
-/**
- * Remove accents from text to normalize character representation
- * @param {string} text - Text to normalize
- * @returns {string} - Normalized text
- */
-function removeAccents(text) {
-    if (!text) return text;
+// Function to normalize player names for better matching
+function normalizePlayerName(name) {
+    if (!name) return '';
 
-    // Normalize to NFD form (decompose accented characters)
-    // Then replace combining diacritical marks with empty string
-    return text
+    // Convert to lowercase and normalize Unicode
+    let normalized = name.toLowerCase()
         .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '');
+        .replace(/[\u0300-\u036f]/g, ''); // Remove diacritical marks
+
+    // Remove common suffixes and prefixes
+    normalized = normalized
+        .replace(/\s+jr\.?$|\s+sr\.?$|\s+ii$|\s+iii$|\s+iv$/, '') // Remove suffixes like Jr., Sr., III
+        .replace(/^the\s+/, ''); // Remove "The" prefix
+
+    // Remove punctuation and ensure single spaces
+    normalized = normalized
+        .replace(/[.,''"\-]/g, '')  // Remove punctuation
+        .replace(/\s+/g, ' ')      // Ensure single spaces
+        .trim();                    // Remove leading/trailing spaces
+
+    return normalized;
 }
 
 /**
@@ -129,9 +137,9 @@ async function saveUniquePlayersToDatabase(db, players) {
         for (const player of playerMap.values()) {
             try {
                 // Normalize name fields
-                const normalizedFullName = removeAccents(player.fullName);
-                const normalizedFirstName = removeAccents(player.firstName);
-                const normalizedLastName = removeAccents(player.lastName);
+                const normalizedFullName = normalizePlayerName(player.fullName);
+                const normalizedFirstName = normalizePlayerName(player.firstName);
+                const normalizedLastName = normalizePlayerName(player.lastName);
 
                 // Log a sample of normalized names
                 if (insertedCount < 5) {
