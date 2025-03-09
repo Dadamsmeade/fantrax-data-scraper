@@ -1,3 +1,4 @@
+// Modified scrapeSchedule function with updated playoff handling
 const { takeScreenshot } = require('../utils/browser');
 const { FANTRAX_BASE_URL } = require('../auth');
 const fs = require('fs-extra');
@@ -129,6 +130,12 @@ async function scrapeSchedule(page, leagueId) {
                 };
             }
 
+            // Track the last period number for reference
+            let lastRegularPeriodNumber = 0;
+
+            // Track playoff rounds for determining Championship vs Playoff
+            let playoffRound = 0;
+
             // Process each scoring period
             scoringPeriods.forEach((periodContainer, index) => {
                 try {
@@ -166,10 +173,37 @@ async function scrapeSchedule(page, leagueId) {
 
                     // Extract period number
                     let periodNumber = '';
+                    let periodType = isPlayoff ? 'Playoff' : 'Regular Season';
+
                     if (periodHeader.includes('Scoring Period')) {
+                        // Regular season period
                         periodNumber = periodHeader.match(/Scoring Period (\d+)/)?.[1] || '';
+                        lastRegularPeriodNumber = parseInt(periodNumber, 10);
                     } else if (periodHeader.includes('Round')) {
-                        periodNumber = `Playoff-${periodHeader.match(/Round (\d+)/)?.[1] || ''}`;
+                        // Playoff round - using just the number as requested
+                        // Extract the round number
+                        const playoffRoundMatch = periodHeader.match(/Round (\d+)/);
+                        if (playoffRoundMatch) {
+                            playoffRound = parseInt(playoffRoundMatch[1], 10);
+
+                            // Set the period number to continue from regular season
+                            // For example, if last regular period was 25, first playoff would be 26
+                            periodNumber = (lastRegularPeriodNumber + playoffRound).toString();
+
+                            // Set period type based on round as requested
+                            if (playoffRound === 1) {
+                                periodType = 'Playoff';
+                            } else if (playoffRound === 2) {
+                                periodType = 'Championship';
+                            } else {
+                                // Handle additional rounds if they exist
+                                periodType = 'Playoff';
+                            }
+                        } else {
+                            // Fallback if we can't parse the round number
+                            periodNumber = `${lastRegularPeriodNumber + index + 1}`;
+                            periodType = 'Playoff';
+                        }
                     } else if (/Period \d+/.test(periodHeader)) {
                         periodNumber = periodHeader.match(/Period (\d+)/)[1];
                     } else {
@@ -245,13 +279,13 @@ async function scrapeSchedule(page, leagueId) {
                                 leagueId,
                                 season: seasonText.trim() || 'Unknown',
                                 periodNumber,
-                                periodType: isPlayoff ? 'Playoff' : 'Regular Season',
+                                periodType,
                                 dateRange: dateRange || 'Unknown',
                                 awayTeamName,
                                 awayTeamId,
                                 homeTeamName,
                                 homeTeamId,
-                                matchupId: row.id || `period${periodNumber}-${awayTeamId}-${homeTeamId}`
+                                matchupId: `${awayTeamId}_${homeTeamId}`
                             };
 
                             allMatchups.push(matchup);

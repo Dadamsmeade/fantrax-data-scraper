@@ -26,17 +26,17 @@ const SEASONS = [
 
 // Select which seasons to scrape
 // Set to empty array to scrape all seasons
-// const YEARS_TO_SCRAPE = ['2024']; // Example: only scrape 2024 and 2023
-const YEARS_TO_SCRAPE = ['2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017'];
+const YEARS_TO_SCRAPE = ['2024']; // Example: only scrape 2024 and 2023
+// const YEARS_TO_SCRAPE = ['2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017'];
 
 // Choose which data types to scrape
 const DATA_TYPES = {
-    SCHEDULE: true,      // Scrape schedule data
+    SCHEDULE: false,      // Scrape schedule data
     STANDINGS: false,     // Scrape standings data
     SEASON_STATS: false,  // Scrape season stats data
-    ROSTERS: false,        // Scrape roster data
+    ROSTERS: true,        // Scrape roster data
     ROSTER_OPTIONS: {     // Roster scraping options
-        startPeriod: 1,   // Start from this period (set to 1 to start from beginning)
+        startPeriod: 20,   // Start from this period (set to 1 to start from beginning)
         // endPeriod: 8,     // End at this period (comment out to use maxPeriods)
         maxPeriods: 10    // Maximum number of periods to scrape (ignored if endPeriod is set)
     }
