@@ -4,83 +4,6 @@ const fs = require('fs-extra');
 const path = require('path');
 
 /**
- * Scrape roster data for all teams in a league for specified periods
- * @param {Page} page - Puppeteer page object
- * @param {string} leagueId - Fantrax league ID
- * @param {Array<Object>} teams - Array of team objects from database
- * @param {Object} dbService - Database service instance
- * @param {number} seasonId - Season ID from database
- * @param {number} maxPeriods - Maximum number of periods to scrape (for testing)
- * @returns {Promise<Array>} - Array of roster data for all teams and periods
- */
-async function scrapeLeagueRosters(page, leagueId, teams, dbService, seasonId, maxPeriods = 1) {
-    console.log(`Scraping rosters for league ${leagueId}, season ID ${seasonId}, max periods: ${maxPeriods}`);
-    const allRosterData = [];
-
-    try {
-        // Get all schedule entries for this season to determine max period number
-        const schedule = await dbService.schedule.getScheduleBySeason(seasonId);
-
-        // Extract unique period numbers from schedule
-        const periodNumbers = [...new Set(schedule.map(entry => parseInt(entry.period_number, 10)))];
-
-        // Sort period numbers and filter out any non-numeric periods (like playoff periods)
-        const regularPeriods = periodNumbers
-            .filter(period => !isNaN(period))
-            .sort((a, b) => a - b);
-
-        console.log(`Found ${regularPeriods.length} regular season periods in the schedule data`);
-
-        if (regularPeriods.length === 0) {
-            console.warn('No regular season periods found in schedule. Make sure to scrape schedule data first.');
-            return allRosterData;
-        }
-
-        // Get the maximum period number
-        const maxPeriodNumber = regularPeriods[regularPeriods.length - 1];
-
-        // Calculate how many periods to actually scrape
-        const periodsToScrape = Math.min(maxPeriodNumber, maxPeriods);
-        console.log(`Will scrape ${periodsToScrape} periods for each team (out of ${maxPeriodNumber} total periods)`);
-
-        // Process each team
-        for (const team of teams) {
-            console.log(`Processing team: ${team.name} (ID: ${team.team_id})`);
-
-            // Scrape each period for this team
-            for (let period = 1; period <= periodsToScrape; period++) {
-                console.log(`Scraping period ${period} for team ${team.name}`);
-
-                try {
-                    const rosterData = await scrapeTeamRoster(page, leagueId, team.team_id, period);
-
-                    // Add team and period information
-                    rosterData.teamId = team.id; // Database ID
-                    rosterData.fantraxTeamId = team.team_id; // Fantrax ID
-                    rosterData.periodNumber = period;
-                    rosterData.seasonId = seasonId; // Add the season ID
-
-                    allRosterData.push(rosterData);
-
-                    // Brief pause between requests to avoid rate limiting
-                    // Use setTimeout instead of page.waitForTimeout
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-                } catch (periodError) {
-                    console.error(`Error scraping period ${period} for team ${team.name}:`, periodError);
-                    // Continue with next period
-                }
-            }
-        }
-
-        console.log(`Successfully scraped ${allRosterData.length} team roster periods`);
-        return allRosterData;
-    } catch (error) {
-        console.error('Error scraping league rosters:', error);
-        throw error;
-    }
-}
-
-/**
  * Scrape roster data for a team in a specific period
  * @param {Page} page - Puppeteer page object
  * @param {string} leagueId - Fantrax league ID
@@ -95,10 +18,49 @@ async function scrapeTeamRoster(page, leagueId, teamId, period) {
         // Navigate to the team roster page for the specified period
         const url = `${FANTRAX_BASE_URL}/fantasy/league/${leagueId}/team/roster;period=${period};teamId=${teamId}`;
         console.log(`Navigating to: ${url}`);
-        await page.goto(url, { waitUntil: 'networkidle2' });
 
-        // Wait for content to load properly
-        await page.waitForSelector('app-league-team-roster', { timeout: 15000 });
+        // Add retry logic for navigation
+        let maxRetries = 3;
+        let success = false;
+        let error;
+
+        for (let attempt = 1; attempt <= maxRetries && !success; attempt++) {
+            try {
+                // Clear cache if this is a retry attempt
+                if (attempt > 1) {
+                    console.log(`Retry attempt ${attempt}/${maxRetries} for period ${period}, team ${teamId}`);
+
+                    try {
+                        const client = await page.target().createCDPSession();
+                        await client.send('Network.clearBrowserCache');
+                        await client.send('Network.clearBrowserCookies');
+                    } catch (e) {
+                        console.log('Could not clear cache:', e.message);
+                    }
+                }
+
+                // Go to the page and wait for it to load
+                await page.goto(url, {
+                    waitUntil: 'networkidle2',
+                    timeout: 30000  // Increase timeout for potentially slow pages
+                });
+
+                // Wait for the roster content to appear
+                await page.waitForSelector('app-league-team-roster', { timeout: 20000 });
+
+                success = true;
+            } catch (attemptError) {
+                error = attemptError;
+                console.error(`Navigation attempt ${attempt} failed:`, attemptError.message);
+
+                // Pause before next retry
+                await new Promise(resolve => setTimeout(resolve, 5000));
+            }
+        }
+
+        if (!success) {
+            throw new Error(`Failed to load roster page after ${maxRetries} attempts: ${error.message}`);
+        }
 
         // Take a screenshot for debugging
         // await takeScreenshot(page, `roster-team-${teamId}-period-${period}`);
@@ -292,6 +254,141 @@ async function scrapeTeamRoster(page, leagueId, teamId, period) {
         }
     } catch (error) {
         console.error('Error scraping roster:', error);
+        throw error;
+    }
+}
+
+/**
+ * Scrape roster data for all teams in a league for specified periods
+ * @param {Page} page - Puppeteer page object
+ * @param {string} leagueId - Fantrax league ID
+ * @param {Array<Object>} teams - Array of team objects from database
+ * @param {Object} dbService - Database service instance
+ * @param {number} seasonId - Season ID from database
+ * @param {Object} options - Scraping options
+ * @param {number} options.startPeriod - Period to start scraping from (default: 1)
+ * @param {number} options.endPeriod - Period to stop scraping at (default: max period)
+ * @param {number} options.maxPeriods - Maximum number of periods to scrape (alternative to endPeriod)
+ * @returns {Promise<Array>} - Array of roster data for all teams and periods
+ */
+async function scrapeLeagueRosters(page, leagueId, teams, dbService, seasonId, options = {}) {
+    // Default options
+    const {
+        startPeriod = 1,
+        endPeriod = null,
+        maxPeriods = null
+    } = options;
+
+    console.log(`Scraping rosters for league ${leagueId}, season ID ${seasonId}`);
+    console.log(`Options: startPeriod=${startPeriod}, endPeriod=${endPeriod}, maxPeriods=${maxPeriods}`);
+
+    const allRosterData = [];
+
+    try {
+        // Get all schedule entries for this season to determine max period number
+        const schedule = await dbService.schedule.getScheduleBySeason(seasonId);
+
+        // Extract unique period numbers from schedule
+        const periodNumbers = [...new Set(schedule.map(entry => parseInt(entry.period_number, 10)))];
+
+        // Sort period numbers and filter out any non-numeric periods (like playoff periods)
+        const regularPeriods = periodNumbers
+            .filter(period => !isNaN(period))
+            .sort((a, b) => a - b);
+
+        console.log(`Found ${regularPeriods.length} regular season periods in the schedule data`);
+
+        if (regularPeriods.length === 0) {
+            console.warn('No regular season periods found in schedule. Make sure to scrape schedule data first.');
+            return allRosterData;
+        }
+
+        // Get the maximum period number
+        const maxPeriodNumber = regularPeriods[regularPeriods.length - 1];
+
+        // Determine effective end period based on parameters
+        const effectiveEndPeriod = endPeriod
+            ? Math.min(endPeriod, maxPeriodNumber)
+            : (maxPeriods ? Math.min(startPeriod + maxPeriods - 1, maxPeriodNumber) : maxPeriodNumber);
+
+        // Validate start and end periods
+        const effectiveStartPeriod = Math.max(1, Math.min(startPeriod, maxPeriodNumber));
+
+        if (effectiveEndPeriod < effectiveStartPeriod) {
+            console.warn(`Invalid period range: start=${effectiveStartPeriod}, end=${effectiveEndPeriod}`);
+            return allRosterData;
+        }
+
+        console.log(`Will scrape periods ${effectiveStartPeriod} to ${effectiveEndPeriod} for each team (out of ${maxPeriodNumber} total periods)`);
+
+        // Process each team
+        for (const team of teams) {
+            console.log(`Processing team: ${team.name} (ID: ${team.team_id})`);
+            let teamSuccessCount = 0;
+            let teamFailCount = 0;
+
+            // Scrape each period for this team
+            for (let period = effectiveStartPeriod; period <= effectiveEndPeriod; period++) {
+                console.log(`Scraping period ${period} for team ${team.name}`);
+
+                try {
+                    const rosterData = await scrapeTeamRoster(page, leagueId, team.team_id, period);
+
+                    // Add team and period information
+                    rosterData.teamId = team.id; // Database ID
+                    rosterData.fantraxTeamId = team.team_id; // Fantrax ID
+                    rosterData.periodNumber = period;
+                    rosterData.seasonId = seasonId; // Add the season ID
+
+                    allRosterData.push(rosterData);
+                    teamSuccessCount++;
+
+                    // Save after each period to ensure data is persisted even if we abort later
+                    try {
+                        await dbService.saveRosterData([rosterData], null, leagueId);
+                        console.log(`Saved roster data for team ${team.name}, period ${period}`);
+                    } catch (saveError) {
+                        console.error(`Error saving roster data for team ${team.name}, period ${period}:`, saveError);
+                    }
+
+                    // Brief pause between requests to avoid rate limiting
+                    // Use normal setTimeout for compatibility
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                } catch (periodError) {
+                    console.error(`Error scraping period ${period} for team ${team.name}:`, periodError);
+                    teamFailCount++;
+
+                    // If we have 3 consecutive failures for a team, move on to next team
+                    if (teamFailCount >= 3) {
+                        console.log(`Too many failures for team ${team.name}, moving to next team`);
+                        break;
+                    }
+
+                    // Slightly longer pause after an error
+                    await new Promise(resolve => setTimeout(resolve, 5000));
+                }
+            }
+
+            // Try to free memory between teams
+            if (global.gc) {
+                try {
+                    global.gc();
+                    console.log('Garbage collection run between teams');
+                } catch (gcError) {
+                    console.log('Failed to run garbage collection');
+                }
+            }
+
+            console.log(`Completed team ${team.name}: ${teamSuccessCount} periods scraped, ${teamFailCount} failures`);
+
+            // Wait a bit longer between teams
+            await new Promise(resolve => setTimeout(resolve, 5000));
+        }
+
+        console.log(`Successfully scraped ${allRosterData.length} team roster periods`);
+        return allRosterData;
+    } catch (error) {
+        console.error('Error scraping league rosters:', error);
         throw error;
     }
 }

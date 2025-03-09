@@ -26,15 +26,20 @@ const SEASONS = [
 
 // Select which seasons to scrape
 // Set to empty array to scrape all seasons
-const YEARS_TO_SCRAPE = ['2024']; // Example: only scrape 2024 and 2023
+// const YEARS_TO_SCRAPE = ['2024']; // Example: only scrape 2024 and 2023
+const YEARS_TO_SCRAPE = ['2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017'];
 
 // Choose which data types to scrape
 const DATA_TYPES = {
-    SCHEDULE: false,      // Scrape schedule data
+    SCHEDULE: true,      // Scrape schedule data
     STANDINGS: false,     // Scrape standings data
     SEASON_STATS: false,  // Scrape season stats data
-    ROSTERS: true,       // Scrape roster data
-    MAX_ROSTER_PERIODS: 10 // Maximum number of periods to scrape (for testing)
+    ROSTERS: false,        // Scrape roster data
+    ROSTER_OPTIONS: {     // Roster scraping options
+        startPeriod: 1,   // Start from this period (set to 1 to start from beginning)
+        // endPeriod: 8,     // End at this period (comment out to use maxPeriods)
+        maxPeriods: 10    // Maximum number of periods to scrape (ignored if endPeriod is set)
+    }
 };
 
 // Filter seasons based on YEARS_TO_SCRAPE
@@ -106,7 +111,7 @@ async function main() {
 
             // Scrape and save roster data
             if (DATA_TYPES.ROSTERS) {
-                await processRosterData(page, season, seasonId, DATA_TYPES.MAX_ROSTER_PERIODS);
+                await processRosterData(page, season, seasonId, DATA_TYPES.ROSTER_OPTIONS);
             }
         }
 
@@ -245,10 +250,22 @@ async function processSeasonStatsData(page, season, seasonId) {
  * @param {Page} page - Puppeteer page object
  * @param {Object} season - Season object
  * @param {number} seasonId - Season database ID
- * @param {number} maxPeriods - Maximum number of periods to scrape (for testing)
+ * @param {Object} options - Scraping options
+ * @param {number} options.startPeriod - Period to start scraping from (default: 1)
+ * @param {number} options.endPeriod - Period to stop scraping at
+ * @param {number} options.maxPeriods - Maximum number of periods to scrape
  */
-async function processRosterData(page, season, seasonId, maxPeriods = 1) {
-    console.log(`Scraping rosters for ${season.year} season (max periods: ${maxPeriods})...`);
+async function processRosterData(page, season, seasonId, options = {}) {
+    const { startPeriod = 1, endPeriod = null, maxPeriods = null } = options;
+
+    const optionsDesc = [];
+    if (startPeriod > 1) optionsDesc.push(`starting from period ${startPeriod}`);
+    if (endPeriod) optionsDesc.push(`ending at period ${endPeriod}`);
+    if (maxPeriods) optionsDesc.push(`max ${maxPeriods} periods`);
+
+    const optionsStr = optionsDesc.length > 0 ? ` (${optionsDesc.join(', ')})` : '';
+    console.log(`Scraping rosters for ${season.year} season${optionsStr}...`);
+
     try {
         // Get teams for this season
         const teams = await dbService.teams.getTeamsBySeason(seasonId);
@@ -270,13 +287,14 @@ async function processRosterData(page, season, seasonId, maxPeriods = 1) {
         }
 
         // Use the improved scraper that leverages existing schedule data
+        // Note: We're not using saveRosterData here because the scraper now saves data for each period
         const rosterData = await scrapeLeagueRosters(
             page,
             season.leagueId,
             teams,
             dbService,
             seasonId,
-            maxPeriods
+            { startPeriod, endPeriod, maxPeriods }
         );
 
         if (rosterData.length === 0) {
@@ -284,17 +302,8 @@ async function processRosterData(page, season, seasonId, maxPeriods = 1) {
             return;
         }
 
-        // Save roster data to database
-        console.log(`Saving ${rosterData.length} roster periods to database...`);
-        const result = await dbService.saveRosterData(
-            rosterData,
-            season.year,
-            season.leagueId
-        );
-
-        console.log(`Database update complete for ${season.year} rosters`);
-        console.log(`Processed ${result.processedRosters} team roster periods with ${result.processedEntries} entries`);
-        console.log(`Matched ${result.initialMatches + result.additionalMatches} players with MLB database (${result.unmatchedEntries} still unmatched)`);
+        console.log(`Scraping complete for ${season.year} rosters`);
+        console.log(`Total roster periods scraped: ${rosterData.length}`);
 
     } catch (error) {
         console.error(`Error processing rosters for ${season.year} season:`, error.message);
