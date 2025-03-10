@@ -75,7 +75,7 @@ class RostersDb {
         const {
             seasonId, teamId, periodNumber, playerId, positionCode,
             rosterSlot, isActive, playerName, playerNameNormalized,
-            mlbTeam, batSide, fantraxPlayerId
+            mlbTeam, batSide, fantraxPlayerId, pitchingStaffId
         } = entry;
 
         // Validate required fields
@@ -92,30 +92,30 @@ class RostersDb {
             if (existingEntry) {
                 // Update existing entry
                 await this.db.run(`
-                    UPDATE rosters 
-                    SET player_id = ?, is_active = ?, player_name = ?, 
-                        player_name_normalized = ?, mlb_team = ?, bat_side = ?, 
-                        fantrax_player_id = ?
-                    WHERE season_id = ? AND team_id = ? AND period_number = ? 
-                    AND position_code = ? AND roster_slot = ?
-                `, [
+          UPDATE rosters 
+          SET player_id = ?, is_active = ?, player_name = ?, 
+              player_name_normalized = ?, mlb_team = ?, bat_side = ?, 
+              fantrax_player_id = ?, pitching_staff_id = ?
+          WHERE season_id = ? AND team_id = ? AND period_number = ? 
+          AND position_code = ? AND roster_slot = ?
+        `, [
                     playerId, isActive ? 1 : 0, playerName,
                     playerNameNormalized, mlbTeam, batSide,
-                    fantraxPlayerId,
+                    fantraxPlayerId, pitchingStaffId,
                     seasonId, teamId, periodNumber, positionCode, rosterSlot
                 ]);
             } else {
                 // Insert new entry
                 await this.db.run(`
-                    INSERT INTO rosters (
-                        season_id, team_id, period_number, player_id, position_code,
-                        roster_slot, is_active, player_name, player_name_normalized,
-                        mlb_team, bat_side, fantrax_player_id
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                `, [
+          INSERT INTO rosters (
+            season_id, team_id, period_number, player_id, position_code,
+            roster_slot, is_active, player_name, player_name_normalized,
+            mlb_team, bat_side, fantrax_player_id, pitching_staff_id
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `, [
                     seasonId, teamId, periodNumber, playerId, positionCode,
                     rosterSlot, isActive ? 1 : 0, playerName, playerNameNormalized,
-                    mlbTeam, batSide, fantraxPlayerId
+                    mlbTeam, batSide, fantraxPlayerId, pitchingStaffId
                 ]);
             }
 
@@ -139,43 +139,43 @@ class RostersDb {
                     const {
                         seasonId, teamId, periodNumber, playerId, positionCode,
                         rosterSlot, isActive, playerName, playerNameNormalized,
-                        mlbTeam, batSide, fantraxPlayerId
+                        mlbTeam, batSide, fantraxPlayerId, pitchingStaffId
                     } = entry;
 
                     // Check if entry exists
                     const existingEntry = await this.db.get(`
-                        SELECT * FROM rosters 
-                        WHERE season_id = ? AND team_id = ? AND period_number = ? 
-                        AND position_code = ? AND roster_slot = ?
-                    `, [seasonId, teamId, periodNumber, positionCode, rosterSlot]);
+                SELECT * FROM rosters 
+                WHERE season_id = ? AND team_id = ? AND period_number = ? 
+                AND position_code = ? AND roster_slot = ?
+              `, [seasonId, teamId, periodNumber, positionCode, rosterSlot]);
 
                     if (existingEntry) {
                         // Update existing entry
                         await this.db.run(`
-                            UPDATE rosters 
-                            SET player_id = ?, is_active = ?, player_name = ?, 
-                                player_name_normalized = ?, mlb_team = ?, bat_side = ?, 
-                                fantrax_player_id = ?
-                            WHERE season_id = ? AND team_id = ? AND period_number = ? 
-                            AND position_code = ? AND roster_slot = ?
-                        `, [
+                  UPDATE rosters 
+                  SET player_id = ?, is_active = ?, player_name = ?, 
+                      player_name_normalized = ?, mlb_team = ?, bat_side = ?, 
+                      fantrax_player_id = ?, pitching_staff_id = ?
+                  WHERE season_id = ? AND team_id = ? AND period_number = ? 
+                  AND position_code = ? AND roster_slot = ?
+                `, [
                             playerId, isActive ? 1 : 0, playerName,
                             playerNameNormalized, mlbTeam, batSide,
-                            fantraxPlayerId,
+                            fantraxPlayerId, pitchingStaffId,
                             seasonId, teamId, periodNumber, positionCode, rosterSlot
                         ]);
                     } else {
                         // Insert new entry
                         await this.db.run(`
-                            INSERT INTO rosters (
-                                season_id, team_id, period_number, player_id, position_code,
-                                roster_slot, is_active, player_name, player_name_normalized,
-                                mlb_team, bat_side, fantrax_player_id
-                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                        `, [
+                  INSERT INTO rosters (
+                    season_id, team_id, period_number, player_id, position_code,
+                    roster_slot, is_active, player_name, player_name_normalized,
+                    mlb_team, bat_side, fantrax_player_id, pitching_staff_id
+                  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                `, [
                             seasonId, teamId, periodNumber, playerId, positionCode,
                             rosterSlot, isActive ? 1 : 0, playerName, playerNameNormalized,
-                            mlbTeam, batSide, fantraxPlayerId
+                            mlbTeam, batSide, fantraxPlayerId, pitchingStaffId
                         ]);
                     }
 

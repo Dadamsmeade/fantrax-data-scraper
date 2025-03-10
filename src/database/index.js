@@ -448,18 +448,30 @@ class DatabaseService {
 
                     // Try to match player with MLB database
                     let playerId = null;
+                    let pitchingStaffId = null;
 
-                    // Skip matching for team pitching
-                    if (player.type !== 'teamPitching') {
-                        // Try to find player by normalized name
+                    // Handle team pitching entries
+                    if (player.positionCode === 'TmP' || player.positionCode === 'Res') {
+                        // Try to match with MLB team
+                        const mlbTeam = await this.db.get(`
+          SELECT id FROM mlb_teams
+          WHERE short_name = ? OR name LIKE ?
+        `, [player.playerName, `%${player.playerName}%`]);
+
+                        if (mlbTeam) {
+                            pitchingStaffId = mlbTeam.id;
+                            console.log(`Matched team pitching "${player.playerName}" to MLB team ID: ${pitchingStaffId}`);
+                        }
+                    } else {
+                        // Try to find player by normalized name (for regular players)
                         const normalizedName = player.normalizedName;
 
                         // First try exact match on normalized name
                         const playerMatch = await this.db.get(`
-                        SELECT id FROM players 
-                        WHERE normalized_full_name = ?
-                        LIMIT 1
-                    `, [normalizedName]);
+          SELECT id FROM players 
+          WHERE normalized_full_name = ?
+          LIMIT 1
+        `, [normalizedName]);
 
                         if (playerMatch) {
                             playerId = playerMatch.id;
@@ -473,6 +485,7 @@ class DatabaseService {
                         teamId,
                         periodNumber,
                         playerId,
+                        pitchingStaffId,  // Add the new field
                         positionCode: player.positionCode,
                         rosterSlot: player.rosterSlot,
                         isActive: player.isActive,
