@@ -8,6 +8,8 @@ const HittingStatsDb = require('./hittingStatsDb'); // Add this import
 const PitchingStatsDb = require('./pitchingStatsDb'); // Add this import
 const RostersDb = require('./rostersDb'); // Add this import
 const MlbTeamsDb = require('./mlbTeamsDb'); // Add this import
+const MlbGamesDb = require('./mlbGamesDb');
+const BatterGameStatsDb = require('./batterGameStatsDb');
 
 /**
  * Database service that provides access to all database operations
@@ -22,6 +24,8 @@ class DatabaseService {
         this.seasonStats = null;     // New
         this.rosters = null;     // New
         this.mlbTeams = null; // Add this new property
+        this.mlbGames = null;
+        this.batterGameStats = null;
         this.initialized = false;
     }
 
@@ -44,6 +48,8 @@ class DatabaseService {
             this.pitchingStats = new PitchingStatsDb(this.db); // New
             this.rosters = new RostersDb(this.db);
             this.mlbTeams = new MlbTeamsDb(this.db);
+            this.mlbGames = new MlbGamesDb(this.db);
+            this.batterGameStats = new BatterGameStatsDb(this.db);
 
             this.initialized = true;
             return this;
