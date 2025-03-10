@@ -17,8 +17,8 @@ fs.ensureDirSync(DEBUG_DIR);
 
 // Configuration for API request rate limiting
 const BATCH_SIZE = 25; // Process games in batches of this size
-const DELAY_BETWEEN_REQUESTS = 1000; // 1 second delay between API requests
-const DELAY_BETWEEN_BATCHES = 5000; // 5 second delay between batches
+const DELAY_BETWEEN_REQUESTS = 50; // 1 second delay between API requests
+const DELAY_BETWEEN_BATCHES = 100; // 5 second delay between batches
 
 /**
  * Fetch boxscore data for a specific game
@@ -36,8 +36,8 @@ async function fetchBoxscore(gamePk) {
         const response = await axios.get(url);
 
         // Save raw response for debugging
-        const debugFile = path.join(DEBUG_DIR, `boxscore-${gamePk}.json`);
-        await fs.writeJson(debugFile, response.data, { spaces: 2 });
+        // const debugFile = path.join(DEBUG_DIR, `boxscore-${gamePk}.json`);
+        // await fs.writeJson(debugFile, response.data, { spaces: 2 });
 
         return response.data;
     } catch (error) {
@@ -140,10 +140,10 @@ function extractBatterStats(boxscore, gamePk, gameDate) {
                 battingSummary: batting.summary || '',
 
                 // Calculated stats
-                avg: batting.avg || '.000',
-                obp: batting.obp || '.000',
-                slg: batting.slg || '.000',
-                ops: batting.ops || '.000',
+                avg: batting.hits / batting.atBats,
+                obp: (batting.hits + batting.baseOnBalls + batting.hitByPitch) / (batting.atBats + batting.baseOnBalls + batting.hitByPitch + batting.sacFlies),
+                slg: ((batting.hits - batting.doubles - batting.triples - batting.homeRuns) + batting.doubles * 2 + batting.triples * 3 + batting.homeRuns * 4) / batting.atBats,
+                ops: (batting.hits + batting.baseOnBalls + batting.hitByPitch) / (batting.atBats + batting.baseOnBalls + batting.hitByPitch + batting.sacFlies) + ((batting.hits - batting.doubles - batting.triples - batting.homeRuns) + batting.doubles * 2 + batting.triples * 3 + batting.homeRuns * 4) / batting.atBats,
                 totalBases: batting.totalBases || 0,
                 leftOnBase: batting.leftOnBase || 0,
                 atBatsPerHomeRun: batting.atBatsPerHomeRun || '-',
